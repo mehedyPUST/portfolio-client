@@ -1,8 +1,8 @@
 import { ThemeProvider } from '@/context/ThemeContext';
 import './globals.css';
 import { Inter } from 'next/font/google';
+import { AuthProvider } from '@/context/AuthContext';
 import CustomCursor from '../../components/CustomCursor';
-
 
 
 const inter = Inter({ subsets: ['latin'] });
@@ -17,8 +17,10 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider>
-          <CustomCursor />
-          {children}
+          <AuthProvider>
+            <CustomCursor />
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

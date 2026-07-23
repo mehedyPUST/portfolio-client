@@ -1,8 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ThemeToggle from './ThemeToggle';  // or inline if you prefer
+import Link from 'next/link';
+import ThemeToggle from './ThemeToggle';
+import { useAuth } from '@/context/AuthContext';
 
 const sections = [
     { id: 'hero', label: 'Home' },
@@ -16,6 +18,7 @@ const sections = [
 export default function Navbar() {
     const [active, setActive] = useState('hero');
     const [menuOpen, setMenuOpen] = useState(false);
+    const { isAuthenticated } = useAuth();
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -26,10 +29,12 @@ export default function Navbar() {
             },
             { rootMargin: '-30% 0px -70% 0px' }
         );
+
         sections.forEach(({ id }) => {
             const el = document.getElementById(id);
             if (el) observer.observe(el);
         });
+
         return () => observer.disconnect();
     }, []);
 
@@ -45,6 +50,7 @@ export default function Navbar() {
         <nav className="fixed top-0 left-0 w-full z-50 bg-emerald-900/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
+                    {/* Logo */}
                     <span className="text-2xl font-bold text-amber-400 tracking-tight">
                         &lt;MH/&gt;
                     </span>
@@ -70,11 +76,28 @@ export default function Navbar() {
                                 )}
                             </button>
                         ))}
+
+                        {/* Admin button */}
+                        <Link
+                            href={isAuthenticated ? '/admin/dashboard' : '/admin/login'}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border border-amber-400/50 text-amber-400 hover:bg-amber-400/10"
+                        >
+                            <Shield size={14} />
+                            {isAuthenticated ? 'Dashboard' : 'Admin'}
+                        </Link>
+
                         <ThemeToggle />
                     </div>
 
-                    {/* Mobile hamburger + toggle */}
+                    {/* Mobile hamburger + admin + toggle */}
                     <div className="flex items-center gap-2 md:hidden">
+                        <Link
+                            href={isAuthenticated ? '/admin/dashboard' : '/admin/login'}
+                            className="flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium border border-amber-400/50 text-amber-400"
+                        >
+                            <Shield size={12} />
+                            {isAuthenticated ? 'Dashboard' : 'Admin'}
+                        </Link>
                         <ThemeToggle />
                         <button
                             className="text-amber-400"

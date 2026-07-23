@@ -1,72 +1,74 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { ArrowRight, Edit } from 'lucide-react';
 import ProjectCard from './ProjectCard';
 import SkeletonCard from './SkeletonCard';
+import { useAuth } from '@/context/AuthContext';
 
-// Replace with your own project data (or fetch from an API)
-const projects = [
-    {
-        id: 1,
-        name: 'E‑Commerce Platform',
-        image: '/project1.jpg',
-        tech: 'Next.js, MongoDB, Stripe',
-        description: 'Full‑stack online store with cart, payment, and admin panel.',
-        live: 'https://your-live-link.com',
-        github: 'https://github.com/yourgithub/ecommerce-client',
-        challenges:
-            'Implementing real‑time stock management and secure payment flow.',
-        improvements: 'Add AI product recommendations, improve SEO.',
-    },
-    {
-        id: 2,
-        name: 'Task Manager API',
-        image: '/project2.jpg',
-        tech: 'Express, MongoDB, JWT',
-        description:
-            'RESTful API for task management with authentication and role‑based access.',
-        live: 'https://api-demo.example.com',
-        github: 'https://github.com/yourgithub/task-manager-api',
-        challenges:
-            'JWT refresh token rotation, request validation and rate limiting.',
-        improvements: 'Add GraphQL interface, improve error logging.',
-    },
-    {
-        id: 3,
-        name: 'Portfolio Website',
-        image: '/project3.jpg',
-        tech: 'Next.js, Framer Motion, Nodemailer',
-        description:
-            'The very portfolio you are viewing – built with modern animations and dark mode.',
-        live: '#',
-        github: 'https://github.com/yourgithub/portfolio',
-        challenges:
-            'Custom cursor performance and scroll‑based animation sync.',
-        improvements: 'Add blog section, integrate CMS, add dark mode toggle.',
-    },
-];
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function ProjectsSection() {
+    const { isAuthenticated } = useAuth();
+    const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Simulate a short loading time (remove if you fetch real data)
     useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 1200);
-        return () => clearTimeout(timer);
+        fetch(`${BACKEND_URL}/api/projects/featured`)
+            .then((res) => res.json())
+            .then((data) => {
+                setProjects(data);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
     }, []);
 
     return (
-        <section id="projects" className="py-20 bg-emerald-50 dark:bg-gray-800">
+        <section id="projects" className="py-20 bg-emerald-50 dark:bg-gray-800 relative">
             <div className="max-w-7xl mx-auto px-4">
-                <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-300 mb-12 text-center">
-                    Projects
-                </h2>
+                <div className="text-center mb-12">
+                    <motion.span
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        className="inline-block px-4 py-1.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-sm font-medium mb-4"
+                    >
+                        My Work
+                    </motion.span>
+                    <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-200">
+                        Featured Projects
+                    </h2>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {loading
                         ? Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
                         : projects.map((project) => (
-                            <ProjectCard key={project.id} project={project} />
+                            <ProjectCard key={project._id} project={project} />
                         ))}
                 </div>
+
+                {/* See More button */}
+                <div className="text-center mt-10">
+                    <Link
+                        href="/projects"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-gray-900 font-semibold rounded-xl transition shadow-lg"
+                    >
+                        See More Projects
+                        <ArrowRight size={18} />
+                    </Link>
+                </div>
+
+                {/* Admin dashboard link */}
+                {isAuthenticated && (
+                    <Link
+                        href="/admin/dashboard"
+                        className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 bg-amber-500 hover:bg-amber-400 text-gray-900 rounded-lg text-sm transition"
+                    >
+                        <Edit size={14} /> Dashboard
+                    </Link>
+                )}
             </div>
         </section>
     );

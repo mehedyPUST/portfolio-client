@@ -1,64 +1,73 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
-import { FaGithub } from 'react-icons/fa';
+import { ArrowLeft, ExternalLink, Github, Tag } from 'lucide-react';
 
-
-// Same data as in ProjectsSection (in a real app you would fetch this from an API)
-const projects = [
-    {
-        id: 1,
-        name: 'E‑Commerce Platform',
-        image: '/project1.jpg',
-        tech: 'Next.js, MongoDB, Stripe',
-        description:
-            'Full‑stack online store with cart, payment, and admin panel.',
-        live: 'https://your-live-link.com',
-        github: 'https://github.com/yourgithub/ecommerce-client',
-        challenges:
-            'Implementing real‑time stock management and secure payment flow.',
-        improvements: 'Add AI product recommendations, improve SEO.',
-    },
-    {
-        id: 2,
-        name: 'Task Manager API',
-        image: '/project2.jpg',
-        tech: 'Express, MongoDB, JWT',
-        description:
-            'RESTful API for task management with authentication and role‑based access.',
-        live: 'https://api-demo.example.com',
-        github: 'https://github.com/yourgithub/task-manager-api',
-        challenges:
-            'JWT refresh token rotation, request validation and rate limiting.',
-        improvements: 'Add GraphQL interface, improve error logging.',
-    },
-    {
-        id: 3,
-        name: 'Portfolio Website',
-        image: '/project3.jpg',
-        tech: 'Next.js, Framer Motion, Nodemailer',
-        description:
-            'The very portfolio you are viewing – built with modern animations and dark mode.',
-        live: '#',
-        github: 'https://github.com/yourgithub/portfolio',
-        challenges:
-            'Custom cursor performance and scroll‑based animation sync.',
-        improvements: 'Add blog section, integrate CMS, add dark mode toggle.',
-    },
-];
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function ProjectDetail() {
     const { id } = useParams();
-    const project = projects.find((p) => p.id === Number(id));
+    const [project, setProject] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
 
-    if (!project) {
+    useEffect(() => {
+        const fetchProject = async () => {
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/projects`);
+                const projects = await res.json();
+
+                // Find by _id (MongoDB) or id (fallback)
+                const found = projects.find(
+                    (p) => p._id === id || p.id === Number(id)
+                );
+
+                if (found) {
+                    setProject(found);
+                } else {
+                    setError(true);
+                }
+            } catch {
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProject();
+    }, [id]);
+
+    // Loading state
+    if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-emerald-50 dark:bg-gray-900">
-                <p className="text-xl text-gray-700 dark:text-gray-300">
-                    Project not found.
-                </p>
+                <div className="text-center">
+                    <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                    <p className="text-gray-600 dark:text-gray-400">Loading project...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Error / Not found
+    if (error || !project) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-emerald-50 dark:bg-gray-900 px-4">
+                <div className="text-center">
+                    <h1 className="text-6xl font-bold text-emerald-800 dark:text-emerald-300 mb-4">404</h1>
+                    <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg">
+                        Project not found.
+                    </p>
+                    <Link
+                        href="/"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-gray-900 font-semibold rounded-xl transition-colors"
+                    >
+                        <ArrowLeft size={18} />
+                        Back to Portfolio
+                    </Link>
+                </div>
             </div>
         );
     }
@@ -68,65 +77,134 @@ export default function ProjectDetail() {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8"
+                transition={{ duration: 0.4 }}
+                className="max-w-4xl mx-auto"
             >
+                {/* Back button */}
                 <Link
                     href="/"
-                    className="inline-flex items-center gap-1 text-amber-500 hover:text-amber-600 dark:hover:text-amber-400 underline mb-6"
+                    className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-600 dark:hover:text-amber-400 font-medium mb-8 transition-colors"
                 >
-                    <ArrowLeft size={18} /> Back to portfolio
+                    <ArrowLeft size={18} />
+                    Back to Portfolio
                 </Link>
-                <h1 className="text-3xl font-bold text-emerald-800 dark:text-emerald-300 mb-4">
-                    {project.name}
-                </h1>
-                <img
-                    src={project.image}
-                    alt={project.name}
-                    className="w-full h-64 object-cover rounded-xl mb-6"
-                />
-                <p className="text-lg text-gray-700 dark:text-gray-300 mb-4">
-                    {project.description}
-                </p>
-                <div className="mb-4">
-                    <span className="font-semibold text-emerald-700 dark:text-emerald-400">
-                        Tech Stack:
-                    </span>{' '}
-                    {project.tech}
-                </div>
-                <div className="flex gap-4 mb-6">
-                    <a
-                        href={project.live}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-amber-500 hover:text-amber-600 dark:hover:text-amber-400 underline"
-                    >
-                        <ExternalLink size={18} /> Live Site
-                    </a>
-                    <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-amber-500 hover:text-amber-600 dark:hover:text-amber-400 underline"
-                    >
-                        <FaGithub size={18} /> Client Repo
-                    </a>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h3 className="font-semibold text-emerald-700 dark:text-emerald-400 mb-2">
-                            Challenges
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400">
-                            {project.challenges}
-                        </p>
+
+                {/* Main content card */}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                    {/* Project image */}
+                    <div className="relative w-full h-64 md:h-96 bg-emerald-100 dark:bg-gray-700">
+                        {project.image ? (
+                            <img
+                                src={project.image}
+                                alt={project.name}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                    e.target.style.display = 'none';
+                                    e.target.parentElement.classList.add('flex', 'items-center', 'justify-center');
+                                    e.target.parentElement.innerHTML +=
+                                        '<span class="text-emerald-400 dark:text-emerald-600 text-lg">No Image Available</span>';
+                                }}
+                            />
+                        ) : (
+                            <div className="flex items-center justify-center h-full">
+                                <span className="text-emerald-400 dark:text-emerald-600 text-lg">No Image Available</span>
+                            </div>
+                        )}
+
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+                        {/* Title overlay */}
+                        <div className="absolute bottom-6 left-6 right-6">
+                            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                                {project.name}
+                            </h1>
+                            <div className="flex items-center gap-2 text-emerald-200">
+                                <Tag size={16} />
+                                <span className="text-sm">{project.tech}</span>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h3 className="font-semibold text-emerald-700 dark:text-emerald-400 mb-2">
-                            Future Improvements
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400">
-                            {project.improvements}
-                        </p>
+
+                    {/* Content */}
+                    <div className="p-8">
+                        {/* Action buttons */}
+                        <div className="flex flex-wrap gap-3 mb-8">
+                            {project.live && project.live !== '#' && (
+                                <a
+                                    href={project.live}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-xl transition-colors"
+                                >
+                                    <ExternalLink size={16} />
+                                    Live Demo
+                                </a>
+                            )}
+                            {project.github && project.github !== '#' && (
+                                <a
+                                    href={project.github}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium rounded-xl transition-colors"
+                                >
+                                    <Github size={16} />
+                                    Client Repository
+                                </a>
+                            )}
+                            {(!project.live || project.live === '#') && (!project.github || project.github === '#') && (
+                                <p className="text-gray-500 dark:text-gray-400 italic">No links available</p>
+                            )}
+                        </div>
+
+                        {/* Description */}
+                        <div className="mb-8">
+                            <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 mb-3">
+                                About This Project
+                            </h2>
+                            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                                {project.description || 'No description provided.'}
+                            </p>
+                        </div>
+
+                        {/* Tech stack */}
+                        {project.tech && (
+                            <div className="mb-8">
+                                <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 mb-3">
+                                    Tech Stack
+                                </h2>
+                                <div className="flex flex-wrap gap-2">
+                                    {project.tech.split(',').map((tech) => (
+                                        <span
+                                            key={tech.trim()}
+                                            className="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full text-sm font-medium"
+                                        >
+                                            {tech.trim()}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Challenges & Improvements */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="bg-amber-50 dark:bg-amber-900/20 p-6 rounded-xl border border-amber-100 dark:border-amber-800/50">
+                                <h3 className="flex items-center gap-2 font-bold text-amber-800 dark:text-amber-300 mb-3">
+                                    ⚡ Challenges
+                                </h3>
+                                <p className="text-amber-700 dark:text-amber-400/80 leading-relaxed text-sm">
+                                    {project.challenges || 'No challenges documented.'}
+                                </p>
+                            </div>
+                            <div className="bg-emerald-50 dark:bg-emerald-900/20 p-6 rounded-xl border border-emerald-100 dark:border-emerald-800/50">
+                                <h3 className="flex items-center gap-2 font-bold text-emerald-800 dark:text-emerald-300 mb-3">
+                                    🚀 Future Improvements
+                                </h3>
+                                <p className="text-emerald-700 dark:text-emerald-400/80 leading-relaxed text-sm">
+                                    {project.improvements || 'No improvements planned yet.'}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </motion.div>
