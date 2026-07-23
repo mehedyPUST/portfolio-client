@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, Send, MapPin, MessageSquare, Edit } from 'lucide-react';
+import { Mail, Phone, Send, MapPin, Edit } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -12,22 +12,27 @@ export default function Contact() {
     const [status, setStatus] = useState('');
     const [contactData, setContactData] = useState(null);
     const [editing, setEditing] = useState(false);
-    const [editForm, setEditForm] = useState({ email: '', phone: '', location: '' });
+    const [editForm, setEditForm] = useState({ email: '', phone: '', whatsapp: '', location: '' });
     const [saving, setSaving] = useState(false);
 
-    // Fetch contact data from backend
-    useEffect(() => {
-        fetch(`${BACKEND_URL}/api/portfolio-data`)
+    // ✅ Fixed: use /api/contact-info
+    const fetchContactData = () => {
+        fetch(`${BACKEND_URL}/api/contact-info`)
             .then((res) => res.json())
             .then((data) => {
                 setContactData(data);
                 setEditForm({
-                    email: data?.email || 'mehedy.hasan@example.com',
-                    phone: data?.phone || '+880 1XXX-XXXXXX',
+                    email: data?.email || '',
+                    phone: data?.phone || '',
+                    whatsapp: data?.whatsapp || '',
                     location: data?.location || 'Pabna, Bangladesh',
                 });
             })
             .catch(() => { });
+    };
+
+    useEffect(() => {
+        fetchContactData();
     }, []);
 
     const handleSubmit = async (e) => {
@@ -51,23 +56,24 @@ export default function Contact() {
         setTimeout(() => setStatus(''), 5000);
     };
 
+    // ✅ Fixed: use /api/contact-info for save
     const handleEditSave = async () => {
         setSaving(true);
         try {
-            await fetch(`${BACKEND_URL}/api/portfolio-data`, {
+            const res = await fetch(`${BACKEND_URL}/api/contact-info`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: editForm.email,
-                    phone: editForm.phone,
-                    location: editForm.location,
-                }),
+                body: JSON.stringify(editForm),
             });
-            setContactData(editForm);
-            setEditing(false);
+            if (res.ok) {
+                setContactData(editForm);
+                setEditing(false);
+            } else {
+                alert('Failed to save');
+            }
         } catch {
-            alert('Failed to save');
+            alert('Network error');
         }
         setSaving(false);
     };
@@ -87,7 +93,6 @@ export default function Contact() {
                 <div className="flex flex-col lg:flex-row gap-12">
                     {/* Contact Info Cards */}
                     <div className="lg:w-1/3 space-y-6">
-                        {/* Email Card */}
                         <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
@@ -96,13 +101,12 @@ export default function Contact() {
                                 <div>
                                     <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Email</h3>
                                     <p className="text-gray-600 dark:text-gray-400 text-sm break-all">
-                                        {contactData?.email || 'mehedy.hasan@example.com'}
+                                        {contactData?.email || 'Not set'}
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Phone Card */}
                         <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
@@ -111,13 +115,12 @@ export default function Contact() {
                                 <div>
                                     <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Phone</h3>
                                     <p className="text-gray-600 dark:text-gray-400 text-sm">
-                                        {contactData?.phone || '+880 1XXX-XXXXXX'}
+                                        {contactData?.phone || 'Not set'}
                                     </p>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Location Card */}
                         <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
                             <div className="flex items-center gap-4">
                                 <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
@@ -188,7 +191,7 @@ export default function Contact() {
             {isAuthenticated && (
                 <button
                     onClick={() => setEditing(true)}
-                    className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 bg-amber-500 hover:bg-amber-400 text-gray-900 rounded-lg text-sm transition"
+                    className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 bg-amber-500 hover:bg-amber-400 text-gray-900 rounded-lg text-sm transition z-10"
                 >
                     <Edit size={14} /> Edit Contact
                 </button>
@@ -219,6 +222,15 @@ export default function Contact() {
                                     type="text"
                                     value={editForm.phone}
                                     onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">WhatsApp</label>
+                                <input
+                                    type="text"
+                                    value={editForm.whatsapp}
+                                    onChange={(e) => setEditForm({ ...editForm, whatsapp: e.target.value })}
                                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
                                 />
                             </div>
