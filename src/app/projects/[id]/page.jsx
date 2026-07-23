@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Github, Tag } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Tag } from 'lucide-react';
+import { FaGithub } from 'react-icons/fa';
+
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -148,7 +150,7 @@ export default function ProjectDetail() {
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium rounded-xl transition-colors"
                                 >
-                                    <Github size={16} />
+                                    <FaGithub size={16} />
                                     Client Repository
                                 </a>
                             )}
