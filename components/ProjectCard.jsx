@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { ExternalLink, Eye } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 
-
 export default function ProjectCard({ project }) {
     return (
         <motion.div
@@ -31,47 +30,49 @@ export default function ProjectCard({ project }) {
                 )}
                 {/* Overlay on hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                    <span className="text-white text-sm font-medium px-3 py-1 bg-amber-500 rounded-full">
+                    <span className="text-white text-xs font-medium px-2.5 py-1 bg-amber-500 rounded-full">
                         {project.tech?.split(',')[0] || 'Project'}
                     </span>
                 </div>
             </div>
 
             {/* Card Content */}
-            <div className="p-6 flex flex-col flex-1">
-                <h3 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 mb-2 line-clamp-1">
+            <div className="p-5 flex flex-col flex-1">
+                <h3 className="text-lg font-bold text-emerald-800 dark:text-emerald-200 mb-1.5 line-clamp-1">
                     {project.name}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2 flex-1">
+                <p className="text-gray-500 dark:text-gray-400 text-xs mb-3 line-clamp-2 flex-1">
                     {project.description?.slice(0, 100)}
                     {project.description?.length > 100 ? '...' : ''}
                 </p>
 
-                {/* Action Buttons */}
-                <div className="flex flex-col gap-2 mt-auto">
-                    <div className="flex gap-2">
+                {/* Action Buttons - compact */}
+                <div className="flex items-center gap-1.5 mt-auto">
+                    {project.live && project.live !== '#' && (
                         <a
-                            href={project.live || '#'}
+                            href={project.live}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium rounded-lg transition-colors"
+                            className="flex items-center gap-1 px-2.5 py-1.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-900/50 text-xs font-medium rounded-md transition-colors"
                         >
-                            <ExternalLink size={14} /> Live
+                            <ExternalLink size={12} /> Live
                         </a>
+                    )}
+                    {project.github && project.github !== '#' && (
                         <a
-                            href={project.github || '#'}
+                            href={project.github}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-gray-800 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white text-sm font-medium rounded-lg transition-colors"
+                            className="flex items-center gap-1 px-2.5 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 text-xs font-medium rounded-md transition-colors"
                         >
-                            <FaGithub size={14} /> Repo
+                            <FaGithub size={12} /> Repo
                         </a>
-                    </div>
+                    )}
                     <Link
                         href={`/projects/${project._id || project.id}`}
-                        className="flex items-center justify-center gap-1.5 px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-gray-900 font-semibold rounded-lg transition-colors text-sm"
+                        className="flex items-center gap-1 px-2.5 py-1.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-900/50 text-xs font-medium rounded-md transition-colors ml-auto"
                     >
-                        <Eye size={14} /> View Details
+                        <Eye size={12} /> Details
                     </Link>
                 </div>
             </div>

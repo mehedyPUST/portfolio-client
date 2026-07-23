@@ -60,7 +60,6 @@ export default function AIAssistant() {
         }
     };
 
-    // Quick suggestion chips
     const suggestions = [
         'What skills does Mehedy have?',
         'Tell me about his projects',
@@ -69,7 +68,6 @@ export default function AIAssistant() {
 
     const handleSuggestion = (text) => {
         setInput(text);
-        // Auto-send after a tiny delay
         setTimeout(() => {
             setInput('');
             const userMessage = { role: 'user', content: text };
@@ -92,7 +90,7 @@ export default function AIAssistant() {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className="fixed bottom-32 right-6 z-50">
             <AnimatePresence>
                 {open && (
                     <motion.div
@@ -150,7 +148,7 @@ export default function AIAssistant() {
                             <div ref={messagesEndRef} />
                         </div>
 
-                        {/* Suggestions (only show at start) */}
+                        {/* Suggestions */}
                         {messages.length <= 1 && (
                             <div className="px-4 pb-2 flex flex-wrap gap-1.5">
                                 {suggestions.map((s) => (
@@ -188,7 +186,7 @@ export default function AIAssistant() {
                 )}
             </AnimatePresence>
 
-            {/* Floating button */}
+            {/* Floating button - positioned higher */}
             <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
