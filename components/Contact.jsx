@@ -8,7 +8,7 @@ export default function Contact() {
     const [status, setStatus] = useState(''); // 'sending' | 'success' | 'error'
 
     // Replace with your actual backend URL after deployment
-    const BACKEND_URL = 'http://localhost:5000';
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
