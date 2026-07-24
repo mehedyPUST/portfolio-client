@@ -23,7 +23,6 @@ export default function AddProjectModal({ onClose, onAdd }) {
     const [saving, setSaving] = useState(false);
     const [preview, setPreview] = useState('');
     const fileInputRef = useRef(null);
-    const textareaRef = useRef(null);
 
     const [descMode, setDescMode] = useState('html');
     const [challengesMode, setChallengesMode] = useState('html');
@@ -115,7 +114,7 @@ export default function AddProjectModal({ onClose, onAdd }) {
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
             >
                 <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800 rounded-t-2xl">
                     <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">Add Project</h2>
@@ -141,57 +140,54 @@ export default function AddProjectModal({ onClose, onAdd }) {
                         {form.image && !uploading && <p className="text-emerald-500 text-sm mt-1">✓ Image uploaded</p>}
                     </div>
 
-                    {/* Name */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Name *</label>
-                        <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
-                    </div>
-
-                    {/* Tech Stack */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tech Stack *</label>
-                        <input type="text" value={form.tech} onChange={(e) => setForm({ ...form, tech: e.target.value })} required placeholder="Next.js, MongoDB, Tailwind" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
+                    {/* Name + Tech Stack - side by side */}
+                    <div className="grid grid-cols-2 gap-3">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Name *</label>
+                            <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tech Stack *</label>
+                            <input type="text" value={form.tech} onChange={(e) => setForm({ ...form, tech: e.target.value })} required placeholder="Next.js, MongoDB, Tailwind" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
+                        </div>
                     </div>
 
                     {/* Description */}
                     <RichTextField label="Description" value={form.description} onChange={(value) => setForm({ ...form, description: value })} mode={descMode} setMode={setDescMode} rows={4} required />
 
-                    {/* URLs */}
-                    <div className="grid grid-cols-2 gap-3">
+                    {/* URLs - 3 columns */}
+                    <div className="grid grid-cols-3 gap-3">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Live URL</label>
-                            <input type="url" value={form.live} onChange={(e) => setForm({ ...form, live: e.target.value })} placeholder="https://..." className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
+                            <input type="url" value={form.live} onChange={(e) => setForm({ ...form, live: e.target.value })} placeholder="https://..." className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 text-sm" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Frontend GitHub</label>
-                            <input type="url" value={form.github} onChange={(e) => setForm({ ...form, github: e.target.value })} placeholder="https://github.com/..." className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
+                            <input type="url" value={form.github} onChange={(e) => setForm({ ...form, github: e.target.value })} placeholder="https://github.com/..." className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 text-sm" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Backend GitHub</label>
+                            <input type="url" value={form.backendGithub} onChange={(e) => setForm({ ...form, backendGithub: e.target.value })} placeholder="Optional" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 text-sm" />
                         </div>
                     </div>
 
-                    {/* Backend GitHub — NEW */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Backend GitHub URL</label>
-                        <input type="url" value={form.backendGithub} onChange={(e) => setForm({ ...form, backendGithub: e.target.value })} placeholder="https://github.com/... (optional)" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
+                    {/* Challenges + Improvements - side by side */}
+                    <div className="grid grid-cols-2 gap-3">
+                        <RichTextField label="Challenges" value={form.challenges} onChange={(value) => setForm({ ...form, challenges: value })} mode={challengesMode} setMode={setChallengesMode} rows={3} />
+                        <RichTextField label="Future Improvements" value={form.improvements} onChange={(value) => setForm({ ...form, improvements: value })} mode={improvementsMode} setMode={setImprovementsMode} rows={3} />
                     </div>
 
-                    {/* Challenges */}
-                    <RichTextField label="Challenges" value={form.challenges} onChange={(value) => setForm({ ...form, challenges: value })} mode={challengesMode} setMode={setChallengesMode} rows={2} />
-
-                    {/* Improvements */}
-                    <RichTextField label="Future Improvements" value={form.improvements} onChange={(value) => setForm({ ...form, improvements: value })} mode={improvementsMode} setMode={setImprovementsMode} rows={2} />
-
-                    {/* Order */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Display Order</label>
-                        <input type="number" value={form.order} onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg" />
-                        <p className="text-xs text-gray-500 mt-1">Lower number = shown first</p>
+                    {/* Order + Featured - side by side */}
+                    <div className="flex items-end gap-4">
+                        <div className="w-32">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Order</label>
+                            <input type="number" value={form.order} onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg" />
+                        </div>
+                        <label className="flex items-center gap-2 cursor-pointer pb-2">
+                            <input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })} className="w-4 h-4 text-amber-500 rounded focus:ring-amber-400" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">Featured project</span>
+                        </label>
                     </div>
-
-                    {/* Featured */}
-                    <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })} className="w-4 h-4 text-amber-500 rounded focus:ring-amber-400" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300">Featured project</span>
-                    </label>
 
                     <button type="submit" disabled={saving || uploading} className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition disabled:opacity-50">
                         <Save size={18} /> {saving ? 'Saving...' : 'Add Project'}
