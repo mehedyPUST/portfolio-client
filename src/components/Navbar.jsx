@@ -3,8 +3,10 @@ import { useState, useEffect } from 'react';
 import { Menu, X, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import ThemeToggle from './ThemeToggle';
 import { useAuth } from '@/context/AuthContext';
+import ThemeToggle from './ThemeToggle';
+
+
 
 const sections = [
     { id: 'hero', label: 'Home' },
@@ -62,8 +64,8 @@ export default function Navbar() {
                                 key={id}
                                 onClick={() => handleClick(id)}
                                 className={`relative px-2 py-1 text-sm font-medium transition-colors ${active === id
-                                        ? 'text-amber-400'
-                                        : 'text-emerald-50 dark:text-gray-300 hover:text-amber-300'
+                                    ? 'text-amber-400'
+                                    : 'text-emerald-50 dark:text-gray-300 hover:text-amber-300'
                                     }`}
                             >
                                 {label}
@@ -125,8 +127,8 @@ export default function Navbar() {
                                     key={id}
                                     onClick={() => handleClick(id)}
                                     className={`text-left px-3 py-2 rounded-md text-sm font-medium ${active === id
-                                            ? 'text-amber-400 bg-emerald-800 dark:bg-gray-800'
-                                            : 'text-emerald-50 dark:text-gray-300 hover:bg-emerald-800 dark:hover:bg-gray-800'
+                                        ? 'text-amber-400 bg-emerald-800 dark:bg-gray-800'
+                                        : 'text-emerald-50 dark:text-gray-300 hover:bg-emerald-800 dark:hover:bg-gray-800'
                                         }`}
                                 >
                                     {label}

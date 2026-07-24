@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Mail, Phone, Send, MapPin, Edit } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
+
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function Contact() {

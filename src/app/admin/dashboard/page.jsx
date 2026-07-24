@@ -4,13 +4,14 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 import Link from 'next/link';
-import { useAuth } from '@/context/AuthContext';
+
 import { ArrowLeft, Edit, ExternalLink, FolderKanban, Layout, LogOut, Plus, Star, Trash2, User } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
-import EditHeroModal from '../../../../components/admin/EditHeroModal';
-import EditAboutModal from '../../../../components/admin/EditAboutModal';
-import AddProjectModal from '../../../../components/admin/AddProjectModal';
-import EditProjectModal from '../../../../components/admin/EditProjectModal';
+import { useAuth } from '@/context/AuthContext';
+import EditHeroModal from '@/components/admin/EditHeroModal';
+import EditAboutModal from '@/components/admin/EditAboutModal';
+import AddProjectModal from '@/components/admin/AddProjectModal';
+import EditProjectModal from '@/components/admin/EditProjectModal';
 
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;

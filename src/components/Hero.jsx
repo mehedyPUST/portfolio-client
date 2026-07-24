@@ -2,10 +2,10 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useAuth } from '@/context/AuthContext';
-import EditHeroModal from './admin/EditHeroModal';
 import { Download, Edit } from 'lucide-react';
 import { FaFacebook, FaGithub, FaLinkedin } from 'react-icons/fa';
+import { useAuth } from '@/context/AuthContext';
+import EditHeroModal from './admin/EditHeroModal';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -46,7 +46,6 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
 
                 <div className="max-w-7xl mx-auto px-4 py-20 flex flex-col md:flex-row items-center gap-12 lg:gap-20 relative z-10">
-
                     {/* Left: Text content */}
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
@@ -152,6 +151,7 @@ export default function Hero() {
                                     src={photoUrl || '/mehedy.jpg'}
                                     alt={title}
                                     fill
+                                    sizes="(max-width: 768px) 288px, 384px"
                                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                                     priority
                                 />

@@ -1,8 +1,11 @@
+
 import { ThemeProvider } from '@/context/ThemeContext';
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { AuthProvider } from '@/context/AuthContext';
-import CustomCursor from '../../components/CustomCursor';
+import CustomCursor from '@/components/CustomCursor';
+
+
 
 
 const inter = Inter({ subsets: ['latin'] });

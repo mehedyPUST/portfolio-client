@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, Edit } from 'lucide-react';
-import ProjectCard from './ProjectCard';
-import SkeletonCard from './SkeletonCard';
 import { useAuth } from '@/context/AuthContext';
+import SkeletonCard from './SkeletonCard';
+import ProjectCard from './ProjectCard';
+
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 

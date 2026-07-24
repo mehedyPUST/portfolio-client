@@ -2,11 +2,13 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useAuth } from '@/context/AuthContext';
+
 import { ArrowLeft, Plus } from 'lucide-react';
-import SkeletonCard from '../../../components/SkeletonCard';
-import ProjectCard from '../../../components/ProjectCard';
-import AddProjectModal from '../../../components/admin/AddProjectModal';
+import { useAuth } from '@/context/AuthContext';
+import SkeletonCard from '@/components/SkeletonCard';
+import ProjectCard from '@/components/ProjectCard';
+import AddProjectModal from '@/components/admin/AddProjectModal';
+
 
 
 
