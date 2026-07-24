@@ -6,12 +6,7 @@ import {
     Server,
     Wrench,
     Monitor,
-    Database,
     Lock,
-    Mail,
-    GitBranch,
-    Cloud,
-    Palette,
 } from 'lucide-react';
 import {
     SiNextdotjs,
@@ -19,11 +14,11 @@ import {
     SiTailwindcss,
     SiNodedotjs,
     SiMongodb,
-    SiJsonwebtokens,
     SiGithub,
     SiVercel,
+    SiTypescript,
+    SiNetlify,
 } from 'react-icons/si';
-import { TbBrandFramerMotion } from 'react-icons/tb';
 
 const skillCategories = [
     {
@@ -31,10 +26,11 @@ const skillCategories = [
         label: 'Frontend',
         icon: <Monitor className="w-5 h-5" />,
         skills: [
-            { name: 'React / Next.js', level: 90, icon: <SiReact className="text-cyan-400" /> },
+            { name: 'Next.js', level: 90, icon: <SiNextdotjs className="text-gray-800" /> },
+            { name: 'React', level: 92, icon: <SiReact className="text-cyan-400" /> },
             { name: 'JavaScript', level: 88, icon: <Code2 className="text-yellow-400" /> },
-            { name: 'Tailwind CSS', level: 92, icon: <SiTailwindcss className="text-teal-400" /> },
-            { name: 'Framer Motion', level: 75, icon: <TbBrandFramerMotion className="text-pink-400" /> },
+            { name: 'TypeScript', level: 80, icon: <SiTypescript className="text-blue-600" /> },
+            { name: 'Tailwind CSS', level: 94, icon: <SiTailwindcss className="text-teal-400" /> },
         ],
     },
     {
@@ -42,10 +38,10 @@ const skillCategories = [
         label: 'Backend',
         icon: <Server className="w-5 h-5" />,
         skills: [
-            { name: 'Node.js / Express', level: 85, icon: <SiNodedotjs className="text-green-400" /> },
-            { name: 'MongoDB', level: 78, icon: <SiMongodb className="text-green-500" /> },
+            { name: 'Node.js', level: 88, icon: <SiNodedotjs className="text-green-500" /> },
+            { name: 'Express.js', level: 86, icon: <Server className="text-gray-400" /> },
+            { name: 'MongoDB', level: 82, icon: <SiMongodb className="text-green-600" /> },
             { name: 'JWT / Auth', level: 80, icon: <Lock className="text-blue-400" /> },
-            { name: 'Nodemailer', level: 70, icon: <Mail className="text-red-400" /> },
         ],
     },
     {
@@ -53,8 +49,9 @@ const skillCategories = [
         label: 'Tools',
         icon: <Wrench className="w-5 h-5" />,
         skills: [
-            { name: 'Git / GitHub', level: 85, icon: <SiGithub className="text-gray-400" /> },
-            { name: 'Vercel / Deploy', level: 82, icon: <SiVercel className="text-gray-400" /> },
+            { name: 'Git / GitHub', level: 90, icon: <SiGithub className="text-gray-400" /> },
+            { name: 'Vercel', level: 85, icon: <SiVercel className="text-black" /> },
+            { name: 'Netlify', level: 80, icon: <SiNetlify className="text-teal-500" /> },
         ],
     },
 ];
@@ -66,7 +63,6 @@ export default function Skills() {
 
     return (
         <section id="skills" className="py-20 bg-emerald-50 dark:bg-gray-800 relative overflow-hidden">
-            {/* Background decoration */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(16,185,129,0.05),transparent_50%)] dark:bg-[radial-gradient(circle_at_30%_50%,rgba(16,185,129,0.03),transparent_50%)]" />
 
             <div className="max-w-4xl mx-auto px-4 relative z-10">
@@ -76,7 +72,6 @@ export default function Skills() {
                     viewport={{ once: true, margin: '-100px' }}
                     transition={{ duration: 0.5 }}
                 >
-                    {/* Header */}
                     <div className="text-center mb-10">
                         <motion.span
                             initial={{ opacity: 0, scale: 0.8 }}
@@ -91,7 +86,6 @@ export default function Skills() {
                         </h2>
                     </div>
 
-                    {/* Tab buttons */}
                     <div className="flex justify-center gap-2 mb-10">
                         {skillCategories.map((category) => (
                             <button
@@ -108,7 +102,6 @@ export default function Skills() {
                         ))}
                     </div>
 
-                    {/* Skill bars */}
                     <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 p-8">
                         <AnimatePresence mode="wait">
                             <motion.div
@@ -152,16 +145,19 @@ export default function Skills() {
                         </AnimatePresence>
                     </div>
 
-                    {/* Tech stack pills */}
                     <div className="flex flex-wrap justify-center gap-3 mt-8">
                         {[
                             { name: 'Next.js', icon: <SiNextdotjs /> },
                             { name: 'React', icon: <SiReact /> },
-                            { name: 'Tailwind', icon: <SiTailwindcss /> },
+                            { name: 'JavaScript', icon: <Code2 /> },
+                            { name: 'TypeScript', icon: <SiTypescript /> },
+                            { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
                             { name: 'Node.js', icon: <SiNodedotjs /> },
+                            { name: 'Express.js', icon: <Server /> },
                             { name: 'MongoDB', icon: <SiMongodb /> },
                             { name: 'GitHub', icon: <SiGithub /> },
                             { name: 'Vercel', icon: <SiVercel /> },
+                            { name: 'Netlify', icon: <SiNetlify /> },
                         ].map((tech) => (
                             <span
                                 key={tech.name}
