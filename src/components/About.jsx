@@ -26,9 +26,9 @@ export default function About() {
     const paragraphs = aboutData?.paragraphs?.length
         ? aboutData.paragraphs
         : [
-            "I’m Mehedy Hasan, a full‑stack web developer with an MSc in Physics from Pabna University of Science and Technology. My thesis in Solid State Physics honed a rigorous, analytical approach to problem‑solving — a mindset I now apply daily to writing clean, efficient, and scalable code.",
-            "My path into web development started at university, driven by a fascination with building things from scratch. I later completed the Programming Hero Bootcamp (Batch 13), where I deepened my expertise in React, Next.js, Node.js, Express, and MongoDB. My physics research background accelerated my ability to understand complex systems, making the transition to full‑stack development natural and rewarding.",
-            "What excites me most is the fusion of logic and creativity in software engineering. Whether architecting a RESTful API, crafting a responsive Tailwind UI, or debugging state‑management issues, I tackle every challenge with a researcher’s curiosity and a builder’s precision — always focused on delivering robust, real‑world solutions.",
+            "I'm Mehedy Hasan, a full‑stack developer with an MSc in Physics from Pabna University of Science & Technology.",
+            "I completed web development training at Programming Hero Bootcamp (Batch 13).",
+            "Outside coding, I enjoy science documentaries, chess, and quantum mechanics.",
         ];
 
     return (
@@ -49,6 +49,7 @@ export default function About() {
                         <div className="space-y-6 md:space-y-8">
                             {paragraphs.map((p, i) => {
                                 const isEven = i % 2 === 0;
+
                                 return (
                                     <motion.div
                                         key={i}
@@ -58,7 +59,7 @@ export default function About() {
                                         transition={{ duration: 0.5, delay: i * 0.1 }}
                                         className={`
                       relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md
-                      border-l-4 border-emerald-500
+                      ${isEven ? 'border-l-4' : 'border-r-4'} border-emerald-500
                       md:w-11/12
                       ${isEven ? 'md:mr-auto' : 'md:ml-auto'}
                     `}
@@ -89,7 +90,7 @@ export default function About() {
                                 </span>
 
                                 <p className="relative text-gray-700 dark:text-gray-300 text-lg md:text-xl italic font-medium leading-relaxed px-4">
-                                    The unknown doesn’t hold me back — it fuels my drive to explore, learn, and build.
+                                    The unknown doesn't hold me back — it fuels my drive to explore, learn, and build.
                                 </p>
                             </div>
                         </motion.div>
