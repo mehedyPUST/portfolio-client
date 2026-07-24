@@ -16,6 +16,7 @@ export default function AddProjectModal({ onClose, onAdd }) {
         challenges: '',
         improvements: '',
         featured: false,
+        order: 0,
     });
     const [uploading, setUploading] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -26,12 +27,10 @@ export default function AddProjectModal({ onClose, onAdd }) {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // Show local preview
         const reader = new FileReader();
         reader.onload = (e) => setPreview(e.target.result);
         reader.readAsDataURL(file);
 
-        // Convert to base64
         setUploading(true);
         const base64 = await new Promise((resolve) => {
             const reader = new FileReader();
@@ -39,7 +38,6 @@ export default function AddProjectModal({ onClose, onAdd }) {
             reader.readAsDataURL(file);
         });
 
-        // Upload to ImgBB via backend
         const res = await fetch(`${BACKEND_URL}/api/upload`, {
             method: 'POST',
             credentials: 'include',
@@ -90,9 +88,7 @@ export default function AddProjectModal({ onClose, onAdd }) {
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     {/* Image Upload */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Screenshot *
-                        </label>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Screenshot *</label>
                         <div
                             onClick={() => fileInputRef.current?.click()}
                             className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-4 text-center cursor-pointer hover:border-amber-400 transition"
@@ -105,13 +101,7 @@ export default function AddProjectModal({ onClose, onAdd }) {
                                     <p className="text-sm text-gray-500">Click to upload screenshot</p>
                                 </div>
                             )}
-                            <input
-                                ref={fileInputRef}
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageUpload}
-                                className="hidden"
-                            />
+                            <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
                         </div>
                         {uploading && <p className="text-amber-500 text-sm mt-1">Uploading...</p>}
                         {form.image && !uploading && <p className="text-emerald-500 text-sm mt-1">✓ Image uploaded</p>}
@@ -119,116 +109,61 @@ export default function AddProjectModal({ onClose, onAdd }) {
 
                     {/* Name */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Project Name *
-                        </label>
-                        <input
-                            type="text"
-                            value={form.name}
-                            onChange={(e) => setForm({ ...form, name: e.target.value })}
-                            required
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
-                        />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Name *</label>
+                        <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
                     </div>
 
                     {/* Tech Stack */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Tech Stack *
-                        </label>
-                        <input
-                            type="text"
-                            value={form.tech}
-                            onChange={(e) => setForm({ ...form, tech: e.target.value })}
-                            required
-                            placeholder="Next.js, MongoDB, Tailwind"
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
-                        />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tech Stack *</label>
+                        <input type="text" value={form.tech} onChange={(e) => setForm({ ...form, tech: e.target.value })} required placeholder="Next.js, MongoDB, Tailwind" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
                     </div>
 
                     {/* Description */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Description *
-                        </label>
-                        <textarea
-                            value={form.description}
-                            onChange={(e) => setForm({ ...form, description: e.target.value })}
-                            required
-                            rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
-                        />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description *</label>
+                        <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required rows={3} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
                     </div>
 
                     {/* Live & GitHub URLs */}
                     <div className="grid grid-cols-2 gap-3">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Live URL
-                            </label>
-                            <input
-                                type="url"
-                                value={form.live}
-                                onChange={(e) => setForm({ ...form, live: e.target.value })}
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
-                            />
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Live URL</label>
+                            <input type="url" value={form.live} onChange={(e) => setForm({ ...form, live: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                GitHub URL
-                            </label>
-                            <input
-                                type="url"
-                                value={form.github}
-                                onChange={(e) => setForm({ ...form, github: e.target.value })}
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
-                            />
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">GitHub URL</label>
+                            <input type="url" value={form.github} onChange={(e) => setForm({ ...form, github: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
                         </div>
                     </div>
 
                     {/* Challenges */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Challenges
-                        </label>
-                        <textarea
-                            value={form.challenges}
-                            onChange={(e) => setForm({ ...form, challenges: e.target.value })}
-                            rows={2}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
-                        />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Challenges</label>
+                        <textarea value={form.challenges} onChange={(e) => setForm({ ...form, challenges: e.target.value })} rows={2} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
                     </div>
 
                     {/* Improvements */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Future Improvements
-                        </label>
-                        <textarea
-                            value={form.improvements}
-                            onChange={(e) => setForm({ ...form, improvements: e.target.value })}
-                            rows={2}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
-                        />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Future Improvements</label>
+                        <textarea value={form.improvements} onChange={(e) => setForm({ ...form, improvements: e.target.value })} rows={2} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
+                    </div>
+
+                    {/* Order */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Display Order</label>
+                        <input type="number" value={form.order} onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg" />
+                        <p className="text-xs text-gray-500 mt-1">Lower number = shown first</p>
                     </div>
 
                     {/* Featured checkbox */}
                     <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                            type="checkbox"
-                            checked={form.featured}
-                            onChange={(e) => setForm({ ...form, featured: e.target.checked })}
-                            className="w-4 h-4 text-amber-500 rounded focus:ring-amber-400"
-                        />
+                        <input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })} className="w-4 h-4 text-amber-500 rounded focus:ring-amber-400" />
                         <span className="text-sm text-gray-700 dark:text-gray-300">Featured project</span>
                     </label>
 
                     {/* Submit */}
-                    <button
-                        type="submit"
-                        disabled={saving || uploading}
-                        className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition disabled:opacity-50"
-                    >
+                    <button type="submit" disabled={saving || uploading} className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition disabled:opacity-50">
                         <Save size={18} />
                         {saving ? 'Saving...' : 'Add Project'}
                     </button>

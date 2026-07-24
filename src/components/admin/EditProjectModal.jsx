@@ -16,6 +16,7 @@ export default function EditProjectModal({ project, onClose, onUpdate }) {
         challenges: project.challenges || '',
         improvements: project.improvements || '',
         featured: project.featured || false,
+        order: project.order || 0,
     });
     const [uploading, setUploading] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -84,10 +85,7 @@ export default function EditProjectModal({ project, onClose, onUpdate }) {
                     {/* Image */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Screenshot</label>
-                        <div
-                            onClick={() => fileInputRef.current?.click()}
-                            className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-4 text-center cursor-pointer hover:border-amber-400 transition"
-                        >
+                        <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-4 text-center cursor-pointer hover:border-amber-400 transition">
                             {preview ? (
                                 <img src={preview} alt="Preview" className="h-40 mx-auto rounded-lg object-cover" />
                             ) : (
@@ -101,7 +99,7 @@ export default function EditProjectModal({ project, onClose, onUpdate }) {
                         {uploading && <p className="text-amber-500 text-sm mt-1">Uploading...</p>}
                     </div>
 
-                    {/* Fields (same as AddProjectModal) */}
+                    {/* Fields */}
                     {[
                         { key: 'name', label: 'Project Name *', type: 'text' },
                         { key: 'tech', label: 'Tech Stack *', type: 'text' },
@@ -114,46 +112,30 @@ export default function EditProjectModal({ project, onClose, onUpdate }) {
                         <div key={key}>
                             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
                             {type === 'textarea' ? (
-                                <textarea
-                                    value={form[key]}
-                                    onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                                    rows={rows}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
-                                />
+                                <textarea value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} rows={rows} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
                             ) : (
-                                <input
-                                    type={type}
-                                    value={form[key]}
-                                    onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
-                                />
+                                <input type={type} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
                             )}
                         </div>
                     ))}
 
+                    {/* Order */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Display Order</label>
+                        <input type="number" value={form.order} onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg" />
+                        <p className="text-xs text-gray-500 mt-1">Lower number = shown first</p>
+                    </div>
+
+                    {/* Featured */}
                     <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                            type="checkbox"
-                            checked={form.featured}
-                            onChange={(e) => setForm({ ...form, featured: e.target.checked })}
-                            className="w-4 h-4 text-amber-500 rounded focus:ring-amber-400"
-                        />
+                        <input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })} className="w-4 h-4 text-amber-500 rounded focus:ring-amber-400" />
                         <span className="text-sm text-gray-700 dark:text-gray-300">Featured project</span>
                     </label>
 
+                    {/* Buttons */}
                     <div className="flex gap-3">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="flex-1 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            disabled={saving}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-amber-500 hover:bg-amber-400 text-gray-900 font-semibold rounded-xl transition"
-                        >
+                        <button type="button" onClick={onClose} className="flex-1 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition">Cancel</button>
+                        <button type="submit" disabled={saving} className="flex-1 flex items-center justify-center gap-2 py-3 bg-amber-500 hover:bg-amber-400 text-gray-900 font-semibold rounded-xl transition">
                             <Save size={18} />
                             {saving ? 'Saving...' : 'Update'}
                         </button>

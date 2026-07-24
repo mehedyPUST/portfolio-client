@@ -2,53 +2,69 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ExternalLink, Eye } from 'lucide-react';
+import { ExternalLink, Eye, } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 
-export default function ProjectCard({ project }) {
+const titleColors = [
+    'text-emerald-700 dark:text-emerald-300',
+    'text-amber-700 dark:text-amber-300',
+    'text-blue-700 dark:text-blue-300',
+    'text-purple-700 dark:text-purple-300',
+    'text-rose-700 dark:text-rose-300',
+];
+
+export default function ProjectCard({ project, index = 0 }) {
+    const colorClass = titleColors[index % titleColors.length];
+
     return (
         <motion.div
-            whileHover={{ y: -6 }}
-            className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden transition-shadow hover:shadow-2xl border border-emerald-100 dark:border-gray-700 group flex flex-col"
+            whileHover={{ y: -8 }}
+            className="group relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col"
         >
-            {/* Project Screenshot */}
-            <div className="relative h-48 w-full overflow-hidden bg-emerald-100 dark:bg-gray-700">
-                {project.image ? (
-                    <Image
-                        src={project.image}
-                        alt={project.name}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        onError={(e) => {
-                            e.target.style.display = 'none';
-                        }}
-                    />
-                ) : (
-                    <div className="flex items-center justify-center h-full text-emerald-400 dark:text-emerald-600">
-                        <Eye size={48} />
-                    </div>
-                )}
-                {/* Overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                    <span className="text-white text-xs font-medium px-2.5 py-1 bg-amber-500 rounded-full">
-                        {project.tech?.split(',')[0] || 'Project'}
-                    </span>
+            {/* Image Section */}
+            <div className="px-5 pt-5">
+                <div className="relative w-full aspect-[16/10] overflow-hidden rounded-t-xl bg-gray-100 dark:bg-gray-800">
+                    {project.image ? (
+                        <Image
+                            src={project.image}
+                            alt={project.name}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-cover group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+                            onError={(e) => {
+                                e.target.style.display = 'none';
+                            }}
+                        />
+                    ) : (
+                        <div className="flex items-center justify-center h-full text-gray-300 dark:text-gray-600">
+                            <Eye size={40} />
+                        </div>
+                    )}
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-xl" />
+
+                    {project.tech && (
+                        <div className="absolute top-3 right-3">
+                            <span className="px-2.5 py-1 text-[11px] font-medium bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full shadow-sm">
+                                {project.tech.split(',')[0].trim()}
+                            </span>
+                        </div>
+                    )}
                 </div>
             </div>
 
-            {/* Card Content */}
+            {/* Content Section */}
             <div className="p-5 flex flex-col flex-1">
-                <h3 className="text-lg font-bold text-emerald-800 dark:text-emerald-200 mb-1.5 line-clamp-1">
+                <h3 className={`text-base font-semibold mb-1.5 line-clamp-1 tracking-tight ${colorClass}`}>
                     {project.name}
                 </h3>
-                <p className="text-gray-500 dark:text-gray-400 text-xs mb-3 line-clamp-2 flex-1">
-                    {project.description?.slice(0, 100)}
-                    {project.description?.length > 100 ? '...' : ''}
+
+                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4 line-clamp-2 flex-1">
+                    {project.description?.slice(0, 120)}
+                    {project.description?.length > 120 ? '...' : ''}
                 </p>
 
-                {/* Action Buttons - compact */}
-                <div className="flex items-center gap-1.5 mt-auto">
+                <div className="flex items-center gap-1.5 mt-auto pt-3 border-t border-gray-100 dark:border-gray-800">
                     {project.live && project.live !== '#' && (
                         <a
                             href={project.live}

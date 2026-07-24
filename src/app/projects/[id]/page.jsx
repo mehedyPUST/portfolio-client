@@ -2,10 +2,10 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Tag } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
-
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -14,6 +14,7 @@ export default function ProjectDetail() {
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [imgError, setImgError] = useState(false);
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -21,7 +22,6 @@ export default function ProjectDetail() {
                 const res = await fetch(`${BACKEND_URL}/api/projects`);
                 const projects = await res.json();
 
-                // Find by _id (MongoDB) or id (fallback)
                 const found = projects.find(
                     (p) => p._id === id || p.id === Number(id)
                 );
@@ -41,7 +41,6 @@ export default function ProjectDetail() {
         fetchProject();
     }, [id]);
 
-    // Loading state
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-emerald-50 dark:bg-gray-900">
@@ -53,7 +52,6 @@ export default function ProjectDetail() {
         );
     }
 
-    // Error / Not found
     if (error || !project) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-emerald-50 dark:bg-gray-900 px-4">
@@ -82,7 +80,6 @@ export default function ProjectDetail() {
                 transition={{ duration: 0.4 }}
                 className="max-w-4xl mx-auto"
             >
-                {/* Back button */}
                 <Link
                     href="/"
                     className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-600 dark:hover:text-amber-400 font-medium mb-8 transition-colors"
@@ -91,21 +88,19 @@ export default function ProjectDetail() {
                     Back to Portfolio
                 </Link>
 
-                {/* Main content card */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
                     {/* Project image */}
                     <div className="relative w-full h-64 md:h-96 bg-emerald-100 dark:bg-gray-700">
-                        {project.image ? (
-                            <img
+                        {project.image && !imgError ? (
+                            <Image
                                 src={project.image}
                                 alt={project.name}
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                    e.target.style.display = 'none';
-                                    e.target.parentElement.classList.add('flex', 'items-center', 'justify-center');
-                                    e.target.parentElement.innerHTML +=
-                                        '<span class="text-emerald-400 dark:text-emerald-600 text-lg">No Image Available</span>';
-                                }}
+                                fill
+                                priority
+                                loading="eager"
+                                sizes="(max-width: 768px) 100vw, 896px"
+                                className="object-cover"
+                                onError={() => setImgError(true)}
                             />
                         ) : (
                             <div className="flex items-center justify-center h-full">
@@ -113,10 +108,8 @@ export default function ProjectDetail() {
                             </div>
                         )}
 
-                        {/* Gradient overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-                        {/* Title overlay */}
                         <div className="absolute bottom-6 left-6 right-6">
                             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
                                 {project.name}
@@ -128,9 +121,7 @@ export default function ProjectDetail() {
                         </div>
                     </div>
 
-                    {/* Content */}
                     <div className="p-8">
-                        {/* Action buttons */}
                         <div className="flex flex-wrap gap-3 mb-8">
                             {project.live && project.live !== '#' && (
                                 <a
@@ -159,7 +150,6 @@ export default function ProjectDetail() {
                             )}
                         </div>
 
-                        {/* Description */}
                         <div className="mb-8">
                             <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 mb-3">
                                 About This Project
@@ -169,7 +159,6 @@ export default function ProjectDetail() {
                             </p>
                         </div>
 
-                        {/* Tech stack */}
                         {project.tech && (
                             <div className="mb-8">
                                 <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 mb-3">
@@ -188,7 +177,6 @@ export default function ProjectDetail() {
                             </div>
                         )}
 
-                        {/* Challenges & Improvements */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="bg-amber-50 dark:bg-amber-900/20 p-6 rounded-xl border border-amber-100 dark:border-amber-800/50">
                                 <h3 className="flex items-center gap-2 font-bold text-amber-800 dark:text-amber-300 mb-3">
