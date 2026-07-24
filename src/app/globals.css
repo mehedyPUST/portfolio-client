@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Custom colour palette (60-30-10) */
 @theme {
   --color-emerald-50: #ecfdf5;
   --color-emerald-100: #d1fae5;
@@ -15,10 +14,8 @@
   --color-gray-800: #1f2937;
 }
 
-/* Dark mode class strategy */
 @variant dark (&:where(.dark, .dark *));
 
-/* Smooth colour transitions */
 html {
   scroll-behavior: auto;
 }
@@ -32,11 +29,10 @@ body {
 
 .dark body {
   background-color: #0f172a;
-  /* slate-900 */
   color: #f1f5f9;
-  /* slate-100 */
 }
 
+/* Hide custom cursor on touch devices (phones, tablets) */
 @media (pointer: coarse) {
   body {
     cursor: auto;
