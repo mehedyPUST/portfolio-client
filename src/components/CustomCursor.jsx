@@ -6,11 +6,20 @@ export default function CustomCursor() {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hovered, setHovered] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
     const rafRef = useRef(null);
 
     useEffect(() => {
+        // Detect touch device
+        const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+        if (hasCoarsePointer || hasTouch) {
+            setIsTouchDevice(true);
+            return; // Skip cursor logic on touch devices
+        }
+
         const move = (e) => {
-            // Use requestAnimationFrame for smooth 60fps tracking
             if (rafRef.current) cancelAnimationFrame(rafRef.current);
             rafRef.current = requestAnimationFrame(() => {
                 setPosition({ x: e.clientX, y: e.clientY });
@@ -28,7 +37,6 @@ export default function CustomCursor() {
         document.addEventListener('mouseleave', hide);
         document.addEventListener('mouseenter', show);
 
-        // Observe interactive elements
         const interactiveElements = document.querySelectorAll(
             'a, button, [role="button"], input, textarea, .interactive'
         );
@@ -49,9 +57,12 @@ export default function CustomCursor() {
         };
     }, [visible]);
 
+    // Don't render cursor on touch devices
+    if (isTouchDevice) return null;
+
     return (
         <>
-            {/* Outer ring - instant follow, no spring */}
+            {/* Outer ring */}
             <motion.div
                 className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] border-2 border-emerald-500 bg-transparent"
                 style={{ x: position.x - 16, y: position.y - 16 }}
@@ -66,7 +77,7 @@ export default function CustomCursor() {
                 transition={{ duration: 0.15, ease: 'easeOut' }}
             />
 
-            {/* Inner dot - instant follow */}
+            {/* Inner dot */}
             <motion.div
                 className="fixed top-0 left-0 w-2 h-2 bg-amber-500 rounded-full pointer-events-none z-[9999]"
                 style={{ x: position.x - 4, y: position.y - 4 }}
