@@ -31,10 +31,6 @@ export default function About() {
             "Outside coding, I enjoy science documentaries, chess, and quantum mechanics.",
         ];
 
-    // Split paragraphs: left column gets even indices (0,2,4…), right column gets odd indices (1,3,5…)
-    const leftParagraphs = paragraphs.filter((_, i) => i % 2 === 0);
-    const rightParagraphs = paragraphs.filter((_, i) => i % 2 === 1);
-
     return (
         <>
             <section id="about" className="py-20 bg-white dark:bg-gray-900 relative">
@@ -45,35 +41,34 @@ export default function About() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
                     >
-                        <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-300 mb-8 text-center">
+                        <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-300 mb-12 text-center">
                             About Me
                         </h2>
 
-                        {/* Desktop: two-column alternating layout */}
-                        <div className="hidden md:grid md:grid-cols-2 gap-8">
-                            <div className="space-y-6">
-                                {leftParagraphs.map((p, i) => (
-                                    <p key={`left-${i}`} className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-                                        {p}
-                                    </p>
-                                ))}
-                            </div>
-                            <div className="space-y-6 mt-10"> {/* slight vertical offset for right column */}
-                                {rightParagraphs.map((p, i) => (
-                                    <p key={`right-${i}`} className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-                                        {p}
-                                    </p>
-                                ))}
-                            </div>
-                        </div>
+                        <div className="space-y-6 md:space-y-8">
+                            {paragraphs.map((p, i) => {
+                                const isEven = i % 2 === 0;
 
-                        {/* Mobile: simple vertical stack */}
-                        <div className="md:hidden space-y-4">
-                            {paragraphs.map((p, i) => (
-                                <p key={i} className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-                                    {p}
-                                </p>
-                            ))}
+                                return (
+                                    <motion.div
+                                        key={i}
+                                        initial={{ opacity: 0, x: isEven ? -30 : 30 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true, margin: '-40px' }}
+                                        transition={{ duration: 0.5, delay: i * 0.1 }}
+                                        className={`
+                      relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md
+                      border-l-4 border-emerald-500
+                      md:w-11/12
+                      ${isEven ? 'md:mr-auto' : 'md:ml-auto'}
+                    `}
+                                    >
+                                        <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                                            {p}
+                                        </p>
+                                    </motion.div>
+                                );
+                            })}
                         </div>
                     </motion.div>
                 </div>
