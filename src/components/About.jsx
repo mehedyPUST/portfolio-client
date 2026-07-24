@@ -63,7 +63,7 @@ export default function About() {
                       ${isEven ? 'md:mr-auto' : 'md:ml-auto'}
                     `}
                                     >
-                                        <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                                        <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed text-justify">
                                             {p}
                                         </p>
                                     </motion.div>
