@@ -45,10 +45,10 @@ export default function About() {
                             About Me
                         </h2>
 
+                        {/* Paragraph cards from backend */}
                         <div className="space-y-6 md:space-y-8">
                             {paragraphs.map((p, i) => {
                                 const isEven = i % 2 === 0;
-
                                 return (
                                     <motion.div
                                         key={i}
@@ -70,6 +70,29 @@ export default function About() {
                                 );
                             })}
                         </div>
+
+                        {/* Hardcoded quote – appears below all paragraphs */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.4, duration: 0.5 }}
+                            className="mt-10 md:mt-12 flex justify-center"
+                        >
+                            <div className="relative bg-gradient-to-r from-emerald-50 to-amber-50 dark:from-gray-800 dark:to-gray-800/80 border border-emerald-200 dark:border-emerald-900/60 rounded-2xl px-8 py-6 max-w-xl text-center shadow-sm">
+                                {/* Quotation mark decorative elements */}
+                                <span className="absolute top-2 left-4 text-5xl text-emerald-400 dark:text-emerald-600 opacity-40 font-serif leading-none">
+                                    “
+                                </span>
+                                <span className="absolute bottom-2 right-4 text-5xl text-emerald-400 dark:text-emerald-600 opacity-40 font-serif leading-none rotate-180">
+                                    ”
+                                </span>
+
+                                <p className="relative text-gray-700 dark:text-gray-300 text-lg md:text-xl italic font-medium leading-relaxed px-4">
+                                    The unknown doesn’t hold me back — it fuels my drive to explore, learn, and build.
+                                </p>
+                            </div>
+                        </motion.div>
                     </motion.div>
                 </div>
 
