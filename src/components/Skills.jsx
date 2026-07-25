@@ -57,13 +57,17 @@ const skillCategories = [
     },
 ];
 
-// helper to get gradient colour based on level (no type annotations)
-const getLevelColor = (level) => {
-    if (level >= 90) return 'from-emerald-400 to-green-500';
-    if (level >= 80) return 'from-amber-400 to-yellow-500';
-    if (level >= 70) return 'from-orange-400 to-amber-500';
-    return 'from-red-400 to-rose-500';
-};
+// A rotating palette of distinct gradients – the order changes per skill index
+const barColors = [
+    'from-blue-500 to-cyan-400',
+    'from-purple-500 to-pink-400',
+    'from-emerald-500 to-teal-400',
+    'from-amber-500 to-orange-400',
+    'from-rose-500 to-red-400',
+    'from-indigo-500 to-violet-400',
+    'from-lime-500 to-green-400',
+    'from-fuchsia-500 to-purple-400',
+];
 
 const getLevelLabel = (level) => {
     if (level >= 90) return 'Expert';
@@ -78,7 +82,6 @@ export default function Skills() {
 
     return (
         <section id="skills" className="py-20 bg-emerald-50 dark:bg-gray-800 relative overflow-hidden">
-            {/* Animated background glow */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(16,185,129,0.08),transparent_50%)] dark:bg-[radial-gradient(circle_at_30%_50%,rgba(16,185,129,0.04),transparent_50%)] animate-pulse" />
 
             <div className="max-w-4xl mx-auto px-4 relative z-10">
@@ -88,7 +91,6 @@ export default function Skills() {
                     viewport={{ once: true, margin: '-100px' }}
                     transition={{ duration: 0.6 }}
                 >
-                    {/* Header */}
                     <div className="text-center mb-10">
                         <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-200">
                             Skills & Expertise
@@ -98,7 +100,6 @@ export default function Skills() {
                         </p>
                     </div>
 
-                    {/* Category Tabs with sliding indicator */}
                     <div className="flex justify-center gap-2 mb-10 relative">
                         {skillCategories.map((category) => (
                             <button
@@ -113,7 +114,6 @@ export default function Skills() {
                                 {category.label}
                             </button>
                         ))}
-                        {/* Sliding underline */}
                         <motion.div
                             className="absolute bottom-0 h-0.5 bg-amber-500 dark:bg-amber-400 rounded-full"
                             layoutId="activeTab"
@@ -125,7 +125,6 @@ export default function Skills() {
                         />
                     </div>
 
-                    {/* Skills Card */}
                     <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/30 dark:border-gray-700/30 p-8">
                         <AnimatePresence mode="wait">
                             <motion.div
@@ -137,8 +136,9 @@ export default function Skills() {
                                 className="space-y-6"
                             >
                                 {activeCategory?.skills.map((skill, index) => {
-                                    const colorClass = getLevelColor(skill.level);
                                     const label = getLevelLabel(skill.level);
+                                    // Pick a color based on index – cycles through the palette
+                                    const colorClass = barColors[index % barColors.length];
                                     return (
                                         <motion.div
                                             key={skill.name}
@@ -189,7 +189,6 @@ export default function Skills() {
                         </AnimatePresence>
                     </div>
 
-                    {/* Tech Tags with floating effect */}
                     <div className="flex flex-wrap justify-center gap-3 mt-8">
                         {[
                             { name: 'Next.js', icon: <SiNextdotjs /> },
