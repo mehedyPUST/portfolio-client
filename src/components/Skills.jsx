@@ -57,15 +57,15 @@ const skillCategories = [
     },
 ];
 
-// helper to get gradient colour based on level
-const getLevelColor = (level: number) => {
+// helper to get gradient colour based on level (no type annotations)
+const getLevelColor = (level) => {
     if (level >= 90) return 'from-emerald-400 to-green-500';
     if (level >= 80) return 'from-amber-400 to-yellow-500';
     if (level >= 70) return 'from-orange-400 to-amber-500';
     return 'from-red-400 to-rose-500';
 };
 
-const getLevelLabel = (level: number) => {
+const getLevelLabel = (level) => {
     if (level >= 90) return 'Expert';
     if (level >= 80) return 'Proficient';
     if (level >= 70) return 'Intermediate';
@@ -105,8 +105,8 @@ export default function Skills() {
                                 key={category.id}
                                 onClick={() => setActiveTab(category.id)}
                                 className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${activeTab === category.id
-                                    ? 'text-amber-600 dark:text-amber-400'
-                                    : 'text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-300'
+                                        ? 'text-amber-600 dark:text-amber-400'
+                                        : 'text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-300'
                                     }`}
                             >
                                 {category.icon}
@@ -168,7 +168,6 @@ export default function Skills() {
                                                     <span className="text-sm font-bold text-amber-600 dark:text-amber-400">
                                                         {skill.level}%
                                                     </span>
-                                                    {/* Small star indicator for expert level */}
                                                     {skill.level >= 90 && (
                                                         <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
                                                     )}
