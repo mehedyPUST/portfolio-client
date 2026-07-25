@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { X, Upload, Save, Eye, Code } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -54,7 +55,7 @@ export default function EditProjectModal({ project, onClose, onUpdate }) {
         if (data.success) {
             setForm({ ...form, image: data.url });
         } else {
-            alert('Image upload failed');
+            toast.error('Image upload failed');
         }
         setUploading(false);
     };
@@ -69,6 +70,7 @@ export default function EditProjectModal({ project, onClose, onUpdate }) {
             body: JSON.stringify(form),
         });
         setSaving(false);
+        toast.success('Project updated!');
         onUpdate();
     };
 

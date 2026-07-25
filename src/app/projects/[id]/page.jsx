@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Tag, Edit } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
-import { SiExpress } from 'react-icons/si';
 import { useAuth } from '@/context/AuthContext';
 import EditProjectModal from '@/components/admin/EditProjectModal';
 
@@ -84,23 +83,28 @@ export default function ProjectDetail() {
                         </div>
 
                         <div className="p-8">
-                            {/* Buttons row */}
-                            <div className="flex flex-wrap gap-3 mb-8">
+                            {/* Buttons – professional style, no backend repo */}
+                            <div className="flex flex-wrap gap-2 mb-8">
                                 {project.live && project.live !== '#' && (
-                                    <a href={project.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-xl">
-                                        <ExternalLink size={16} /> Live Demo
+                                    <a
+                                        href={project.live}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-4 py-2 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 bg-white dark:bg-gray-800 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg text-sm font-medium transition-colors"
+                                    >
+                                        <ExternalLink size={14} />
+                                        Live Demo
                                     </a>
                                 )}
-                                {/* Client Repo */}
                                 {project.github && project.github !== '#' && (
-                                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-800 hover:bg-gray-700 text-white font-medium rounded-xl">
-                                        <FaGithub size={16} /> Client Repository
-                                    </a>
-                                )}
-                                {/* Server Repo — NEW */}
-                                {project.backendGithub && project.backendGithub !== '#' && (
-                                    <a href={project.backendGithub} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-medium rounded-xl border border-slate-500">
-                                        <SiExpress size={16} /> Server Repository
+                                    <a
+                                        href={project.github}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg text-sm font-medium transition-colors"
+                                    >
+                                        <FaGithub size={14} />
+                                        Client Repository
                                     </a>
                                 )}
                             </div>
@@ -140,7 +144,7 @@ export default function ProjectDetail() {
                 </motion.div>
             </div>
 
-            {/* Floating Edit Button */}
+            {/* Floating Edit Button – only for admin */}
             {isAuthenticated && (
                 <motion.button
                     initial={{ opacity: 0, scale: 0.8 }}

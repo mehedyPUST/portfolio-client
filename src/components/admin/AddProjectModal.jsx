@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { X, Upload, Save, Eye, Code } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -54,7 +55,7 @@ export default function AddProjectModal({ onClose, onAdd }) {
         if (data.success) {
             setForm({ ...form, image: data.url });
         } else {
-            alert('Image upload failed');
+            toast.error('Image upload failed');
         }
         setUploading(false);
     };
@@ -62,7 +63,7 @@ export default function AddProjectModal({ onClose, onAdd }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!form.name || !form.image || !form.tech || !form.description) {
-            alert('Please fill all required fields');
+            toast.error('Please fill all required fields');
             return;
         }
         setSaving(true);
@@ -73,6 +74,7 @@ export default function AddProjectModal({ onClose, onAdd }) {
             body: JSON.stringify(form),
         });
         setSaving(false);
+        toast.success('Project added!');
         onAdd();
     };
 
