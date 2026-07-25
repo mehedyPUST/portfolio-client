@@ -73,14 +73,6 @@ export default function Skills() {
                     transition={{ duration: 0.5 }}
                 >
                     <div className="text-center mb-10">
-                        <motion.span
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            className="inline-block px-4 py-1.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-sm font-medium mb-4"
-                        >
-                            What I Know
-                        </motion.span>
                         <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-200">
                             Skills & Expertise
                         </h2>
@@ -92,8 +84,8 @@ export default function Skills() {
                                 key={category.id}
                                 onClick={() => setActiveTab(category.id)}
                                 className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${activeTab === category.id
-                                        ? 'bg-amber-500 text-gray-900 shadow-lg shadow-amber-500/25'
-                                        : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-emerald-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
+                                    ? 'bg-amber-500 text-gray-900 shadow-lg shadow-amber-500/25'
+                                    : 'bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-emerald-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700'
                                     }`}
                             >
                                 {category.icon}

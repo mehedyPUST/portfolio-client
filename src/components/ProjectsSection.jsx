@@ -7,7 +7,6 @@ import { useAuth } from '@/context/AuthContext';
 import SkeletonCard from './SkeletonCard';
 import ProjectCard from './ProjectCard';
 
-
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export default function ProjectsSection() {
@@ -29,14 +28,6 @@ export default function ProjectsSection() {
         <section id="projects" className="py-20 bg-emerald-50 dark:bg-gray-800 relative">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="text-center mb-12">
-                    <motion.span
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        className="inline-block px-4 py-1.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-sm font-medium mb-4"
-                    >
-                        My Work
-                    </motion.span>
                     <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-200">
                         Featured Projects
                     </h2>
