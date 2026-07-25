@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, Send, MapPin, Edit } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-
+import toast from 'react-hot-toast';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -16,10 +16,9 @@ export default function Contact() {
     const [editForm, setEditForm] = useState({ email: '', phone: '', whatsapp: '', location: '' });
     const [saving, setSaving] = useState(false);
 
-    // ✅ Fixed: use /api/contact-info
     const fetchContactData = () => {
         fetch(`${BACKEND_URL}/api/contact-info`)
-            .then((res) => res.json())
+            .then((r) => r.json())
             .then((data) => {
                 setContactData(data);
                 setEditForm({
@@ -48,16 +47,18 @@ export default function Contact() {
             if (res.ok) {
                 setStatus('success');
                 setForm({ name: '', email: '', message: '' });
+                toast.success('Message sent! I’ll get back to you soon.');
             } else {
                 setStatus('error');
+                toast.error('Failed to send. Please try again.');
             }
         } catch {
             setStatus('error');
+            toast.error('Network error. Please try again.');
         }
         setTimeout(() => setStatus(''), 5000);
     };
 
-    // ✅ Fixed: use /api/contact-info for save
     const handleEditSave = async () => {
         setSaving(true);
         try {
@@ -70,11 +71,12 @@ export default function Contact() {
             if (res.ok) {
                 setContactData(editForm);
                 setEditing(false);
+                toast.success('Contact info updated!');
             } else {
-                alert('Failed to save');
+                toast.error('Failed to save');
             }
         } catch {
-            alert('Network error');
+            toast.error('Network error');
         }
         setSaving(false);
     };
@@ -82,113 +84,119 @@ export default function Contact() {
     return (
         <section id="contact" className="py-20 bg-white dark:bg-gray-900 relative">
             <div className="max-w-6xl mx-auto px-4">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-300 mb-4">
-                        Get In Touch
-                    </h2>
-                    <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                        Have a project in mind or just want to say hello? Fill out the form below.
-                    </p>
-                </div>
-
-                <div className="flex flex-col lg:flex-row gap-12">
-                    {/* Contact Info Cards */}
-                    <div className="lg:w-1/3 space-y-6">
-                        <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <Mail className="text-white" size={20} />
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Email</h3>
-                                    <p className="text-gray-600 dark:text-gray-400 text-sm break-all">
-                                        {contactData?.email || 'Not set'}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <Phone className="text-white" size={20} />
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Phone</h3>
-                                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                                        {contactData?.phone || 'Not set'}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <MapPin className="text-white" size={20} />
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Location</h3>
-                                    <p className="text-gray-600 dark:text-gray-400 text-sm">
-                                        {contactData?.location || 'Pabna, Bangladesh'}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-80px' }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-300 mb-4">
+                            Get In Touch
+                        </h2>
+                        <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                            Have a project in mind or just want to say hello? Fill out the form below.
+                        </p>
                     </div>
 
-                    {/* Contact Form */}
-                    <div className="lg:w-2/3">
-                        <form
-                            onSubmit={handleSubmit}
-                            className="bg-emerald-50 dark:bg-gray-800 p-8 rounded-2xl border border-emerald-100 dark:border-gray-700"
-                        >
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                <input
-                                    type="text"
-                                    placeholder="Your Name"
-                                    value={form.name}
-                                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                    required
-                                    className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-emerald-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                                />
-                                <input
-                                    type="email"
-                                    placeholder="Your Email"
-                                    value={form.email}
-                                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                    required
-                                    className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-emerald-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-amber-400 focus:border-transparent"
-                                />
+                    <div className="flex flex-col lg:flex-row gap-12">
+                        {/* Contact Info Cards */}
+                        <div className="lg:w-1/3 space-y-6">
+                            <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <Mail className="text-white" size={20} />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Email</h3>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm break-all">
+                                            {contactData?.email || 'Not set'}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                            <textarea
-                                rows="5"
-                                placeholder="Your Message"
-                                value={form.message}
-                                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                                required
-                                className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-emerald-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-amber-400 focus:border-transparent mb-6 resize-none"
-                            />
-                            <button
-                                type="submit"
-                                disabled={status === 'sending'}
-                                className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:bg-amber-300 text-gray-900 font-semibold py-4 rounded-xl transition shadow-lg"
+
+                            <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <Phone className="text-white" size={20} />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Phone</h3>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                            {contactData?.phone || 'Not set'}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <MapPin className="text-white" size={20} />
+                                    </div>
+                                    <div>
+                                        <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Location</h3>
+                                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                            {contactData?.location || 'Pabna, Bangladesh'}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Contact Form */}
+                        <div className="lg:w-2/3">
+                            <form
+                                onSubmit={handleSubmit}
+                                className="bg-emerald-50 dark:bg-gray-800 p-8 rounded-2xl border border-emerald-100 dark:border-gray-700"
                             >
-                                <Send size={18} />
-                                {status === 'sending' ? 'Sending...' : 'Send Message'}
-                            </button>
-                            {status === 'success' && (
-                                <p className="text-emerald-600 mt-4 text-center">Message sent successfully!</p>
-                            )}
-                            {status === 'error' && (
-                                <p className="text-red-500 mt-4 text-center">Failed to send. Please try again.</p>
-                            )}
-                        </form>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <input
+                                        type="text"
+                                        placeholder="Your Name"
+                                        value={form.name}
+                                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                                        required
+                                        className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-emerald-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-amber-400 focus:border-transparent"
+                                    />
+                                    <input
+                                        type="email"
+                                        placeholder="Your Email"
+                                        value={form.email}
+                                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                        required
+                                        className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-emerald-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-amber-400 focus:border-transparent"
+                                    />
+                                </div>
+                                <textarea
+                                    rows="5"
+                                    placeholder="Your Message"
+                                    value={form.message}
+                                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                                    required
+                                    className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-emerald-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-amber-400 focus:border-transparent mb-6 resize-none"
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={status === 'sending'}
+                                    className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:bg-amber-300 text-gray-900 font-semibold py-4 rounded-xl transition shadow-lg"
+                                >
+                                    <Send size={18} />
+                                    {status === 'sending' ? 'Sending...' : 'Send Message'}
+                                </button>
+                                {status === 'success' && (
+                                    <p className="text-emerald-600 mt-4 text-center">Message sent successfully!</p>
+                                )}
+                                {status === 'error' && (
+                                    <p className="text-red-500 mt-4 text-center">Failed to send. Please try again.</p>
+                                )}
+                            </form>
+                        </div>
                     </div>
-                </div>
+                </motion.div>
             </div>
 
-            {/* Admin edit button */}
             {isAuthenticated && (
                 <button
                     onClick={() => setEditing(true)}
@@ -198,7 +206,6 @@ export default function Contact() {
                 </button>
             )}
 
-            {/* Edit Modal */}
             {editing && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
                     <motion.div

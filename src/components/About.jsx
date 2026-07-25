@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Edit } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import EditAboutModal from './admin/EditAboutModal';
+import AboutSkeleton from './AboutSkeleton';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -22,6 +23,8 @@ export default function About() {
     useEffect(() => {
         fetchAbout();
     }, []);
+
+    if (!aboutData) return <AboutSkeleton />;
 
     const paragraphs = aboutData?.paragraphs?.length
         ? aboutData.paragraphs
@@ -44,12 +47,9 @@ export default function About() {
                         <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-300 mb-12 text-center">
                             About Me
                         </h2>
-
-                        {/* Paragraph cards from backend */}
                         <div className="space-y-6 md:space-y-8">
                             {paragraphs.map((p, i) => {
                                 const isEven = i % 2 === 0;
-
                                 return (
                                     <motion.div
                                         key={i}
@@ -57,22 +57,13 @@ export default function About() {
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true, margin: '-40px' }}
                                         transition={{ duration: 0.5, delay: i * 0.1 }}
-                                        className={`
-                      relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md
-                      ${isEven ? 'border-l-4' : 'border-r-4'} border-emerald-500
-                      md:w-11/12
-                      ${isEven ? 'md:mr-auto' : 'md:ml-auto'}
-                    `}
+                                        className={`relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md ${isEven ? 'border-l-4' : 'border-r-4'} border-emerald-500 md:w-11/12 ${isEven ? 'md:mr-auto' : 'md:ml-auto'}`}
                                     >
-                                        <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed text-justify">
-                                            {p}
-                                        </p>
+                                        <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed text-justify">{p}</p>
                                     </motion.div>
                                 );
                             })}
                         </div>
-
-                        {/* Hardcoded quote – appears below all paragraphs */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -81,14 +72,8 @@ export default function About() {
                             className="mt-10 md:mt-12 flex justify-center"
                         >
                             <div className="relative bg-gradient-to-r from-emerald-50 to-amber-50 dark:from-gray-800 dark:to-gray-800/80 border border-emerald-200 dark:border-emerald-900/60 rounded-2xl px-8 py-6 max-w-xl text-center shadow-sm">
-                                {/* Quotation mark decorative elements */}
-                                <span className="absolute top-2 left-4 text-5xl text-emerald-400 dark:text-emerald-600 opacity-40 font-serif leading-none">
-                                    “
-                                </span>
-                                <span className="absolute bottom-2 right-4 text-5xl text-emerald-400 dark:text-emerald-600 opacity-40 font-serif leading-none rotate-180">
-                                    ”
-                                </span>
-
+                                <span className="absolute top-2 left-4 text-5xl text-emerald-400 dark:text-emerald-600 opacity-40 font-serif leading-none">“</span>
+                                <span className="absolute bottom-2 right-4 text-5xl text-emerald-400 dark:text-emerald-600 opacity-40 font-serif leading-none rotate-180">”</span>
                                 <p className="relative text-gray-700 dark:text-gray-300 text-lg md:text-xl italic font-medium leading-relaxed px-4">
                                     The unknown doesn't hold me back — it fuels my drive to explore, learn, and build.
                                 </p>
@@ -96,27 +81,13 @@ export default function About() {
                         </motion.div>
                     </motion.div>
                 </div>
-
                 {isAuthenticated && (
-                    <button
-                        onClick={() => setShowEditModal(true)}
-                        className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 bg-amber-500 hover:bg-amber-400 text-gray-900 rounded-lg text-sm"
-                    >
+                    <button onClick={() => setShowEditModal(true)} className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 bg-amber-500 hover:bg-amber-400 text-gray-900 rounded-lg text-sm">
                         <Edit size={14} /> Edit
                     </button>
                 )}
             </section>
-
-            {showEditModal && (
-                <EditAboutModal
-                    aboutData={aboutData}
-                    onClose={() => setShowEditModal(false)}
-                    onUpdate={() => {
-                        fetchAbout();
-                        setShowEditModal(false);
-                    }}
-                />
-            )}
+            {showEditModal && <EditAboutModal aboutData={aboutData} onClose={() => setShowEditModal(false)} onUpdate={() => { fetchAbout(); setShowEditModal(false); }} />}
         </>
     );
 }

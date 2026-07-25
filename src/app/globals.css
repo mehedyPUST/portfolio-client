@@ -32,7 +32,16 @@ body {
   color: #f1f5f9;
 }
 
-/* Hide custom cursor on touch devices (phones, tablets) */
+/* Serif headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-lora), serif;
+}
+
 @media (pointer: coarse) {
   body {
     cursor: auto;
