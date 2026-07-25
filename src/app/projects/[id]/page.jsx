@@ -109,11 +109,13 @@ export default function ProjectDetail() {
                                 )}
                             </div>
 
-                            {/* Description – full width, no extra padding */}
+                            {/* Description – full width, no extra padding/margins */}
                             <div className="mb-8 -mx-8">
-                                <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 mb-3 px-8">About This Project</h2>
+                                <h2 className="text-xl font-bold text-emerald-800 dark:text-emerald-200 mb-3 px-8">
+                                    About This Project
+                                </h2>
                                 <div
-                                    className="text-gray-600 dark:text-gray-300 leading-relaxed prose prose-sm dark:prose-invert max-w-none"
+                                    className="text-gray-600 dark:text-gray-300 leading-relaxed max-w-none"
                                     dangerouslySetInnerHTML={{ __html: project.description || '<p>No description provided.</p>' }}
                                 />
                             </div>
@@ -129,23 +131,27 @@ export default function ProjectDetail() {
                                 </div>
                             )}
 
-                            {/* Challenges – zero inner padding, only card border */}
+                            {/* Challenges – zero padding on the whole card, title keeps minimal spacing */}
                             <div className="mb-6">
-                                <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-100 dark:border-amber-800/50">
-                                    <h3 className="font-bold text-amber-800 dark:text-amber-300 text-lg pt-6 px-6 pb-0">⚡ Challenges</h3>
+                                <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-100 dark:border-amber-800/50 overflow-hidden">
+                                    <h3 className="font-bold text-amber-800 dark:text-amber-300 text-lg pt-6 px-6 pb-0">
+                                        ⚡ Challenges
+                                    </h3>
                                     <div
-                                        className="text-amber-700 dark:text-amber-400/80 prose prose-sm dark:prose-invert max-w-none"
+                                        className="text-amber-700 dark:text-amber-400/80 leading-relaxed"
                                         dangerouslySetInnerHTML={{ __html: project.challenges || '<p>None documented.</p>' }}
                                     />
                                 </div>
                             </div>
 
-                            {/* Improvements – zero inner padding */}
+                            {/* Improvements – same zero‑padding treatment */}
                             <div>
-                                <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/50">
-                                    <h3 className="font-bold text-emerald-800 dark:text-emerald-300 text-lg pt-6 px-6 pb-0">🚀 Future Improvements</h3>
+                                <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800/50 overflow-hidden">
+                                    <h3 className="font-bold text-emerald-800 dark:text-emerald-300 text-lg pt-6 px-6 pb-0">
+                                        🚀 Future Improvements
+                                    </h3>
                                     <div
-                                        className="text-emerald-700 dark:text-emerald-400/80 prose prose-sm dark:prose-invert max-w-none"
+                                        className="text-emerald-700 dark:text-emerald-400/80 leading-relaxed"
                                         dangerouslySetInnerHTML={{ __html: project.improvements || '<p>None planned.</p>' }}
                                     />
                                 </div>
