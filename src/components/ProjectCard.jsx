@@ -38,8 +38,7 @@ export default function ProjectCard({ project }) {
                     {project.name}
                 </h3>
                 <p className="text-gray-500 dark:text-gray-400 text-xs mb-3 line-clamp-2 flex-1">
-                    {project.description?.replace(/<[^>]*>/g, '').slice(0, 100)}
-                    {project.description?.length > 100 ? '...' : ''}
+                    {project.shortDescription || project.description?.replace(/<[^>]*>/g, '').slice(0, 100)}
                 </p>
 
                 <div className="flex items-center gap-1.5 mt-auto">
@@ -53,7 +52,6 @@ export default function ProjectCard({ project }) {
                             <ExternalLink size={12} /> Live
                         </a>
                     )}
-                    {/* Only Frontend GitHub link on card */}
                     {project.github && project.github !== '#' && (
                         <a
                             href={project.github}

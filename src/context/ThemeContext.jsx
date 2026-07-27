@@ -4,16 +4,18 @@ import { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState('dark'); // ← ডিফল্ট dark
 
     useEffect(() => {
         const stored = localStorage.getItem('theme');
-        if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (stored) {
+            // ইউজারের সেভ করা পছন্দ থাকলে সেটা ব্যবহার করো
+            setTheme(stored);
+            document.documentElement.classList.toggle('dark', stored === 'dark');
+        } else {
+            // প্রথম ভিজিট — ডিফল্ট dark
             setTheme('dark');
             document.documentElement.classList.add('dark');
-        } else {
-            setTheme('light');
-            document.documentElement.classList.remove('dark');
         }
     }, []);
 

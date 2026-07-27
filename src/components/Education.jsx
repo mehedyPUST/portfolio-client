@@ -4,7 +4,7 @@ import { GraduationCap } from 'lucide-react';
 
 export default function Education() {
     return (
-        <section id="education" className="py-20 bg-white dark:bg-gray-900">
+        <section id="education" className="py-20 bg-white dark:bg-gray-900 scroll-mt-20">
             <div className="max-w-4xl mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}

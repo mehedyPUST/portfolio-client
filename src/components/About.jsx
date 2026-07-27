@@ -8,15 +8,23 @@ import AboutSkeleton from './AboutSkeleton';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+const defaultAbout = {
+    paragraphs: [
+        "I'm Mehedy Hasan, a full‑stack developer with an MSc in Physics from Pabna University of Science & Technology.",
+        "I completed web development training at Programming Hero Bootcamp (Batch 13).",
+        "Outside coding, I enjoy science documentaries, chess, and quantum mechanics.",
+    ],
+};
+
 export default function About() {
     const { isAuthenticated } = useAuth();
-    const [aboutData, setAboutData] = useState(null);
+    const [aboutData, setAboutData] = useState(defaultAbout);
     const [showEditModal, setShowEditModal] = useState(false);
 
     const fetchAbout = () => {
         fetch(`${BACKEND_URL}/api/about`)
             .then((r) => r.json())
-            .then(setAboutData)
+            .then((data) => { if (data && data.paragraphs) setAboutData(data); })
             .catch(() => { });
     };
 
@@ -36,7 +44,7 @@ export default function About() {
 
     return (
         <>
-            <section id="about" className="py-20 bg-white dark:bg-gray-900 relative">
+            <section id="about" className="py-20 bg-white dark:bg-gray-900 relative scroll-mt-20">
                 <div className="max-w-4xl mx-auto px-4">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -75,7 +83,7 @@ export default function About() {
                                 <span className="absolute top-2 left-4 text-5xl text-emerald-400 dark:text-emerald-600 opacity-40 font-serif leading-none">“</span>
                                 <span className="absolute bottom-2 right-4 text-5xl text-emerald-400 dark:text-emerald-600 opacity-40 font-serif leading-none rotate-180">”</span>
                                 <p className="relative text-gray-700 dark:text-gray-300 text-lg md:text-xl italic font-medium leading-relaxed px-4">
-                                    The unknown doesn't hold me back — it fuels my drive to explore, learn, and build.
+                                    The unknown doesn&apos;t hold me back — it fuels my drive to explore, learn, and build.
                                 </p>
                             </div>
                         </motion.div>

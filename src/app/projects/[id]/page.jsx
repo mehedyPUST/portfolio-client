@@ -62,8 +62,8 @@ export default function ProjectDetail() {
         <>
             <div className="min-h-screen bg-emerald-50 dark:bg-gray-900 py-20 px-4">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
-                    <Link href="/" className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-600 font-medium mb-8">
-                        <ArrowLeft size={18} /> Back to Portfolio
+                    <Link href="/projects" className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-600 font-medium mb-8">
+                        <ArrowLeft size={18} /> Back to Projects
                     </Link>
 
                     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">

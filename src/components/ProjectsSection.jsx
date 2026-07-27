@@ -25,7 +25,7 @@ export default function ProjectsSection() {
     }, []);
 
     return (
-        <section id="projects" className="py-20 bg-emerald-50 dark:bg-gray-800 relative">
+        <section id="projects" className="py-20 bg-emerald-50 dark:bg-gray-800 relative scroll-mt-20">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-200">

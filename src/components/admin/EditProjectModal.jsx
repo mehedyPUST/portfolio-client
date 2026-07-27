@@ -12,6 +12,7 @@ export default function EditProjectModal({ project, onClose, onUpdate }) {
         image: project.image || '',
         tech: project.tech || '',
         description: project.description || '',
+        shortDescription: project.shortDescription || '',
         live: project.live || '',
         github: project.github || '',
         backendGithub: project.backendGithub || '',
@@ -116,6 +117,20 @@ export default function EditProjectModal({ project, onClose, onUpdate }) {
                     <div className="grid grid-cols-2 gap-3">
                         <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Name *</label><input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" /></div>
                         <div><label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tech Stack *</label><input type="text" value={form.tech} onChange={(e) => setForm({ ...form, tech: e.target.value })} required className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" /></div>
+                    </div>
+
+                    {/* Short Description */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Short Description</label>
+                        <input
+                            type="text"
+                            value={form.shortDescription}
+                            onChange={(e) => setForm({ ...form, shortDescription: e.target.value })}
+                            placeholder="Brief summary for project cards..."
+                            maxLength={120}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">{form.shortDescription?.length || 0}/120 characters</p>
                     </div>
 
                     <RichTextField label="Description" value={form.description} onChange={(value) => setForm({ ...form, description: value })} mode={descMode} setMode={setDescMode} rows={4} required />

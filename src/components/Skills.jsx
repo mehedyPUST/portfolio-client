@@ -81,7 +81,7 @@ export default function Skills() {
     const activeCategory = skillCategories.find((cat) => cat.id === activeTab);
 
     return (
-        <section id="skills" className="py-20 bg-emerald-50 dark:bg-gray-800 relative overflow-hidden">
+        <section id="skills" className="py-20 bg-emerald-50 dark:bg-gray-800 relative overflow-hidden scroll-mt-20">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(16,185,129,0.08),transparent_50%)] dark:bg-[radial-gradient(circle_at_30%_50%,rgba(16,185,129,0.04),transparent_50%)] animate-pulse" />
 
             <div className="max-w-4xl mx-auto px-4 relative z-10">
@@ -106,8 +106,8 @@ export default function Skills() {
                                 key={category.id}
                                 onClick={() => setActiveTab(category.id)}
                                 className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${activeTab === category.id
-                                        ? 'text-amber-600 dark:text-amber-400'
-                                        : 'text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-300'
+                                    ? 'text-amber-600 dark:text-amber-400'
+                                    : 'text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-300'
                                     }`}
                             >
                                 {category.icon}

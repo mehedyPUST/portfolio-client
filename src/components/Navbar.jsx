@@ -23,28 +23,34 @@ export default function Navbar() {
     const { isAuthenticated } = useAuth();
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) setActive(entry.target.id);
-                });
-            },
-            { rootMargin: '-30% 0px -70% 0px' }
-        );
+        const handleScroll = () => {
+            const scrollPos = window.scrollY + 120;
+            const sectionElements = sections
+                .map(({ id }) => document.getElementById(id))
+                .filter(Boolean);
 
-        sections.forEach(({ id }) => {
-            const el = document.getElementById(id);
-            if (el) observer.observe(el);
-        });
+            for (let i = sectionElements.length - 1; i >= 0; i--) {
+                const el = sectionElements[i];
+                if (el.offsetTop <= scrollPos) {
+                    setActive(sections[i].id);
+                    break;
+                }
+            }
+        };
 
-        return () => observer.disconnect();
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     const handleClick = (id) => {
+        setActive(id);
+        setMenuOpen(false);
         const el = document.getElementById(id);
         if (el) {
-            el.scrollIntoView({ behavior: 'instant', block: 'start' });
-            setMenuOpen(false);
+            const yOffset = -70;
+            const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
         }
     };
 
