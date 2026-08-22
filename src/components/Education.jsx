@@ -54,7 +54,7 @@ export default function Education() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.15, duration: 0.4 }}
-                            className="inline-flex items-center gap-3 rounded-2xl border border-primary-200/70 dark:border-primary-500/20 bg-white dark:bg-dark-surface px-4 py-3.5 shadow-sm"
+                            className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-br from-primary-50/90 via-white to-primary-100/50 dark:from-dark-elevated dark:via-dark-surface dark:to-primary-900/20 px-4 py-3.5 shadow-sm"
                         >
                             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-500/15 shrink-0">
                                 <Sparkles className="text-primary-600 dark:text-primary-400" size={16} />
@@ -107,8 +107,9 @@ export default function Education() {
                                             transition: { duration: 0.4, ease: 'easeOut' },
                                         },
                                     }}
-                                    className="group rounded-2xl border border-gray-200/90 dark:border-dark-border bg-white dark:bg-dark-surface p-5 sm:p-6 shadow-sm hover:border-primary-300/50 dark:hover:border-primary-500/30 hover:shadow-md transition-all duration-300"
+                                    className="group relative rounded-2xl bg-gradient-to-br from-white via-gray-50/90 to-primary-50/80 dark:from-dark-elevated dark:via-dark-surface dark:to-primary-900/20 p-5 sm:p-6 shadow-sm hover:shadow-xl transition-all duration-300"
                                 >
+                                    <div className="absolute left-0 top-5 bottom-5 w-[3px] rounded-full bg-primary-500/70 opacity-80 group-hover:opacity-100 transition-opacity" />
                                     <div className="flex items-start gap-4">
                                         <div className="shrink-0 flex h-11 w-11 items-center justify-center rounded-xl bg-primary-600 text-white shadow-md shadow-primary-600/25 group-hover:scale-[1.03] transition-transform duration-300">
                                             <Icon size={20} />
@@ -121,10 +122,10 @@ export default function Education() {
                                                 {item.school}
                                             </p>
                                             <div className="flex flex-wrap items-center gap-2 mt-3">
-                                                <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-primary-50 dark:bg-primary-500/15 text-primary-700 dark:text-primary-400 border border-primary-100 dark:border-primary-500/20">
+                                                <span className="text-xs px-2.5 py-1 rounded-full font-medium bg-primary-50 dark:bg-primary-500/15 text-primary-700 dark:text-primary-400">
                                                     {item.focus}
                                                 </span>
-                                                <span className="text-xs px-2.5 py-1 rounded-full bg-gray-50 dark:bg-dark-elevated text-gray-600 dark:text-light-muted border border-gray-100 dark:border-dark-border">
+                                                <span className="text-xs px-2.5 py-1 rounded-full bg-gray-100/80 dark:bg-dark-elevated text-gray-600 dark:text-light-muted">
                                                     {item.period}
                                                 </span>
                                             </div>
