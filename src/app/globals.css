@@ -1,35 +1,49 @@
 @import "tailwindcss";
 
 @theme {
-  --color-emerald-50: #ecfdf5;
-  --color-emerald-100: #d1fae5;
-  --color-emerald-500: #10b981;
-  --color-emerald-700: #047857;
-  --color-emerald-800: #065f46;
-  --color-emerald-900: #064e3b;
-  --color-amber-300: #fcd34d;
-  --color-amber-400: #fbbf24;
-  --color-amber-500: #f59e0b;
-  --color-gray-900: #111827;
-  --color-gray-800: #1f2937;
+  /* === MongoDB Brand Colors === */
+  --color-primary-400: #00ED64;
+  /* Bright accent green */
+  --color-primary-500: #10AA5A;
+  /* Medium green */
+  --color-primary-600: #00684A;
+  /* Dark brand green */
+
+  /* Dark Theme Backgrounds */
+  --color-dark: #0A1A1A;
+  /* Global background */
+  --color-dark-surface: #162B2B;
+  /* Cards / Panels */
+  --color-dark-border: #2A4A4A;
+  /* Borders & dividers */
+  --color-dark-elevated: #1F3D3D;
+  /* Hover / dropdown states */
+
+  /* Light Text Colors (on dark background) */
+  --color-light: #E8F0F0;
+  /* Primary text */
+  --color-light-muted: #9AB0B0;
+  /* Secondary / muted text */
 }
 
 @variant dark (&:where(.dark, .dark *));
 
+/* Global styles */
 html {
   scroll-behavior: auto;
 }
 
 body {
   cursor: none;
-  background-color: var(--color-emerald-50);
-  color: var(--color-gray-900);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
   transition: background-color 0.3s, color 0.3s;
 }
 
+/* Dark mode overrides */
 .dark body {
-  background-color: #0f172a;
-  color: #f1f5f9;
+  background-color: var(--color-dark);
+  color: #E8F0F0;
 }
 
 /* Serif headings */
@@ -46,4 +60,84 @@ h6 {
   body {
     cursor: auto;
   }
+}
+
+/* ==================== CUSTOM SCROLLBAR ==================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A1A1A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00ED64;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #50F094;
+  box-shadow: 0 0 20px rgba(0, 237, 100, 0.3);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #00ED64 #0A1A1A;
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(-45deg, #00684A, #00ED64, #0A7A5A, #00684A);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }

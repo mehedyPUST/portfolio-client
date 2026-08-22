@@ -11,9 +11,6 @@ import ProjectsSection from "@/components/ProjectsSection";
 import ScrollProgress from "@/components/ScrollProgress";
 import Skills from "@/components/Skills";
 
-
-
-
 export default function Home() {
   return (
     <>

@@ -97,15 +97,14 @@ export default function AIAssistant() {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="absolute bottom-16 right-0 w-80 sm:w-96 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col"
+                        className="absolute bottom-16 right-0 w-80 sm:w-96 bg-white dark:bg-dark-surface rounded-2xl shadow-2xl border border-gray-200 dark:border-dark-border overflow-hidden flex flex-col"
                         style={{ maxHeight: '520px' }}
                     >
-                        {/* Header */}
-                        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-800 dark:to-emerald-700">
+                        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-primary-600 to-primary-500 dark:from-primary-700 dark:to-primary-600">
                             <div className="flex items-center gap-2 text-white">
                                 <div className="relative">
                                     <Bot size={20} />
-                                    <Sparkles className="absolute -top-1 -right-1 text-amber-300" size={10} />
+                                    <Sparkles className="absolute -top-1 -right-1 text-primary-400" size={10} />
                                 </div>
                                 <span className="font-semibold text-sm">AI Assistant</span>
                             </div>
@@ -117,7 +116,6 @@ export default function AIAssistant() {
                             </button>
                         </div>
 
-                        {/* Messages */}
                         <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ maxHeight: '330px' }}>
                             {messages.map((msg, i) => (
                                 <div
@@ -126,8 +124,8 @@ export default function AIAssistant() {
                                 >
                                     <div
                                         className={`max-w-[85%] px-4 py-2.5 rounded-2xl text-sm ${msg.role === 'user'
-                                                ? 'bg-amber-500 text-gray-900 rounded-br-md'
-                                                : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-md'
+                                                ? 'bg-primary-500 text-white rounded-br-md'
+                                                : 'bg-gray-100 dark:bg-dark-elevated text-gray-800 dark:text-light rounded-bl-md'
                                             }`}
                                     >
                                         {msg.content}
@@ -136,7 +134,7 @@ export default function AIAssistant() {
                             ))}
                             {loading && (
                                 <div className="flex justify-start">
-                                    <div className="bg-gray-100 dark:bg-gray-700 px-4 py-2.5 rounded-2xl rounded-bl-md">
+                                    <div className="bg-gray-100 dark:bg-dark-elevated px-4 py-2.5 rounded-2xl rounded-bl-md">
                                         <div className="flex gap-1">
                                             <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                                             <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -148,14 +146,13 @@ export default function AIAssistant() {
                             <div ref={messagesEndRef} />
                         </div>
 
-                        {/* Suggestions */}
                         {messages.length <= 1 && (
                             <div className="px-4 pb-2 flex flex-wrap gap-1.5">
                                 {suggestions.map((s) => (
                                     <button
                                         key={s}
                                         onClick={() => handleSuggestion(s)}
-                                        className="text-xs px-2.5 py-1.5 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition border border-emerald-200 dark:border-emerald-800"
+                                        className="text-xs px-2.5 py-1.5 bg-primary-50 dark:bg-primary-500/20 text-primary-700 dark:text-primary-400 rounded-full hover:bg-primary-100 dark:hover:bg-primary-500/30 transition border border-primary-200 dark:border-primary-800"
                                     >
                                         {s}
                                     </button>
@@ -163,21 +160,20 @@ export default function AIAssistant() {
                             </div>
                         )}
 
-                        {/* Input */}
-                        <div className="p-3 border-t border-gray-200 dark:border-gray-700 flex gap-2">
+                        <div className="p-3 border-t border-gray-200 dark:border-dark-border flex gap-2">
                             <input
                                 type="text"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyDown={handleKeyDown}
                                 placeholder="Ask me anything..."
-                                className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 dark:text-white"
+                                className="flex-1 px-3 py-2 bg-gray-100 dark:bg-dark-elevated border border-gray-200 dark:border-dark-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 dark:text-light"
                                 disabled={loading}
                             />
                             <button
                                 onClick={handleSend}
                                 disabled={loading || !input.trim()}
-                                className="p-2 bg-amber-500 hover:bg-amber-400 disabled:bg-gray-300 dark:disabled:bg-gray-600 text-gray-900 rounded-xl transition disabled:cursor-not-allowed"
+                                className="p-2 bg-primary-500 hover:bg-primary-600 disabled:bg-gray-300 dark:disabled:bg-dark-border text-white rounded-xl transition disabled:cursor-not-allowed"
                             >
                                 <Send size={16} />
                             </button>
@@ -186,16 +182,15 @@ export default function AIAssistant() {
                 )}
             </AnimatePresence>
 
-            {/* Floating button - positioned higher */}
             <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setOpen(!open)}
-                className="relative bg-amber-500 hover:bg-amber-400 text-gray-900 p-4 rounded-full shadow-lg transition hover:shadow-xl"
+                className="relative bg-primary-500 hover:bg-primary-600 text-white p-4 rounded-full shadow-lg transition hover:shadow-xl shadow-lg shadow-primary-500/30"
                 aria-label="Toggle AI assistant"
             >
                 <Bot size={24} />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-gray-800 animate-pulse" />
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-primary-400 rounded-full border-2 border-white dark:border-dark-surface animate-pulse" />
             </motion.button>
         </div>
     );

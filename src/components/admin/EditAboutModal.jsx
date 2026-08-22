@@ -58,21 +58,21 @@ export default function EditAboutModal({ aboutData, onClose, onUpdate }) {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col"
+                className="bg-white dark:bg-dark-surface rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col border border-gray-200 dark:border-dark-border"
             >
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-dark-border">
                     <div>
-                        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-light">
                             Edit About Section
                         </h2>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-sm text-gray-500 dark:text-light-muted mt-1">
                             {paragraphs.filter((p) => p.trim()).length} paragraph(s)
                         </p>
                     </div>
                     <button
                         onClick={onClose}
-                        className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition"
+                        className="text-gray-400 dark:text-light-muted hover:text-gray-600 dark:hover:text-light transition"
                     >
                         <X size={20} />
                     </button>
@@ -89,14 +89,14 @@ export default function EditAboutModal({ aboutData, onClose, onUpdate }) {
                             className="flex gap-2"
                         >
                             <div className="flex-1 relative">
-                                <span className="absolute -top-2 left-3 bg-white dark:bg-gray-800 px-2 text-xs text-gray-500 dark:text-gray-400">
+                                <span className="absolute -top-2 left-3 bg-white dark:bg-dark-surface px-2 text-xs text-gray-500 dark:text-light-muted">
                                     Paragraph {index + 1}
                                 </span>
                                 <textarea
                                     value={para}
                                     onChange={(e) => updateParagraph(index, e.target.value)}
                                     rows={4}
-                                    className="w-full px-4 py-3 pt-4 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-transparent resize-none"
+                                    className="w-full px-4 py-3 pt-4 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-xl focus:ring-2 focus:ring-primary-400 focus:border-transparent resize-none"
                                     placeholder="Write your about content here..."
                                 />
                             </div>
@@ -115,11 +115,11 @@ export default function EditAboutModal({ aboutData, onClose, onUpdate }) {
                 </div>
 
                 {/* Footer */}
-                <div className="p-6 border-t border-gray-200 dark:border-gray-700 space-y-3">
+                <div className="p-6 border-t border-gray-200 dark:border-dark-border space-y-3">
                     <button
                         type="button"
                         onClick={addParagraph}
-                        className="w-full flex items-center justify-center gap-2 py-2.5 border-2 border-dashed border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition text-sm font-medium"
+                        className="w-full flex items-center justify-center gap-2 py-2.5 border-2 border-dashed border-primary-300 dark:border-primary-700 text-primary-600 dark:text-primary-400 rounded-xl hover:bg-primary-50 dark:hover:bg-primary-500/10 transition text-sm font-medium"
                     >
                         <Plus size={16} />
                         Add Paragraph
@@ -128,7 +128,7 @@ export default function EditAboutModal({ aboutData, onClose, onUpdate }) {
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium"
+                            className="flex-1 py-3 border border-gray-300 dark:border-dark-border text-gray-700 dark:text-light-muted rounded-xl hover:bg-gray-50 dark:hover:bg-dark-elevated transition font-medium"
                         >
                             Cancel
                         </button>
@@ -136,7 +136,7 @@ export default function EditAboutModal({ aboutData, onClose, onUpdate }) {
                             type="button"
                             onClick={handleSubmit}
                             disabled={saving}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-amber-500 hover:bg-amber-400 disabled:bg-amber-300 disabled:cursor-not-allowed text-gray-900 font-semibold rounded-xl transition"
+                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-400 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition shadow-lg shadow-primary-500/30"
                         >
                             <Save size={18} />
                             {saving ? 'Saving...' : 'Save Changes'}

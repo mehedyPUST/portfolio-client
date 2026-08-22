@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Code2,
@@ -7,7 +7,7 @@ import {
     Wrench,
     Monitor,
     Lock,
-    Star,
+    Sparkles,
 } from 'lucide-react';
 import {
     SiNextdotjs,
@@ -41,7 +41,7 @@ const skillCategories = [
         skills: [
             { name: 'Node.js', level: 88, icon: <SiNodedotjs className="text-green-500" /> },
             { name: 'Express.js', level: 86, icon: <Server className="text-gray-400" /> },
-            { name: 'MongoDB', level: 82, icon: <SiMongodb className="text-green-600" /> },
+            { name: 'MongoDB', level: 82, icon: <SiMongodb className="text-primary-500" /> },
             { name: 'JWT / Auth', level: 80, icon: <Lock className="text-blue-400" /> },
         ],
     },
@@ -57,9 +57,8 @@ const skillCategories = [
     },
 ];
 
-// A rotating palette of distinct gradients – the order changes per skill index
 const barColors = [
-    'from-blue-500 to-cyan-400',
+    'from-primary-500 to-primary-400',
     'from-purple-500 to-pink-400',
     'from-emerald-500 to-teal-400',
     'from-amber-500 to-orange-400',
@@ -78,107 +77,149 @@ const getLevelLabel = (level) => {
 
 export default function Skills() {
     const [activeTab, setActiveTab] = useState('frontend');
+
+    useEffect(() => {
+        const exists = skillCategories.some((cat) => cat.id === activeTab);
+        if (!exists) {
+            setActiveTab(skillCategories[0]?.id || 'frontend');
+        }
+    }, [activeTab]);
+
     const activeCategory = skillCategories.find((cat) => cat.id === activeTab);
 
-    return (
-        <section id="skills" className="py-20 bg-emerald-50 dark:bg-gray-800 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(16,185,129,0.08),transparent_50%)] dark:bg-[radial-gradient(circle_at_30%_50%,rgba(16,185,129,0.04),transparent_50%)] animate-pulse" />
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.12,
+                delayChildren: 0.15,
+            },
+        },
+    };
 
-            <div className="max-w-4xl mx-auto px-4 relative z-10">
+    const itemVariants = {
+        hidden: { opacity: 0, x: 20 },
+        visible: {
+            opacity: 1,
+            x: 0,
+            transition: { duration: 0.4, ease: 'easeOut' },
+        },
+    };
+
+    return (
+        <section id="skills" className="py-24 bg-white dark:bg-dark-surface scroll-mt-20">
+            <div className="max-w-6xl mx-auto px-4">
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-100px' }}
-                    transition={{ duration: 0.6 }}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-50px' }}
+                    className="flex flex-col md:flex-row items-stretch justify-center gap-0"
                 >
-                    <div className="text-center mb-10">
-                        <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-200">
+                    {/* LEFT – Title + Category Selector */}
+                    <motion.div
+                        initial={{ opacity: 0, x: -40 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.7, ease: 'easeOut' }}
+                        className="md:w-2/5 flex flex-col justify-center space-y-4 pr-0 md:pr-12 py-4"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
                             Skills & Expertise
                         </h2>
-                        <p className="text-gray-600 dark:text-gray-400 mt-2">
-                            Technologies I work with daily
+                        <div className="w-12 h-1 bg-primary-500 rounded-full mb-2 md:mb-4" />
+
+                        <p className="text-gray-600 dark:text-gray-300 text-sm hidden md:block">
+                            Select a category to explore my technical skills.
                         </p>
-                    </div>
 
-                    <div className="flex justify-center gap-2 mb-10 relative">
-                        {skillCategories.map((category) => (
-                            <button
-                                key={category.id}
-                                onClick={() => setActiveTab(category.id)}
-                                className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 ${activeTab === category.id
-                                        ? 'text-amber-600 dark:text-amber-400'
-                                        : 'text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-300'
-                                    }`}
-                            >
-                                {category.icon}
-                                {category.label}
-                            </button>
-                        ))}
-                        <motion.div
-                            className="absolute bottom-0 h-0.5 bg-amber-500 dark:bg-amber-400 rounded-full"
-                            layoutId="activeTab"
-                            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                            style={{
-                                left: `calc(${skillCategories.findIndex(c => c.id === activeTab)} * (100% / ${skillCategories.length}) + 5%)`,
-                                width: `calc(${100 / skillCategories.length}% - 10%)`,
-                            }}
-                        />
-                    </div>
+                        {/* Mobile: horizontal | Desktop: vertical */}
+                        <div className="flex md:flex-col gap-2.5 md:gap-3 mt-2 md:mt-4 overflow-x-auto pb-1 md:pb-0 scrollbar-hide">
+                            {skillCategories.map((category) => {
+                                const isActive = activeTab === category.id;
+                                return (
+                                    <motion.button
+                                        key={category.id}
+                                        onClick={() => setActiveTab(category.id)}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className={`flex items-center gap-2.5 px-4 md:px-5 py-2.5 md:py-3.5 rounded-xl font-medium text-sm whitespace-nowrap transition-all duration-200 ${isActive
+                                            ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
+                                            : 'bg-primary-50 dark:bg-dark-elevated text-gray-700 dark:text-gray-300 hover:bg-primary-100 dark:hover:bg-dark-border'
+                                            }`}
+                                    >
+                                        <span className="text-base md:text-lg">{category.icon}</span>
+                                        {category.label}
+                                        {isActive && (
+                                            <span className="ml-1 md:ml-auto text-xs bg-white/20 px-2 py-0.5 rounded-full text-white hidden md:inline">
+                                                Active
+                                            </span>
+                                        )}
+                                    </motion.button>
+                                );
+                            })}
+                        </div>
+                    </motion.div>
 
-                    <div className="bg-white/70 dark:bg-gray-900/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/30 dark:border-gray-700/30 p-8">
+                    {/* Separation Bar */}
+                    <motion.div
+                        initial={{ opacity: 0, scaleY: 0.5 }}
+                        whileInView={{ opacity: 1, scaleY: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+                        className="hidden md:block w-1.5 min-h-[400px] bg-gradient-to-b from-primary-500 via-primary-400/60 to-primary-500/10 rounded-full mx-8 self-stretch"
+                    />
+
+                    {/* RIGHT – Skills List */}
+                    <div className="md:w-3/5 flex flex-col justify-center space-y-4 mt-8 md:mt-0 pl-0 md:pl-4 py-4">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeTab}
-                                initial={{ opacity: 0, y: 15 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -15 }}
-                                transition={{ duration: 0.3 }}
-                                className="space-y-6"
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.25 }}
+                                className="space-y-4"
                             >
                                 {activeCategory?.skills.map((skill, index) => {
                                     const label = getLevelLabel(skill.level);
-                                    // Pick a color based on index – cycles through the palette
                                     const colorClass = barColors[index % barColors.length];
                                     return (
                                         <motion.div
                                             key={skill.name}
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: index * 0.08, type: 'spring', stiffness: 300 }}
-                                            whileHover={{ scale: 1.02, y: -2 }}
-                                            className="group p-2 rounded-xl hover:bg-emerald-50/50 dark:hover:bg-gray-800/50 transition-colors"
+                                            variants={itemVariants}
+                                            whileHover={{ y: -2 }}
+                                            className="bg-primary-50 dark:bg-dark-elevated rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-200 dark:border-dark-border/50"
                                         >
-                                            <div className="flex items-center justify-between mb-1.5">
+                                            <div className="flex items-center justify-between mb-2">
                                                 <div className="flex items-center gap-3">
-                                                    <motion.span
-                                                        className="text-xl"
-                                                        animate={{ y: [0, -4, 0] }}
-                                                        transition={{ duration: 2, repeat: Infinity, delay: index * 0.1 }}
-                                                    >
-                                                        {skill.icon}
-                                                    </motion.span>
-                                                    <span className="font-medium text-gray-800 dark:text-gray-200">
+                                                    <span className="text-xl">{skill.icon}</span>
+                                                    <span className="font-medium text-gray-800 dark:text-white">
                                                         {skill.name}
                                                     </span>
-                                                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                                                    <span className="text-xs px-2.5 py-0.5 rounded-full bg-gray-200 dark:bg-dark-border text-gray-700 dark:text-gray-300 font-medium">
                                                         {label}
                                                     </span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="text-sm font-bold text-amber-600 dark:text-amber-400">
+                                                    <span className="text-sm font-bold text-primary-500 dark:text-primary-400">
                                                         {skill.level}%
                                                     </span>
                                                     {skill.level >= 90 && (
-                                                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                                                        <Sparkles className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="w-full h-2.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden shadow-inner">
+                                            <div className="w-full h-2.5 bg-gray-200 dark:bg-dark-border rounded-full overflow-hidden">
                                                 <motion.div
                                                     initial={{ width: 0 }}
-                                                    whileInView={{ width: `${skill.level}%` }}
-                                                    viewport={{ once: true }}
-                                                    transition={{ duration: 1.2, delay: index * 0.1, ease: 'easeOut' }}
+                                                    animate={{ width: `${skill.level}%` }}
+                                                    transition={{
+                                                        duration: 1.2,
+                                                        delay: index * 0.05,
+                                                        ease: 'easeOut',
+                                                    }}
                                                     className={`h-full rounded-full bg-gradient-to-r ${colorClass}`}
                                                 />
                                             </div>
@@ -187,35 +228,6 @@ export default function Skills() {
                                 })}
                             </motion.div>
                         </AnimatePresence>
-                    </div>
-
-                    <div className="flex flex-wrap justify-center gap-3 mt-8">
-                        {[
-                            { name: 'Next.js', icon: <SiNextdotjs /> },
-                            { name: 'React', icon: <SiReact /> },
-                            { name: 'JavaScript', icon: <Code2 /> },
-                            { name: 'TypeScript', icon: <SiTypescript /> },
-                            { name: 'Tailwind CSS', icon: <SiTailwindcss /> },
-                            { name: 'Node.js', icon: <SiNodedotjs /> },
-                            { name: 'Express.js', icon: <Server /> },
-                            { name: 'MongoDB', icon: <SiMongodb /> },
-                            { name: 'GitHub', icon: <SiGithub /> },
-                            { name: 'Vercel', icon: <SiVercel /> },
-                            { name: 'Netlify', icon: <SiNetlify /> },
-                        ].map((tech, i) => (
-                            <motion.span
-                                key={tech.name}
-                                whileHover={{ scale: 1.15, rotate: -2 }}
-                                whileTap={{ scale: 0.95 }}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: i * 0.03 }}
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 shadow-md border border-gray-200/50 dark:border-gray-700/50 hover:border-amber-400 dark:hover:border-amber-500 transition-colors cursor-default"
-                            >
-                                {tech.icon}
-                                {tech.name}
-                            </motion.span>
-                        ))}
                     </div>
                 </motion.div>
             </div>

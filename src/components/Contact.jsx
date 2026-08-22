@@ -47,7 +47,7 @@ export default function Contact() {
             if (res.ok) {
                 setStatus('success');
                 setForm({ name: '', email: '', message: '' });
-                toast.success('Message sent! I’ll get back to you soon.');
+                toast.success('Message sent! I\'ll get back to you soon.');
             } else {
                 setStatus('error');
                 toast.error('Failed to send. Please try again.');
@@ -82,7 +82,7 @@ export default function Contact() {
     };
 
     return (
-        <section id="contact" className="py-20 bg-white dark:bg-gray-900 relative">
+        <section id="contact" className="py-20 bg-white dark:bg-dark-surface relative scroll-mt-20">
             <div className="max-w-6xl mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
@@ -91,10 +91,10 @@ export default function Contact() {
                     transition={{ duration: 0.5 }}
                 >
                     <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold text-emerald-800 dark:text-emerald-300 mb-4">
+                        <h2 className="text-3xl md:text-4xl font-bold text-primary-600 dark:text-primary-400 mb-4">
                             Get In Touch
                         </h2>
-                        <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                        <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
                             Have a project in mind or just want to say hello? Fill out the form below.
                         </p>
                     </div>
@@ -102,54 +102,74 @@ export default function Contact() {
                     <div className="flex flex-col lg:flex-row gap-12">
                         {/* Contact Info Cards */}
                         <div className="lg:w-1/3 space-y-6">
-                            <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.1 }}
+                                className="bg-primary-50 dark:bg-dark-elevated p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group"
+                            >
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform duration-300">
                                         <Mail className="text-white" size={20} />
                                     </div>
                                     <div>
-                                        <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Email</h3>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm break-all">
+                                        <h3 className="font-semibold text-gray-800 dark:text-white">Email</h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm break-all">
                                             {contactData?.email || 'Not set'}
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
 
-                            <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className="bg-primary-50 dark:bg-dark-elevated p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group"
+                            >
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform duration-300">
                                         <Phone className="text-white" size={20} />
                                     </div>
                                     <div>
-                                        <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Phone</h3>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                        <h3 className="font-semibold text-gray-800 dark:text-white">Phone</h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm">
                                             {contactData?.phone || 'Not set'}
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
 
-                            <div className="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border border-emerald-100 dark:border-gray-700">
+                            <motion.div
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.3 }}
+                                className="bg-primary-50 dark:bg-dark-elevated p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group"
+                            >
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary-500/30 group-hover:scale-110 transition-transform duration-300">
                                         <MapPin className="text-white" size={20} />
                                     </div>
                                     <div>
-                                        <h3 className="font-semibold text-emerald-800 dark:text-emerald-300">Location</h3>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                        <h3 className="font-semibold text-gray-800 dark:text-white">Location</h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm">
                                             {contactData?.location || 'Pabna, Bangladesh'}
                                         </p>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         </div>
 
                         {/* Contact Form */}
-                        <div className="lg:w-2/3">
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="lg:w-2/3"
+                        >
                             <form
                                 onSubmit={handleSubmit}
-                                className="bg-emerald-50 dark:bg-gray-800 p-8 rounded-2xl border border-emerald-100 dark:border-gray-700"
+                                className="bg-primary-50 dark:bg-dark-elevated p-8 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300"
                             >
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                     <input
@@ -158,7 +178,7 @@ export default function Contact() {
                                         value={form.name}
                                         onChange={(e) => setForm({ ...form, name: e.target.value })}
                                         required
-                                        className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-emerald-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-amber-400 focus:border-transparent"
+                                        className="w-full px-4 py-3 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all duration-200"
                                     />
                                     <input
                                         type="email"
@@ -166,7 +186,7 @@ export default function Contact() {
                                         value={form.email}
                                         onChange={(e) => setForm({ ...form, email: e.target.value })}
                                         required
-                                        className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-emerald-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-amber-400 focus:border-transparent"
+                                        className="w-full px-4 py-3 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-primary-400 focus:border-transparent transition-all duration-200"
                                     />
                                 </div>
                                 <textarea
@@ -175,24 +195,36 @@ export default function Contact() {
                                     value={form.message}
                                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                                     required
-                                    className="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-emerald-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-amber-400 focus:border-transparent mb-6 resize-none"
+                                    className="w-full px-4 py-3 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-primary-400 focus:border-transparent mb-6 resize-none transition-all duration-200"
                                 />
                                 <button
                                     type="submit"
                                     disabled={status === 'sending'}
-                                    className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-400 disabled:bg-amber-300 text-gray-900 font-semibold py-4 rounded-xl transition shadow-lg"
+                                    className="w-full flex items-center justify-center gap-2 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-400 disabled:cursor-not-allowed text-white font-semibold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-[1.02]"
                                 >
                                     <Send size={18} />
                                     {status === 'sending' ? 'Sending...' : 'Send Message'}
                                 </button>
                                 {status === 'success' && (
-                                    <p className="text-emerald-600 mt-4 text-center">Message sent successfully!</p>
+                                    <motion.p
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="text-primary-600 dark:text-primary-400 mt-4 text-center font-medium"
+                                    >
+                                        ✓ Message sent successfully!
+                                    </motion.p>
                                 )}
                                 {status === 'error' && (
-                                    <p className="text-red-500 mt-4 text-center">Failed to send. Please try again.</p>
+                                    <motion.p
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="text-red-500 mt-4 text-center font-medium"
+                                    >
+                                        ✗ Failed to send. Please try again.
+                                    </motion.p>
                                 )}
                             </form>
-                        </div>
+                        </motion.div>
                     </div>
                 </motion.div>
             </div>
@@ -200,7 +232,7 @@ export default function Contact() {
             {isAuthenticated && (
                 <button
                     onClick={() => setEditing(true)}
-                    className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 bg-amber-500 hover:bg-amber-400 text-gray-900 rounded-lg text-sm transition z-10"
+                    className="absolute top-4 right-4 flex items-center gap-2 px-3 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-sm transition-all duration-200 shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 hover:scale-105 z-10"
                 >
                     <Edit size={14} /> Edit Contact
                 </button>
@@ -211,7 +243,7 @@ export default function Contact() {
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-6"
+                        className="bg-white dark:bg-dark-surface rounded-2xl shadow-2xl w-full max-w-md p-6 border border-gray-200 dark:border-dark-border"
                     >
                         <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Edit Contact Info</h2>
                         <div className="space-y-4">
@@ -221,7 +253,7 @@ export default function Contact() {
                                     type="email"
                                     value={editForm.email}
                                     onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
+                                    className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-white rounded-lg focus:ring-2 focus:ring-primary-400 transition-all duration-200"
                                 />
                             </div>
                             <div>
@@ -230,7 +262,7 @@ export default function Contact() {
                                     type="text"
                                     value={editForm.phone}
                                     onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
+                                    className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-white rounded-lg focus:ring-2 focus:ring-primary-400 transition-all duration-200"
                                 />
                             </div>
                             <div>
@@ -239,7 +271,7 @@ export default function Contact() {
                                     type="text"
                                     value={editForm.whatsapp}
                                     onChange={(e) => setEditForm({ ...editForm, whatsapp: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
+                                    className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-white rounded-lg focus:ring-2 focus:ring-primary-400 transition-all duration-200"
                                 />
                             </div>
                             <div>
@@ -248,21 +280,21 @@ export default function Contact() {
                                     type="text"
                                     value={editForm.location}
                                     onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
+                                    className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-white rounded-lg focus:ring-2 focus:ring-primary-400 transition-all duration-200"
                                 />
                             </div>
                         </div>
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={() => setEditing(false)}
-                                className="flex-1 py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl"
+                                className="flex-1 py-2.5 border border-gray-300 dark:border-dark-border text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-dark-elevated transition-all duration-200"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleEditSave}
                                 disabled={saving}
-                                className="flex-1 py-2.5 bg-amber-500 hover:bg-amber-400 text-gray-900 font-semibold rounded-xl"
+                                className="flex-1 py-2.5 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow-lg shadow-primary-500/30 hover:shadow-primary-500/50 transition-all duration-200"
                             >
                                 {saving ? 'Saving...' : 'Save'}
                             </button>

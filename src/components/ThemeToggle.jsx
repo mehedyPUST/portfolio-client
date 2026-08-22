@@ -5,10 +5,11 @@ import { motion } from 'framer-motion';
 
 export default function ThemeToggle() {
     const { theme, toggleTheme } = useTheme();
+
     return (
         <button
             onClick={toggleTheme}
-            className="p-2 rounded-full text-amber-400 hover:bg-emerald-800 dark:hover:bg-gray-700 transition overflow-hidden"
+            className="p-2 rounded-full text-primary-500 hover:bg-primary-500/10 dark:text-primary-400 dark:hover:bg-primary-400/10 transition-all duration-300 overflow-hidden"
             aria-label="Toggle dark mode"
         >
             <motion.div

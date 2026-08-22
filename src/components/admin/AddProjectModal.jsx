@@ -12,6 +12,7 @@ export default function AddProjectModal({ onClose, onAdd }) {
         image: '',
         tech: '',
         description: '',
+        shortDescription: '',
         live: '',
         github: '',
         backendGithub: '',
@@ -81,13 +82,13 @@ export default function AddProjectModal({ onClose, onAdd }) {
     const RichTextField = ({ label, value, onChange, mode, setMode, rows = 3, required = false }) => (
         <div>
             <div className="flex items-center justify-between mb-1">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-gray-700 dark:text-light-muted">
                     {label} {required && '*'}
                 </label>
                 <button
                     type="button"
                     onClick={() => setMode(mode === 'html' ? 'preview' : 'html')}
-                    className="flex items-center gap-1 text-xs text-gray-500 hover:text-amber-500 transition"
+                    className="flex items-center gap-1 text-xs text-gray-500 dark:text-light-muted hover:text-primary-500 dark:hover:text-primary-400 transition"
                 >
                     {mode === 'html' ? <><Eye size={12} /> Preview</> : <><Code size={12} /> HTML</>}
                 </button>
@@ -98,16 +99,16 @@ export default function AddProjectModal({ onClose, onAdd }) {
                     onChange={(e) => onChange(e.target.value)}
                     rows={rows}
                     required={required}
-                    placeholder='<p class="text-gray-700">Write your content here...</p>'
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 font-mono text-sm resize-y"
+                    placeholder='<p class="text-gray-700 dark:text-light">Write your content here...</p>'
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400 font-mono text-sm resize-y"
                 />
             ) : (
                 <div
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-900 rounded-lg min-h-[80px] prose prose-sm dark:prose-invert max-w-none"
-                    dangerouslySetInnerHTML={{ __html: value || '<p class="text-gray-400 italic">Nothing to preview</p>' }}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark rounded-lg min-h-[80px] prose prose-sm dark:prose-invert max-w-none"
+                    dangerouslySetInnerHTML={{ __html: value || '<p class="text-gray-400 dark:text-light-muted italic">Nothing to preview</p>' }}
                 />
             )}
-            <p className="text-xs text-gray-400 mt-1">Supports HTML tags and Tailwind classes</p>
+            <p className="text-xs text-gray-400 dark:text-light-muted mt-1">Supports HTML tags and Tailwind classes</p>
         </div>
     );
 
@@ -116,42 +117,58 @@ export default function AddProjectModal({ onClose, onAdd }) {
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+                className="bg-white dark:bg-dark-surface rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-dark-border"
             >
-                <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800 rounded-t-2xl">
-                    <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">Add Project</h2>
-                    <button onClick={onClose} className="text-gray-500 hover:text-gray-700"><X size={20} /></button>
+                <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-dark-border sticky top-0 bg-white dark:bg-dark-surface rounded-t-2xl">
+                    <h2 className="text-xl font-bold text-gray-800 dark:text-light">Add Project</h2>
+                    <button onClick={onClose} className="text-gray-500 dark:text-light-muted hover:text-gray-700 dark:hover:text-light transition">
+                        <X size={20} />
+                    </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     {/* Image */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Screenshot *</label>
-                        <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-4 text-center cursor-pointer hover:border-amber-400 transition">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">Screenshot *</label>
+                        <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-gray-300 dark:border-dark-border rounded-xl p-4 text-center cursor-pointer hover:border-primary-400 dark:hover:border-primary-400 transition">
                             {preview ? (
                                 <img src={preview} alt="Preview" className="h-40 mx-auto rounded-lg object-cover" />
                             ) : (
                                 <div className="py-8">
-                                    <Upload className="mx-auto text-gray-400 mb-2" size={32} />
-                                    <p className="text-sm text-gray-500">Click to upload screenshot</p>
+                                    <Upload className="mx-auto text-gray-400 dark:text-light-muted mb-2" size={32} />
+                                    <p className="text-sm text-gray-500 dark:text-light-muted">Click to upload screenshot</p>
                                 </div>
                             )}
                             <input ref={fileInputRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
                         </div>
-                        {uploading && <p className="text-amber-500 text-sm mt-1">Uploading...</p>}
-                        {form.image && !uploading && <p className="text-emerald-500 text-sm mt-1">✓ Image uploaded</p>}
+                        {uploading && <p className="text-primary-500 text-sm mt-1">Uploading...</p>}
+                        {form.image && !uploading && <p className="text-primary-600 dark:text-primary-400 text-sm mt-1">✓ Image uploaded</p>}
                     </div>
 
-                    {/* Name + Tech Stack - side by side */}
+                    {/* Name + Tech Stack */}
                     <div className="grid grid-cols-2 gap-3">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Name *</label>
-                            <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
+                            <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">Project Name *</label>
+                            <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tech Stack *</label>
-                            <input type="text" value={form.tech} onChange={(e) => setForm({ ...form, tech: e.target.value })} required placeholder="Next.js, MongoDB, Tailwind" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400" />
+                            <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">Tech Stack *</label>
+                            <input type="text" value={form.tech} onChange={(e) => setForm({ ...form, tech: e.target.value })} required placeholder="Next.js, MongoDB, Tailwind" className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400" />
                         </div>
+                    </div>
+
+                    {/* Short Description */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">Short Description</label>
+                        <input
+                            type="text"
+                            value={form.shortDescription}
+                            onChange={(e) => setForm({ ...form, shortDescription: e.target.value })}
+                            placeholder="Brief summary for project cards..."
+                            maxLength={120}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400"
+                        />
+                        <p className="text-xs text-gray-500 dark:text-light-muted mt-1">{form.shortDescription?.length || 0}/120 characters</p>
                     </div>
 
                     {/* Description */}
@@ -160,38 +177,38 @@ export default function AddProjectModal({ onClose, onAdd }) {
                     {/* URLs - 3 columns */}
                     <div className="grid grid-cols-3 gap-3">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Live URL</label>
-                            <input type="url" value={form.live} onChange={(e) => setForm({ ...form, live: e.target.value })} placeholder="https://..." className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 text-sm" />
+                            <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">Live URL</label>
+                            <input type="url" value={form.live} onChange={(e) => setForm({ ...form, live: e.target.value })} placeholder="https://..." className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400 text-sm" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Frontend GitHub</label>
-                            <input type="url" value={form.github} onChange={(e) => setForm({ ...form, github: e.target.value })} placeholder="https://github.com/..." className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 text-sm" />
+                            <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">Frontend GitHub</label>
+                            <input type="url" value={form.github} onChange={(e) => setForm({ ...form, github: e.target.value })} placeholder="https://github.com/..." className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400 text-sm" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Backend GitHub</label>
-                            <input type="url" value={form.backendGithub} onChange={(e) => setForm({ ...form, backendGithub: e.target.value })} placeholder="Optional" className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 text-sm" />
+                            <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">Backend GitHub</label>
+                            <input type="url" value={form.backendGithub} onChange={(e) => setForm({ ...form, backendGithub: e.target.value })} placeholder="Optional" className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400 text-sm" />
                         </div>
                     </div>
 
-                    {/* Challenges + Improvements - side by side */}
+                    {/* Challenges + Improvements */}
                     <div className="grid grid-cols-2 gap-3">
                         <RichTextField label="Challenges" value={form.challenges} onChange={(value) => setForm({ ...form, challenges: value })} mode={challengesMode} setMode={setChallengesMode} rows={3} />
                         <RichTextField label="Future Improvements" value={form.improvements} onChange={(value) => setForm({ ...form, improvements: value })} mode={improvementsMode} setMode={setImprovementsMode} rows={3} />
                     </div>
 
-                    {/* Order + Featured - side by side */}
+                    {/* Order + Featured */}
                     <div className="flex items-end gap-4">
                         <div className="w-32">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Order</label>
-                            <input type="number" value={form.order} onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg" />
+                            <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">Order</label>
+                            <input type="number" value={form.order} onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })} className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg" />
                         </div>
                         <label className="flex items-center gap-2 cursor-pointer pb-2">
-                            <input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })} className="w-4 h-4 text-amber-500 rounded focus:ring-amber-400" />
-                            <span className="text-sm text-gray-700 dark:text-gray-300">Featured project</span>
+                            <input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })} className="w-4 h-4 text-primary-500 rounded focus:ring-primary-400" />
+                            <span className="text-sm text-gray-700 dark:text-light-muted">Featured project</span>
                         </label>
                     </div>
 
-                    <button type="submit" disabled={saving || uploading} className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl transition disabled:opacity-50">
+                    <button type="submit" disabled={saving || uploading} className="w-full flex items-center justify-center gap-2 py-3 bg-primary-600 hover:bg-primary-500 text-white font-semibold rounded-xl transition disabled:opacity-50 shadow-lg shadow-primary-600/30">
                         <Save size={18} /> {saving ? 'Saving...' : 'Add Project'}
                     </button>
                 </form>

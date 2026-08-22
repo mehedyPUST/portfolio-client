@@ -12,7 +12,7 @@ import EditHeroModal from '@/components/admin/EditHeroModal';
 import EditAboutModal from '@/components/admin/EditAboutModal';
 import AddProjectModal from '@/components/admin/AddProjectModal';
 import EditProjectModal from '@/components/admin/EditProjectModal';
-
+import ThemeToggle from '@/components/ThemeToggle';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -82,8 +82,8 @@ export default function AdminDashboard() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
-                <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+            <div className="min-h-screen flex items-center justify-center bg-light-bg dark:bg-dark">
+                <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
@@ -97,30 +97,33 @@ export default function AdminDashboard() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+        <div className="min-h-screen bg-[#F8FAFA] dark:bg-dark">
             {/* Top Navbar */}
-            <nav className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
+            <nav className="sticky top-0 z-40 bg-white dark:bg-dark-surface border-b border-gray-200 dark:border-dark-border shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Link
                             href="/"
-                            className="flex items-center gap-2 text-gray-500 hover:text-amber-500 transition"
+                            className="flex items-center gap-2 text-gray-600 dark:text-light-muted hover:text-primary-600 dark:hover:text-primary-400 transition font-medium"
                         >
                             <ArrowLeft size={18} />
                             <span className="hidden sm:inline text-sm">View Site</span>
                         </Link>
-                        <div className="w-px h-6 bg-gray-300 dark:bg-gray-700" />
-                        <h1 className="text-lg font-bold text-gray-800 dark:text-white">
+                        <div className="w-px h-6 bg-gray-300 dark:bg-dark-border" />
+                        <h1 className="text-lg font-bold text-gray-900 dark:text-white">
                             Dashboard
                         </h1>
                     </div>
-                    <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition text-sm font-medium"
-                    >
-                        <LogOut size={16} />
-                        <span className="hidden sm:inline">Logout</span>
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <ThemeToggle />
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition text-sm font-medium"
+                        >
+                            <LogOut size={16} />
+                            <span className="hidden sm:inline">Logout</span>
+                        </button>
+                    </div>
                 </div>
             </nav>
 
@@ -128,44 +131,44 @@ export default function AdminDashboard() {
                 {/* Stats */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                     {[
-                        { label: 'Projects', value: projects.length, icon: FolderKanban, color: 'bg-emerald-500' },
-                        { label: 'Featured', value: projects.filter(p => p.featured).length, icon: Star, color: 'bg-amber-500' },
-                        { label: 'About Paras', value: aboutData?.paragraphs?.length || 0, icon: User, color: 'bg-blue-500' },
+                        { label: 'Projects', value: projects.length, icon: FolderKanban, color: 'bg-primary-500' },
+                        { label: 'Featured', value: projects.filter(p => p.featured).length, icon: Star, color: 'bg-primary-400' },
+                        { label: 'About Paras', value: aboutData?.paragraphs?.length || 0, icon: User, color: 'bg-primary-600' },
                     ].map((stat) => (
                         <motion.div
                             key={stat.label}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-800 flex items-center gap-4"
+                            className="bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-dark-border flex items-center gap-4"
                         >
-                            <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center`}>
+                            <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center shadow-lg`}>
                                 <stat.icon className="text-white" size={22} />
                             </div>
                             <div>
-                                <p className="text-2xl font-bold text-gray-800 dark:text-white">{stat.value}</p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</p>
+                                <p className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
+                                <p className="text-sm text-gray-600 dark:text-gray-300">{stat.label}</p>
                             </div>
                         </motion.div>
                     ))}
                 </div>
 
                 {/* Tab navigation */}
-                <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-gray-800 pb-4">
+                <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-dark-border pb-4">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${activeTab === tab.id
-                                ? 'bg-amber-500 text-gray-900 shadow-lg shadow-amber-500/25'
-                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-elevated'
                                 }`}
                         >
                             <tab.icon size={16} />
                             {tab.label}
                             {tab.count !== undefined && (
                                 <span className={`px-2 py-0.5 rounded-full text-xs ${activeTab === tab.id
-                                    ? 'bg-gray-900/20 text-gray-900'
-                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                                        ? 'bg-white/20 text-white'
+                                        : 'bg-gray-200 dark:bg-dark-border text-gray-700 dark:text-gray-300'
                                     }`}>
                                     {tab.count}
                                 </span>
@@ -183,28 +186,28 @@ export default function AdminDashboard() {
                 >
                     {/* Projects Tab */}
                     {activeTab === 'projects' && (
-                        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
-                            <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-gray-800">
+                        <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-sm border border-gray-200 dark:border-dark-border overflow-hidden">
+                            <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-dark-border">
                                 <div>
-                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white">All Projects</h2>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">Manage your portfolio projects</p>
+                                    <h2 className="text-lg font-bold text-gray-900 dark:text-white">All Projects</h2>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">Manage your portfolio projects</p>
                                 </div>
                                 <button
                                     onClick={() => setAddProjectOpen(true)}
-                                    className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-xl transition shadow-lg shadow-emerald-500/25"
+                                    className="flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-500 text-white font-medium rounded-xl transition shadow-lg shadow-primary-600/30"
                                 >
                                     <Plus size={16} />
                                     Add Project
                                 </button>
                             </div>
-                            <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                            <div className="divide-y divide-gray-100 dark:divide-dark-border">
                                 {projects.length === 0 ? (
                                     <div className="text-center py-16">
-                                        <FolderKanban className="mx-auto text-gray-300 dark:text-gray-700 mb-4" size={48} />
-                                        <p className="text-gray-500 dark:text-gray-400">No projects yet</p>
+                                        <FolderKanban className="mx-auto text-gray-300 dark:text-dark-border mb-4" size={48} />
+                                        <p className="text-gray-600 dark:text-gray-300">No projects yet</p>
                                         <button
                                             onClick={() => setAddProjectOpen(true)}
-                                            className="mt-4 px-4 py-2 bg-amber-500 text-gray-900 rounded-xl text-sm font-medium"
+                                            className="mt-4 px-4 py-2 bg-primary-500 text-white rounded-xl text-sm font-medium hover:bg-primary-600 transition shadow-lg shadow-primary-500/30"
                                         >
                                             Create your first project
                                         </button>
@@ -213,7 +216,7 @@ export default function AdminDashboard() {
                                     projects.map((project) => (
                                         <div
                                             key={project._id}
-                                            className="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition gap-4"
+                                            className="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-dark-elevated transition gap-4"
                                         >
                                             <div className="flex items-center gap-4">
                                                 <img
@@ -224,24 +227,24 @@ export default function AdminDashboard() {
                                                 />
                                                 <div className="min-w-0">
                                                     <div className="flex items-center gap-2">
-                                                        <h3 className="font-semibold text-gray-800 dark:text-white truncate">
+                                                        <h3 className="font-semibold text-gray-900 dark:text-white truncate">
                                                             {project.name}
                                                         </h3>
                                                         {project.featured && (
-                                                            <span className="flex-shrink-0 px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs rounded-full flex items-center gap-1">
+                                                            <span className="flex-shrink-0 px-2 py-0.5 bg-primary-100 dark:bg-primary-500/20 text-primary-700 dark:text-primary-400 text-xs rounded-full flex items-center gap-1 font-medium">
                                                                 <Star size={10} /> Featured
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{project.tech}</p>
+                                                    <p className="text-sm text-gray-600 dark:text-gray-300 truncate">{project.tech}</p>
                                                     <div className="flex items-center gap-3 mt-1">
                                                         {project.live && project.live !== '#' && (
-                                                            <a href={project.live} target="_blank" className="text-xs text-emerald-600 hover:underline flex items-center gap-1">
+                                                            <a href={project.live} target="_blank" className="text-xs text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1 font-medium">
                                                                 <ExternalLink size={10} /> Live
                                                             </a>
                                                         )}
                                                         {project.github && project.github !== '#' && (
-                                                            <a href={project.github} target="_blank" className="text-xs text-gray-600 dark:text-gray-400 hover:underline flex items-center gap-1">
+                                                            <a href={project.github} target="_blank" className="text-xs text-gray-700 dark:text-gray-300 hover:underline flex items-center gap-1">
                                                                 <FaGithub size={10} /> Repo
                                                             </a>
                                                         )}
@@ -273,15 +276,15 @@ export default function AdminDashboard() {
 
                     {/* Hero Tab */}
                     {activeTab === 'hero' && (
-                        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+                        <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-sm border border-gray-200 dark:border-dark-border p-6">
                             <div className="flex items-center justify-between mb-6">
                                 <div>
-                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white">Hero Section</h2>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">Your introduction and social links</p>
+                                    <h2 className="text-lg font-bold text-gray-900 dark:text-white">Hero Section</h2>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">Your introduction and social links</p>
                                 </div>
                                 <button
                                     onClick={() => setHeroModalOpen(true)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-gray-900 font-medium rounded-xl transition"
+                                    className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl transition shadow-lg shadow-primary-500/30"
                                 >
                                     <Edit size={16} /> Edit
                                 </button>
@@ -296,9 +299,9 @@ export default function AdminDashboard() {
                                     { label: 'LinkedIn', value: heroData?.linkedin || 'Not set' },
                                     { label: 'Facebook', value: heroData?.facebook || 'Not set' },
                                 ].map((item) => (
-                                    <div key={item.label} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl">
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{item.label}</p>
-                                        <p className="text-sm font-medium text-gray-800 dark:text-white truncate">{item.value}</p>
+                                    <div key={item.label} className="bg-gray-50 dark:bg-dark-elevated p-4 rounded-xl border border-gray-100 dark:border-dark-border">
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 font-medium">{item.label}</p>
+                                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{item.value}</p>
                                     </div>
                                 ))}
                             </div>
@@ -307,30 +310,30 @@ export default function AdminDashboard() {
 
                     {/* About Tab */}
                     {activeTab === 'about' && (
-                        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 p-6">
+                        <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-sm border border-gray-200 dark:border-dark-border p-6">
                             <div className="flex items-center justify-between mb-6">
                                 <div>
-                                    <h2 className="text-lg font-bold text-gray-800 dark:text-white">About Section</h2>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    <h2 className="text-lg font-bold text-gray-900 dark:text-white">About Section</h2>
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">
                                         {aboutData?.paragraphs?.length || 0} paragraph(s)
                                     </p>
                                 </div>
                                 <button
                                     onClick={() => setAboutModalOpen(true)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-gray-900 font-medium rounded-xl transition"
+                                    className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl transition shadow-lg shadow-primary-500/30"
                                 >
                                     <Edit size={16} /> Edit
                                 </button>
                             </div>
                             <div className="space-y-3">
                                 {aboutData?.paragraphs?.map((para, i) => (
-                                    <div key={i} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl">
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Paragraph {i + 1}</p>
-                                        <p className="text-sm text-gray-800 dark:text-white">{para}</p>
+                                    <div key={i} className="bg-gray-50 dark:bg-dark-elevated p-4 rounded-xl border border-gray-100 dark:border-dark-border">
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 font-medium">Paragraph {i + 1}</p>
+                                        <p className="text-sm text-gray-800 dark:text-gray-100">{para}</p>
                                     </div>
                                 ))}
                                 {(!aboutData?.paragraphs || aboutData.paragraphs.length === 0) && (
-                                    <p className="text-gray-500 dark:text-gray-400 text-center py-8">No content yet. Click Edit to add.</p>
+                                    <p className="text-gray-600 dark:text-gray-300 text-center py-8">No content yet. Click Edit to add.</p>
                                 )}
                             </div>
                         </div>

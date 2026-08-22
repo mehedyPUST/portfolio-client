@@ -10,13 +10,12 @@ export default function CustomCursor() {
     const rafRef = useRef(null);
 
     useEffect(() => {
-        // Detect touch device
         const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
         const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
         if (hasCoarsePointer || hasTouch) {
             setIsTouchDevice(true);
-            return; // Skip cursor logic on touch devices
+            return;
         }
 
         const move = (e) => {
@@ -57,29 +56,26 @@ export default function CustomCursor() {
         };
     }, [visible]);
 
-    // Don't render cursor on touch devices
     if (isTouchDevice) return null;
 
     return (
         <>
-            {/* Outer ring */}
             <motion.div
-                className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] border-2 border-emerald-500 bg-transparent"
+                className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-[9999] border-2 border-primary-500 bg-transparent"
                 style={{ x: position.x - 16, y: position.y - 16 }}
                 animate={{
                     scale: hovered ? 1.8 : 1,
-                    borderColor: hovered ? '#f59e0b' : '#10b981',
+                    borderColor: hovered ? '#00ED64' : '#10AA5A',
                     boxShadow: hovered
-                        ? '0 0 20px rgba(245, 158, 11, 0.5)'
+                        ? '0 0 20px rgba(0, 237, 100, 0.5)'
                         : '0 0 10px rgba(16, 185, 129, 0.3)',
                     opacity: visible ? 1 : 0,
                 }}
                 transition={{ duration: 0.15, ease: 'easeOut' }}
             />
 
-            {/* Inner dot */}
             <motion.div
-                className="fixed top-0 left-0 w-2 h-2 bg-amber-500 rounded-full pointer-events-none z-[9999]"
+                className="fixed top-0 left-0 w-2 h-2 bg-primary-500 rounded-full pointer-events-none z-[9999]"
                 style={{ x: position.x - 4, y: position.y - 4 }}
                 animate={{
                     scale: hovered ? 1.5 : 1,

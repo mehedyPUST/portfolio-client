@@ -1,4 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <circle cx="16" cy="16" r="16" fill="#065f46"/>
-  <text x="16" y="17" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="#f59e0b">M</text>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0A7A55"/>
+      <stop offset="100%" stop-color="#005C3E"/>
+    </linearGradient>
+  </defs>
+  <circle cx="16" cy="16" r="15.5" fill="url(#bg)" stroke="#003D29" stroke-width="1"/>
+  <text x="16" y="17.5" 
+        text-anchor="middle" 
+        dominant-baseline="middle" 
+        font-family="Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+        font-weight="700" 
+        font-size="17" 
+        fill="#FFFFFF"
+        letter-spacing="-0.5">M</text>
 </svg>

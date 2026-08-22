@@ -10,13 +10,11 @@ export default function Footer() {
     const [contactInfo, setContactInfo] = useState(null);
 
     useEffect(() => {
-        // Fetch hero data (social links + description)
         fetch(`${BACKEND_URL}/api/hero`)
             .then((r) => r.json())
             .then(setHeroData)
             .catch(() => { });
 
-        // Fetch contact info (email, phone, location)
         fetch(`${BACKEND_URL}/api/contact-info`)
             .then((r) => r.json())
             .then(setContactInfo)
@@ -29,7 +27,6 @@ export default function Footer() {
 
     const currentYear = new Date().getFullYear();
 
-    // Data from API (with fallbacks)
     const github = heroData?.github || '#';
     const linkedin = heroData?.linkedin || '#';
     const facebook = heroData?.facebook || '#';
@@ -39,15 +36,13 @@ export default function Footer() {
     const location = contactInfo?.location || 'Pabna, Bangladesh';
 
     return (
-        <footer className="bg-gray-900 dark:bg-black text-gray-300 pt-16 pb-8">
+        <footer className="bg-dark text-gray-300 pt-16 pb-8">
             <div className="max-w-7xl mx-auto px-4">
-                {/* Main footer content */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-
-                    {/* Brand column */}
+                    {/* Brand Column */}
                     <div>
-                        <h3 className="text-2xl font-bold text-amber-400 mb-4">&lt;MH /&gt;</h3>
-                        <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                        <h3 className="text-2xl font-bold text-primary-400 mb-4">&lt;MH /&gt;</h3>
+                        <p className="text-gray-300 dark:text-gray-300 text-sm leading-relaxed mb-6">
                             {description}
                         </p>
                         <div className="flex items-center gap-3">
@@ -55,38 +50,38 @@ export default function Footer() {
                                 <a
                                     href={github}
                                     target="_blank"
-                                    className="w-9 h-9 bg-gray-800 hover:bg-amber-500 hover:text-gray-900 rounded-lg flex items-center justify-center transition-all duration-200"
+                                    className="w-10 h-10 bg-dark-elevated hover:bg-primary-500 hover:text-dark rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-lg hover:shadow-primary-500/30"
                                     aria-label="GitHub"
                                 >
-                                    <FaGithub size={16} />
+                                    <FaGithub size={18} />
                                 </a>
                             )}
                             {linkedin && linkedin !== '#' && (
                                 <a
                                     href={linkedin}
                                     target="_blank"
-                                    className="w-9 h-9 bg-gray-800 hover:bg-amber-500 hover:text-gray-900 rounded-lg flex items-center justify-center transition-all duration-200"
+                                    className="w-10 h-10 bg-dark-elevated hover:bg-primary-500 hover:text-dark rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-lg hover:shadow-primary-500/30"
                                     aria-label="LinkedIn"
                                 >
-                                    <FaLinkedin size={16} />
+                                    <FaLinkedin size={18} />
                                 </a>
                             )}
                             {facebook && facebook !== '#' && (
                                 <a
                                     href={facebook}
                                     target="_blank"
-                                    className="w-9 h-9 bg-gray-800 hover:bg-amber-500 hover:text-gray-900 rounded-lg flex items-center justify-center transition-all duration-200"
+                                    className="w-10 h-10 bg-dark-elevated hover:bg-primary-500 hover:text-dark rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-lg hover:shadow-primary-500/30"
                                     aria-label="Facebook"
                                 >
-                                    <FaFacebook size={16} />
+                                    <FaFacebook size={18} />
                                 </a>
                             )}
                         </div>
                     </div>
 
-                    {/* Quick links */}
+                    {/* Quick Links */}
                     <div>
-                        <h4 className="text-white font-semibold mb-4">Quick Links</h4>
+                        <h4 className="text-white font-semibold mb-4 text-lg">Quick Links</h4>
                         <ul className="space-y-2.5">
                             {[
                                 { label: 'Home', href: '#hero' },
@@ -103,7 +98,7 @@ export default function Footer() {
                                             const el = document.getElementById(link.href.replace('#', ''));
                                             if (el) el.scrollIntoView({ behavior: 'instant' });
                                         }}
-                                        className="text-gray-400 hover:text-amber-400 text-sm transition-colors duration-200"
+                                        className="text-gray-300 hover:text-primary-400 text-sm transition-all duration-200 hover:translate-x-1 inline-block"
                                     >
                                         → {link.label}
                                     </a>
@@ -112,18 +107,18 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Contact info — from API */}
+                    {/* Contact Info */}
                     <div>
-                        <h4 className="text-white font-semibold mb-4">Get In Touch</h4>
-                        <ul className="space-y-3">
+                        <h4 className="text-white font-semibold mb-4 text-lg">Get In Touch</h4>
+                        <ul className="space-y-3.5">
                             {email && (
                                 <li>
                                     <a
                                         href={`mailto:${email}`}
-                                        className="flex items-center gap-3 text-gray-400 hover:text-amber-400 text-sm transition-colors duration-200"
+                                        className="flex items-center gap-3 text-gray-300 hover:text-primary-400 text-sm transition-all duration-200 group"
                                     >
-                                        <FaEnvelope className="text-amber-500 flex-shrink-0" size={14} />
-                                        {email}
+                                        <FaEnvelope className="text-primary-400 group-hover:scale-110 transition-transform duration-200" size={16} />
+                                        <span className="group-hover:translate-x-1 transition-transform duration-200">{email}</span>
                                     </a>
                                 </li>
                             )}
@@ -131,17 +126,17 @@ export default function Footer() {
                                 <li>
                                     <a
                                         href={`tel:${phone.replace(/\s/g, '')}`}
-                                        className="flex items-center gap-3 text-gray-400 hover:text-amber-400 text-sm transition-colors duration-200"
+                                        className="flex items-center gap-3 text-gray-300 hover:text-primary-400 text-sm transition-all duration-200 group"
                                     >
-                                        <FaPhone className="text-amber-500 flex-shrink-0" size={14} />
-                                        {phone}
+                                        <FaPhone className="text-primary-400 group-hover:scale-110 transition-transform duration-200" size={16} />
+                                        <span className="group-hover:translate-x-1 transition-transform duration-200">{phone}</span>
                                     </a>
                                 </li>
                             )}
                             {location && (
-                                <li className="flex items-center gap-3 text-gray-400 text-sm">
-                                    <FaMapMarkerAlt className="text-amber-500 flex-shrink-0" size={14} />
-                                    {location}
+                                <li className="flex items-center gap-3 text-gray-300 text-sm group">
+                                    <FaMapMarkerAlt className="text-primary-400 group-hover:scale-110 transition-transform duration-200" size={16} />
+                                    <span className="group-hover:translate-x-1 transition-transform duration-200">{location}</span>
                                 </li>
                             )}
                         </ul>
@@ -149,17 +144,18 @@ export default function Footer() {
                 </div>
 
                 {/* Divider */}
-                <div className="border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p className="text-gray-500 text-sm flex items-center gap-1">
-                        © {currentYear} Mehedy Hasan. Built with <Heart className="text-red-500 inline" size={14} fill="currentColor" /> using Next.js
+                <div className="border-t border-dark-border pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p className="text-gray-400 text-sm flex items-center gap-1">
+                        © {currentYear} Mehedy Hasan. Built with{' '}
+                        <Heart className="text-primary-400 inline animate-pulse" size={14} fill="currentColor" />{' '}
+                        using Next.js
                     </p>
 
-                    {/* Scroll to top */}
                     <button
                         onClick={scrollToTop}
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-amber-500 hover:text-gray-900 text-gray-400 rounded-lg text-sm transition-all duration-200"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-dark-elevated hover:bg-primary-500 hover:text-dark text-gray-300 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-lg hover:shadow-primary-500/30"
                     >
-                        <ArrowUp size={14} />
+                        <ArrowUp size={16} />
                         Back to Top
                     </button>
                 </div>

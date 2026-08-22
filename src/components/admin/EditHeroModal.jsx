@@ -25,12 +25,10 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // Show local preview
         const reader = new FileReader();
         reader.onload = (e) => setPreview(e.target.result);
         reader.readAsDataURL(file);
 
-        // Convert to base64
         setUploading(true);
         const base64 = await new Promise((resolve) => {
             const reader = new FileReader();
@@ -38,7 +36,6 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
             reader.readAsDataURL(file);
         });
 
-        // Upload to ImgBB via backend
         try {
             const res = await fetch(`${BACKEND_URL}/api/upload`, {
                 method: 'POST',
@@ -90,21 +87,21 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col"
+                className="bg-white dark:bg-dark-surface rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col border border-gray-200 dark:border-dark-border"
             >
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-dark-border">
                     <div>
-                        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200">
+                        <h2 className="text-xl font-bold text-gray-800 dark:text-light">
                             Edit Hero Section
                         </h2>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-sm text-gray-500 dark:text-light-muted mt-1">
                             Update your introduction
                         </p>
                     </div>
                     <button
                         onClick={onClose}
-                        className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition"
+                        className="text-gray-400 dark:text-light-muted hover:text-gray-600 dark:hover:text-light transition"
                     >
                         <X size={20} />
                     </button>
@@ -114,13 +111,13 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
                 <div className="flex-1 overflow-y-auto p-6 space-y-5">
                     {/* Profile Photo */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-2">
                             Profile Photo
                         </label>
                         <div className="flex items-center gap-4">
                             <div
                                 onClick={() => fileInputRef.current?.click()}
-                                className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-600 cursor-pointer hover:border-amber-400 transition group flex-shrink-0"
+                                className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-dashed border-gray-300 dark:border-dark-border cursor-pointer hover:border-primary-400 dark:hover:border-primary-400 transition group flex-shrink-0"
                             >
                                 {preview ? (
                                     <img
@@ -129,7 +126,7 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
                                         className="w-full h-full object-cover"
                                     />
                                 ) : (
-                                    <div className="flex items-center justify-center h-full text-gray-400">
+                                    <div className="flex items-center justify-center h-full text-gray-400 dark:text-light-muted">
                                         <Camera size={24} />
                                     </div>
                                 )}
@@ -145,14 +142,14 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
                                 />
                             </div>
                             <div className="flex-1">
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                <p className="text-sm text-gray-500 dark:text-light-muted">
                                     Click the photo to upload a new one
                                 </p>
                                 {uploading && (
-                                    <p className="text-amber-500 text-sm mt-1">Uploading...</p>
+                                    <p className="text-primary-500 text-sm mt-1">Uploading...</p>
                                 )}
                                 {form.photoUrl && !uploading && (
-                                    <p className="text-emerald-500 text-sm mt-1">✓ Photo uploaded</p>
+                                    <p className="text-primary-600 dark:text-primary-400 text-sm mt-1">✓ Photo uploaded</p>
                                 )}
                             </div>
                         </div>
@@ -165,13 +162,13 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
                                 setPreview(e.target.value);
                             }}
                             placeholder="Or paste image URL directly"
-                            className="w-full mt-2 px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm focus:ring-2 focus:ring-amber-400"
+                            className="w-full mt-2 px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg text-sm focus:ring-2 focus:ring-primary-400"
                         />
                     </div>
 
                     {/* Title */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">
                             Title / Name *
                         </label>
                         <input
@@ -179,13 +176,13 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
                             value={form.title}
                             onChange={(e) => setForm({ ...form, title: e.target.value })}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400"
                         />
                     </div>
 
                     {/* Subtitle */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">
                             Subtitle / Designation *
                         </label>
                         <input
@@ -193,26 +190,26 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
                             value={form.subtitle}
                             onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
                             required
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400"
                         />
                     </div>
 
                     {/* Description */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">
                             Short Description
                         </label>
                         <textarea
                             value={form.description}
                             onChange={(e) => setForm({ ...form, description: e.target.value })}
                             rows={3}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 resize-none"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400 resize-none"
                         />
                     </div>
 
                     {/* Resume Link */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-light-muted mb-1">
                             Resume Link (Google Drive)
                         </label>
                         <input
@@ -220,56 +217,56 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
                             value={form.resumeLink}
                             onChange={(e) => setForm({ ...form, resumeLink: e.target.value })}
                             placeholder="https://drive.google.com/..."
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400"
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400"
                         />
                     </div>
 
                     {/* Social Links */}
                     <div className="space-y-4">
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Social Links</p>
+                        <p className="text-sm font-medium text-gray-700 dark:text-light-muted">Social Links</p>
 
                         <div>
-                            <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">GitHub</label>
+                            <label className="block text-xs text-gray-500 dark:text-light-muted mb-1">GitHub</label>
                             <input
                                 type="url"
                                 value={form.github}
                                 onChange={(e) => setForm({ ...form, github: e.target.value })}
                                 placeholder="https://github.com/..."
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 text-sm"
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400 text-sm"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">LinkedIn</label>
+                            <label className="block text-xs text-gray-500 dark:text-light-muted mb-1">LinkedIn</label>
                             <input
                                 type="url"
                                 value={form.linkedin}
                                 onChange={(e) => setForm({ ...form, linkedin: e.target.value })}
                                 placeholder="https://linkedin.com/in/..."
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 text-sm"
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400 text-sm"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">Facebook</label>
+                            <label className="block text-xs text-gray-500 dark:text-light-muted mb-1">Facebook</label>
                             <input
                                 type="url"
                                 value={form.facebook}
                                 onChange={(e) => setForm({ ...form, facebook: e.target.value })}
                                 placeholder="https://facebook.com/..."
-                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-amber-400 text-sm"
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border dark:bg-dark-elevated dark:text-light rounded-lg focus:ring-2 focus:ring-primary-400 text-sm"
                             />
                         </div>
                     </div>
                 </div>
 
                 {/* Footer */}
-                <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+                <div className="p-6 border-t border-gray-200 dark:border-dark-border">
                     <div className="flex gap-3">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium"
+                            className="flex-1 py-3 border border-gray-300 dark:border-dark-border text-gray-700 dark:text-light-muted rounded-xl hover:bg-gray-50 dark:hover:bg-dark-elevated transition font-medium"
                         >
                             Cancel
                         </button>
@@ -277,7 +274,7 @@ export default function EditHeroModal({ heroData, onClose, onUpdate }) {
                             type="button"
                             onClick={handleSubmit}
                             disabled={saving || uploading}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-amber-500 hover:bg-amber-400 disabled:bg-amber-300 disabled:cursor-not-allowed text-gray-900 font-semibold rounded-xl transition"
+                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-primary-500 hover:bg-primary-600 disabled:bg-primary-400 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition shadow-lg shadow-primary-500/30"
                         >
                             <Save size={18} />
                             {saving ? 'Saving...' : 'Save Changes'}
