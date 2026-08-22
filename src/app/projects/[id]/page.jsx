@@ -123,28 +123,16 @@ export default function ProjectDetail() {
             <div className="min-h-screen bg-[#F8FAFA] dark:bg-dark">
                 <nav className="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-dark/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-dark-border">
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                        <Link
-                            href="/"
-                            className="text-xl font-bold text-primary-600 dark:text-primary-400 tracking-tight"
-                        >
+                        <Link href="/" className="text-xl font-bold text-primary-600 dark:text-primary-400 tracking-tight">
                             &lt;MH/&gt;
                         </Link>
                         <ThemeToggle />
                     </div>
                 </nav>
-
                 <div className="flex items-center justify-center min-h-screen pt-16 px-4">
-                    <motion.div
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-center max-w-md"
-                    >
-                        <p className="text-7xl font-bold text-primary-500/20 dark:text-primary-400/20 mb-2">
-                            404
-                        </p>
-                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-light mb-2">
-                            Project not found
-                        </h1>
+                    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-md">
+                        <p className="text-7xl font-bold text-primary-500/20 dark:text-primary-400/20 mb-2">404</p>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-light mb-2">Project not found</h1>
                         <p className="text-gray-500 dark:text-light-muted mb-8 text-sm">
                             This project doesn&apos;t exist or may have been removed.
                         </p>
@@ -163,7 +151,6 @@ export default function ProjectDetail() {
     const techList = project.tech
         ? project.tech.split(',').map((t) => t.trim()).filter(Boolean)
         : [];
-
     const hasLive = project.live && project.live !== '#';
     const hasGithub = project.github && project.github !== '#';
     const hasBackend = project.backendGithub && project.backendGithub !== '#';
@@ -173,10 +160,7 @@ export default function ProjectDetail() {
             <div className="min-h-screen bg-[#F8FAFA] dark:bg-dark">
                 <nav className="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-dark/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-dark-border">
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                        <Link
-                            href="/"
-                            className="text-xl font-bold text-primary-600 dark:text-primary-400 tracking-tight"
-                        >
+                        <Link href="/" className="text-xl font-bold text-primary-600 dark:text-primary-400 tracking-tight">
                             &lt;MH/&gt;
                         </Link>
                         <ThemeToggle />
@@ -194,22 +178,14 @@ export default function ProjectDetail() {
                             href="/projects"
                             className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-light-muted hover:text-primary-600 dark:hover:text-primary-400 transition mb-8 group"
                         >
-                            <ArrowLeft
-                                size={16}
-                                className="group-hover:-translate-x-0.5 transition-transform"
-                            />
+                            <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
                             Back to Projects
                         </Link>
 
-                        {/* Hero image */}
                         <div className="relative rounded-2xl overflow-hidden border border-gray-200/80 dark:border-dark-border shadow-xl shadow-gray-200/40 dark:shadow-none mb-8 bg-gray-100 dark:bg-dark-elevated">
                             <div className="aspect-[16/9] sm:aspect-[2/1] relative">
                                 {project.image ? (
-                                    <img
-                                        src={project.image}
-                                        alt={project.name}
-                                        className="w-full h-full object-cover"
-                                    />
+                                    <img src={project.image} alt={project.name} className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="flex items-center justify-center h-full text-gray-300 dark:text-dark-border">
                                         <Layers size={48} strokeWidth={1.25} />
@@ -236,7 +212,6 @@ export default function ProjectDetail() {
                             </div>
                         </div>
 
-                        {/* Action buttons */}
                         <div className="flex flex-wrap gap-2.5 mb-10">
                             {hasLive && (
                                 <a
@@ -245,8 +220,7 @@ export default function ProjectDetail() {
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-500 text-white text-sm font-semibold rounded-xl shadow-md shadow-primary-600/20 transition"
                                 >
-                                    <ExternalLink size={15} />
-                                    Live Demo
+                                    <ExternalLink size={15} /> Live Demo
                                 </a>
                             )}
                             {hasGithub && (
@@ -256,8 +230,7 @@ export default function ProjectDetail() {
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border text-gray-700 dark:text-light text-sm font-medium rounded-xl hover:bg-gray-50 dark:hover:bg-dark-elevated transition"
                                 >
-                                    <FaGithub size={15} />
-                                    Frontend
+                                    <FaGithub size={15} /> Frontend
                                 </a>
                             )}
                             {hasBackend && (
@@ -267,14 +240,12 @@ export default function ProjectDetail() {
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border text-gray-700 dark:text-light text-sm font-medium rounded-xl hover:bg-gray-50 dark:hover:bg-dark-elevated transition"
                                 >
-                                    <FaGithub size={15} />
-                                    Backend
+                                    <FaGithub size={15} /> Backend
                                 </a>
                             )}
                         </div>
 
                         <div className="space-y-6">
-                            {/* About */}
                             <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border shadow-sm overflow-hidden">
                                 <div className="px-6 sm:px-8 py-4 border-b border-gray-100 dark:border-dark-border">
                                     <h2 className="text-base font-semibold text-gray-900 dark:text-light tracking-tight flex items-center gap-2.5">
@@ -283,14 +254,10 @@ export default function ProjectDetail() {
                                     </h2>
                                 </div>
                                 <div className="px-6 sm:px-8 py-6 text-gray-600 dark:text-light-muted text-[15px]">
-                                    <MarkdownContent
-                                        content={project.description}
-                                        fallback="No description provided."
-                                    />
+                                    <MarkdownContent content={project.description} fallback="No description provided." />
                                 </div>
                             </section>
 
-                            {/* Tech Stack */}
                             {techList.length > 0 && (
                                 <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border shadow-sm overflow-hidden">
                                     <div className="px-6 sm:px-8 py-4 border-b border-gray-100 dark:border-dark-border">
@@ -312,49 +279,33 @@ export default function ProjectDetail() {
                                 </section>
                             )}
 
-                            {/* Challenges */}
                             <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border shadow-sm overflow-hidden">
                                 <div className="flex items-center gap-3 px-6 sm:px-8 py-4 border-b border-gray-100 dark:border-dark-border bg-amber-50/60 dark:bg-amber-500/5">
                                     <div className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-500/15 flex items-center justify-center shrink-0">
                                         <Zap size={16} className="text-amber-600 dark:text-amber-400" />
                                     </div>
                                     <div>
-                                        <h3 className="text-base font-semibold text-gray-900 dark:text-light tracking-tight">
-                                            Challenges
-                                        </h3>
-                                        <p className="text-xs text-gray-500 dark:text-light-muted mt-0.5">
-                                            Problems faced and how they were solved
-                                        </p>
+                                        <h3 className="text-base font-semibold text-gray-900 dark:text-light tracking-tight">Challenges</h3>
+                                        <p className="text-xs text-gray-500 dark:text-light-muted mt-0.5">Problems faced and how they were solved</p>
                                     </div>
                                 </div>
                                 <div className="px-6 sm:px-8 py-6 text-[15px] text-gray-600 dark:text-light-muted">
-                                    <MarkdownContent
-                                        content={project.challenges}
-                                        fallback="None documented."
-                                    />
+                                    <MarkdownContent content={project.challenges} fallback="None documented." />
                                 </div>
                             </section>
 
-                            {/* Future Improvements */}
                             <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border shadow-sm overflow-hidden">
                                 <div className="flex items-center gap-3 px-6 sm:px-8 py-4 border-b border-gray-100 dark:border-dark-border bg-primary-50/60 dark:bg-primary-500/5">
                                     <div className="w-9 h-9 rounded-xl bg-primary-100 dark:bg-primary-500/15 flex items-center justify-center shrink-0">
                                         <Rocket size={16} className="text-primary-600 dark:text-primary-400" />
                                     </div>
                                     <div>
-                                        <h3 className="text-base font-semibold text-gray-900 dark:text-light tracking-tight">
-                                            Future Improvements
-                                        </h3>
-                                        <p className="text-xs text-gray-500 dark:text-light-muted mt-0.5">
-                                            Planned enhancements and next steps
-                                        </p>
+                                        <h3 className="text-base font-semibold text-gray-900 dark:text-light tracking-tight">Future Improvements</h3>
+                                        <p className="text-xs text-gray-500 dark:text-light-muted mt-0.5">Planned enhancements and next steps</p>
                                     </div>
                                 </div>
                                 <div className="px-6 sm:px-8 py-6 text-[15px] text-gray-600 dark:text-light-muted">
-                                    <MarkdownContent
-                                        content={project.improvements}
-                                        fallback="None planned."
-                                    />
+                                    <MarkdownContent content={project.improvements} fallback="None planned." />
                                 </div>
                             </section>
                         </div>
