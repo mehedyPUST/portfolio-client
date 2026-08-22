@@ -13,11 +13,76 @@ import {
     Star,
 } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { useAuth } from '@/context/AuthContext';
 import EditProjectModal from '@/components/admin/EditProjectModal';
 import ThemeToggle from '@/components/ThemeToggle';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+const markdownComponents = {
+    p: ({ children }) => (
+        <p className="mb-3 last:mb-0 leading-relaxed">{children}</p>
+    ),
+    strong: ({ children }) => (
+        <strong className="font-semibold text-gray-900 dark:text-light">{children}</strong>
+    ),
+    em: ({ children }) => <em className="italic">{children}</em>,
+    a: ({ href, children }) => (
+        <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary-600 dark:text-primary-400 underline underline-offset-2 hover:opacity-80 transition"
+        >
+            {children}
+        </a>
+    ),
+    ul: ({ children }) => (
+        <ul className="list-disc list-outside ml-5 space-y-1.5 mb-3 last:mb-0">{children}</ul>
+    ),
+    ol: ({ children }) => (
+        <ol className="list-decimal list-outside ml-5 space-y-1.5 mb-3 last:mb-0">{children}</ol>
+    ),
+    li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+    h1: ({ children }) => (
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-light mt-4 mb-2 first:mt-0">
+            {children}
+        </h3>
+    ),
+    h2: ({ children }) => (
+        <h3 className="text-base font-semibold text-gray-900 dark:text-light mt-4 mb-2 first:mt-0">
+            {children}
+        </h3>
+    ),
+    h3: ({ children }) => (
+        <h4 className="text-sm font-semibold text-gray-900 dark:text-light mt-3 mb-1.5 first:mt-0">
+            {children}
+        </h4>
+    ),
+    code: ({ children }) => (
+        <code className="px-1.5 py-0.5 rounded-md bg-gray-100 dark:bg-dark-elevated text-[0.85em] font-mono text-primary-700 dark:text-primary-400">
+            {children}
+        </code>
+    ),
+    blockquote: ({ children }) => (
+        <blockquote className="border-l-2 border-primary-400 pl-4 italic text-gray-500 dark:text-light-muted my-3">
+            {children}
+        </blockquote>
+    ),
+};
+
+function MarkdownContent({ content, fallback }) {
+    if (!content || !content.trim()) {
+        return <p className="text-gray-400 dark:text-light-muted italic">{fallback}</p>;
+    }
+    return (
+        <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+            {content}
+        </ReactMarkdown>
+    );
+}
 
 export default function ProjectDetail() {
     const { id } = useParams();
@@ -106,7 +171,6 @@ export default function ProjectDetail() {
     return (
         <>
             <div className="min-h-screen bg-[#F8FAFA] dark:bg-dark">
-                {/* Navbar */}
                 <nav className="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-dark/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-dark-border">
                     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                         <Link
@@ -126,7 +190,6 @@ export default function ProjectDetail() {
                         transition={{ duration: 0.4 }}
                         className="max-w-4xl mx-auto"
                     >
-                        {/* Back link */}
                         <Link
                             href="/projects"
                             className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-light-muted hover:text-primary-600 dark:hover:text-primary-400 transition mb-8 group"
@@ -138,7 +201,6 @@ export default function ProjectDetail() {
                             Back to Projects
                         </Link>
 
-                        {/* Hero image card */}
                         <div className="relative rounded-2xl overflow-hidden border border-gray-200/80 dark:border-dark-border shadow-xl shadow-gray-200/50 dark:shadow-none mb-8 bg-gray-100 dark:bg-dark-elevated">
                             <div className="aspect-[16/9] sm:aspect-[2/1] relative">
                                 {project.image ? (
@@ -173,7 +235,6 @@ export default function ProjectDetail() {
                             </div>
                         </div>
 
-                        {/* Action buttons */}
                         <div className="flex flex-wrap gap-2.5 mb-10">
                             {hasLive && (
                                 <a
@@ -210,27 +271,20 @@ export default function ProjectDetail() {
                             )}
                         </div>
 
-                        {/* Content grid */}
                         <div className="space-y-8">
-                            {/* About */}
                             <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 sm:p-8 shadow-sm">
                                 <h2 className="text-lg font-semibold text-gray-900 dark:text-light mb-4 flex items-center gap-2">
                                     <span className="w-1 h-5 rounded-full bg-primary-500" />
                                     About This Project
                                 </h2>
-                                <div
-                                    className="text-gray-600 dark:text-light-muted leading-relaxed prose prose-sm dark:prose-invert max-w-none
-                                        prose-p:my-3 prose-headings:text-gray-900 dark:prose-headings:text-light
-                                        prose-a:text-primary-600 dark:prose-a:text-primary-400"
-                                    dangerouslySetInnerHTML={{
-                                        __html:
-                                            project.description ||
-                                            '<p class="text-gray-400 italic">No description provided.</p>',
-                                    }}
-                                />
+                                <div className="text-gray-600 dark:text-light-muted text-[15px]">
+                                    <MarkdownContent
+                                        content={project.description}
+                                        fallback="No description provided."
+                                    />
+                                </div>
                             </section>
 
-                            {/* Tech Stack */}
                             {techList.length > 0 && (
                                 <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 sm:p-8 shadow-sm">
                                     <h2 className="text-lg font-semibold text-gray-900 dark:text-light mb-4 flex items-center gap-2">
@@ -250,7 +304,6 @@ export default function ProjectDetail() {
                                 </section>
                             )}
 
-                            {/* Challenges & Improvements */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 shadow-sm">
                                     <h3 className="text-base font-semibold text-gray-900 dark:text-light mb-3 flex items-center gap-2">
@@ -259,14 +312,12 @@ export default function ProjectDetail() {
                                         </div>
                                         Challenges
                                     </h3>
-                                    <div
-                                        className="text-sm text-gray-600 dark:text-light-muted leading-relaxed prose prose-sm dark:prose-invert max-w-none"
-                                        dangerouslySetInnerHTML={{
-                                            __html:
-                                                project.challenges ||
-                                                '<p class="text-gray-400 italic">None documented.</p>',
-                                        }}
-                                    />
+                                    <div className="text-sm text-gray-600 dark:text-light-muted">
+                                        <MarkdownContent
+                                            content={project.challenges}
+                                            fallback="None documented."
+                                        />
+                                    </div>
                                 </section>
 
                                 <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 shadow-sm">
@@ -276,14 +327,12 @@ export default function ProjectDetail() {
                                         </div>
                                         Future Improvements
                                     </h3>
-                                    <div
-                                        className="text-sm text-gray-600 dark:text-light-muted leading-relaxed prose prose-sm dark:prose-invert max-w-none"
-                                        dangerouslySetInnerHTML={{
-                                            __html:
-                                                project.improvements ||
-                                                '<p class="text-gray-400 italic">None planned.</p>',
-                                        }}
-                                    />
+                                    <div className="text-sm text-gray-600 dark:text-light-muted">
+                                        <MarkdownContent
+                                            content={project.improvements}
+                                            fallback="None planned."
+                                        />
+                                    </div>
                                 </section>
                             </div>
                         </div>
@@ -291,7 +340,6 @@ export default function ProjectDetail() {
                 </main>
             </div>
 
-            {/* Edit FAB */}
             {isAuthenticated && (
                 <motion.button
                     initial={{ opacity: 0, scale: 0.85 }}

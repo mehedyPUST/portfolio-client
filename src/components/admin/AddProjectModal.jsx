@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Upload, Save, Eye, Code, ImageIcon, Link2, Layers, Star } from 'lucide-react';
+import { X, Upload, Save, ImageIcon, Link2, Star } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -25,10 +25,6 @@ export default function AddProjectModal({ onClose, onAdd }) {
     const [saving, setSaving] = useState(false);
     const [preview, setPreview] = useState('');
     const fileInputRef = useRef(null);
-
-    const [descMode, setDescMode] = useState('html');
-    const [challengesMode, setChallengesMode] = useState('html');
-    const [improvementsMode, setImprovementsMode] = useState('html');
 
     const handleImageUpload = async (e) => {
         const file = e.target.files?.[0];
@@ -88,49 +84,7 @@ export default function AddProjectModal({ onClose, onAdd }) {
     const inputClass =
         'w-full px-3.5 py-2.5 bg-gray-50 dark:bg-dark-elevated border border-gray-200 dark:border-dark-border rounded-xl text-sm text-gray-900 dark:text-light placeholder:text-gray-400 dark:placeholder:text-light-muted focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 transition';
     const labelClass = 'block text-sm font-medium text-gray-700 dark:text-light-muted mb-1.5';
-
-    const RichTextField = ({ label, value, onChange, mode, setMode, rows = 3, required = false }) => (
-        <div>
-            <div className="flex items-center justify-between mb-1.5">
-                <label className={labelClass + ' mb-0'}>
-                    {label} {required && <span className="text-primary-500">*</span>}
-                </label>
-                <button
-                    type="button"
-                    onClick={() => setMode(mode === 'html' ? 'preview' : 'html')}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-gray-500 dark:text-light-muted hover:text-primary-600 dark:hover:text-primary-400 bg-gray-100 dark:bg-dark-elevated rounded-lg transition"
-                >
-                    {mode === 'html' ? (
-                        <>
-                            <Eye size={12} /> Preview
-                        </>
-                    ) : (
-                        <>
-                            <Code size={12} /> HTML
-                        </>
-                    )}
-                </button>
-            </div>
-            {mode === 'html' ? (
-                <textarea
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    rows={rows}
-                    required={required}
-                    placeholder='<p>Write your content here...</p>'
-                    className={inputClass + ' font-mono resize-y min-h-[80px]'}
-                />
-            ) : (
-                <div
-                    className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-dark-elevated border border-gray-200 dark:border-dark-border rounded-xl min-h-[80px] prose prose-sm dark:prose-invert max-w-none"
-                    dangerouslySetInnerHTML={{
-                        __html: value || '<p class="text-gray-400 dark:text-light-muted italic">Nothing to preview</p>',
-                    }}
-                />
-            )}
-            <p className="text-[11px] text-gray-400 dark:text-light-muted mt-1.5">HTML & Tailwind classes supported</p>
-        </div>
-    );
+    const textareaClass = inputClass + ' resize-y min-h-[90px] leading-relaxed';
 
     return (
         <AnimatePresence>
@@ -149,7 +103,6 @@ export default function AddProjectModal({ onClose, onAdd }) {
                     transition={{ type: 'spring', damping: 28, stiffness: 320 }}
                     className="relative bg-white dark:bg-dark-surface rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col border border-gray-200/80 dark:border-dark-border overflow-hidden"
                 >
-                    {/* Header */}
                     <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-dark-border shrink-0">
                         <div>
                             <h2 className="text-lg font-semibold text-gray-900 dark:text-light tracking-tight">
@@ -167,20 +120,19 @@ export default function AddProjectModal({ onClose, onAdd }) {
                         </button>
                     </div>
 
-                    {/* Body */}
                     <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
                         <div className="p-6 space-y-6">
-                            {/* Image Upload */}
                             <div>
                                 <label className={labelClass}>
                                     Screenshot <span className="text-primary-500">*</span>
                                 </label>
                                 <div
                                     onClick={() => fileInputRef.current?.click()}
-                                    className={`relative group border-2 border-dashed rounded-2xl overflow-hidden cursor-pointer transition-all ${preview
+                                    className={`relative group border-2 border-dashed rounded-2xl overflow-hidden cursor-pointer transition-all ${
+                                        preview
                                             ? 'border-primary-400/50 dark:border-primary-500/40'
                                             : 'border-gray-200 dark:border-dark-border hover:border-primary-400 dark:hover:border-primary-500'
-                                        }`}
+                                    }`}
                                 >
                                     {preview ? (
                                         <div className="relative">
@@ -231,7 +183,6 @@ export default function AddProjectModal({ onClose, onAdd }) {
                                 )}
                             </div>
 
-                            {/* Name + Tech */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className={labelClass}>
@@ -261,7 +212,6 @@ export default function AddProjectModal({ onClose, onAdd }) {
                                 </div>
                             </div>
 
-                            {/* Short Description */}
                             <div>
                                 <label className={labelClass}>Short Description</label>
                                 <input
@@ -277,18 +227,23 @@ export default function AddProjectModal({ onClose, onAdd }) {
                                 </p>
                             </div>
 
-                            {/* Description */}
-                            <RichTextField
-                                label="Description"
-                                value={form.description}
-                                onChange={(value) => setForm({ ...form, description: value })}
-                                mode={descMode}
-                                setMode={setDescMode}
-                                rows={4}
-                                required
-                            />
+                            <div>
+                                <label className={labelClass}>
+                                    Description <span className="text-primary-500">*</span>
+                                </label>
+                                <textarea
+                                    value={form.description}
+                                    onChange={(e) => setForm({ ...form, description: e.target.value })}
+                                    rows={5}
+                                    required
+                                    placeholder={'Write about the project...\n\n**Bold**, *italic*, lists, and [links](url) are supported.'}
+                                    className={textareaClass}
+                                />
+                                <p className="text-[11px] text-gray-400 dark:text-light-muted mt-1.5">
+                                    Markdown supported: **bold**, *italic*, - lists, [links](url)
+                                </p>
+                            </div>
 
-                            {/* Links Section */}
                             <div className="space-y-3">
                                 <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-light-muted">
                                     <Link2 size={14} className="text-primary-500" />
@@ -334,27 +289,35 @@ export default function AddProjectModal({ onClose, onAdd }) {
                                 </div>
                             </div>
 
-                            {/* Challenges + Improvements */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <RichTextField
-                                    label="Challenges"
-                                    value={form.challenges}
-                                    onChange={(value) => setForm({ ...form, challenges: value })}
-                                    mode={challengesMode}
-                                    setMode={setChallengesMode}
-                                    rows={3}
-                                />
-                                <RichTextField
-                                    label="Future Improvements"
-                                    value={form.improvements}
-                                    onChange={(value) => setForm({ ...form, improvements: value })}
-                                    mode={improvementsMode}
-                                    setMode={setImprovementsMode}
-                                    rows={3}
-                                />
+                                <div>
+                                    <label className={labelClass}>Challenges</label>
+                                    <textarea
+                                        value={form.challenges}
+                                        onChange={(e) => setForm({ ...form, challenges: e.target.value })}
+                                        rows={4}
+                                        placeholder={'- Auth edge cases\n- Performance under load'}
+                                        className={textareaClass}
+                                    />
+                                    <p className="text-[11px] text-gray-400 dark:text-light-muted mt-1.5">
+                                        Markdown lists work well here
+                                    </p>
+                                </div>
+                                <div>
+                                    <label className={labelClass}>Future Improvements</label>
+                                    <textarea
+                                        value={form.improvements}
+                                        onChange={(e) => setForm({ ...form, improvements: e.target.value })}
+                                        rows={4}
+                                        placeholder={'- Add dark mode\n- Improve mobile UX'}
+                                        className={textareaClass}
+                                    />
+                                    <p className="text-[11px] text-gray-400 dark:text-light-muted mt-1.5">
+                                        Markdown lists work well here
+                                    </p>
+                                </div>
                             </div>
 
-                            {/* Order + Featured */}
                             <div className="flex flex-wrap items-center gap-6 pt-1">
                                 <div className="w-28">
                                     <label className={labelClass}>Order</label>
@@ -369,15 +332,17 @@ export default function AddProjectModal({ onClose, onAdd }) {
                                 </div>
                                 <label className="flex items-center gap-2.5 cursor-pointer select-none mt-5">
                                     <div
-                                        className={`relative w-10 h-6 rounded-full transition-colors ${form.featured
+                                        className={`relative w-10 h-6 rounded-full transition-colors ${
+                                            form.featured
                                                 ? 'bg-primary-500'
                                                 : 'bg-gray-200 dark:bg-dark-elevated'
-                                            }`}
+                                        }`}
                                         onClick={() => setForm({ ...form, featured: !form.featured })}
                                     >
                                         <div
-                                            className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.featured ? 'translate-x-4' : ''
-                                                }`}
+                                            className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${
+                                                form.featured ? 'translate-x-4' : ''
+                                            }`}
                                         />
                                     </div>
                                     <span className="text-sm text-gray-700 dark:text-light-muted flex items-center gap-1.5">
@@ -388,7 +353,6 @@ export default function AddProjectModal({ onClose, onAdd }) {
                             </div>
                         </div>
 
-                        {/* Footer */}
                         <div className="sticky bottom-0 px-6 py-4 bg-white dark:bg-dark-surface border-t border-gray-100 dark:border-dark-border flex gap-3">
                             <button
                                 type="button"
