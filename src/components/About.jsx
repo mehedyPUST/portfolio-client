@@ -69,12 +69,12 @@ export default function About() {
         <>
             <section
                 id="about"
-                className="py-24 bg-white dark:bg-dark-surface scroll-mt-20 relative overflow-hidden"
+                className="py-20 sm:py-24 bg-white dark:bg-dark-surface scroll-mt-20 relative overflow-hidden border-y border-gray-100 dark:border-dark-border"
             >
                 {/* Subtle background decoration */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,237,100,0.03),transparent_60%)] pointer-events-none" />
 
-                <div className="max-w-6xl mx-auto px-4 relative z-10">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
                     <div className="flex flex-col md:flex-row items-stretch justify-center gap-0">
                         {/* ========== LEFT COLUMN ========== */}
                         <motion.div
@@ -82,15 +82,18 @@ export default function About() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.7, ease: 'easeOut' }}
-                            className="md:w-2/5 flex flex-col justify-center space-y-8 pr-0 md:pr-12 py-4"
+                            className="md:w-2/5 flex flex-col justify-center space-y-6 md:pr-10 lg:pr-12 py-2"
                         >
                             {/* Heading */}
                             <div>
-                                <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                <p className="text-xs font-semibold tracking-wider uppercase text-primary-600 dark:text-primary-400 mb-2">
+                                    Get to know me
+                                </p>
+                                <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-light">
                                     About Me
                                 </h2>
-                                <div className="w-12 h-1 bg-primary-500 rounded-full mt-4" />
-                                <p className="mt-4 text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-sm">
+                                <div className="w-11 h-1 bg-primary-500 rounded-full mt-4 mb-4" />
+                                <p className="text-sm text-gray-600 dark:text-light-muted leading-relaxed max-w-sm">
                                     A brief introduction to my background and what drives me.
                                 </p>
                             </div>
@@ -114,7 +117,7 @@ export default function About() {
                                         className="w-5 h-5 text-primary-500/80 mb-4"
                                         strokeWidth={1.8}
                                     />
-                                    <p className="text-gray-800 dark:text-gray-100 text-[1.05rem] leading-relaxed italic font-medium min-h-[5rem]">
+                                    <p className="text-gray-800 dark:text-light text-[1.05rem] leading-relaxed italic font-medium min-h-[5rem]">
                                         {typedText}
                                         {showCursor && (
                                             <span className="inline-block w-[2px] h-[1.15em] ml-1 align-middle bg-primary-500 animate-pulse" />
@@ -130,7 +133,7 @@ export default function About() {
                             whileInView={{ opacity: 1, scaleY: 1 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className="hidden md:block w-1.5 min-h-[360px] bg-gradient-to-b from-primary-500 via-primary-400/50 to-primary-500/10 rounded-full mx-8 self-stretch"
+                            className="hidden md:block w-1.5 min-h-[360px] self-stretch mx-6 lg:mx-8 rounded-full bg-gradient-to-b from-primary-500 via-primary-400/60 to-primary-500/10"
                         />
 
                         {/* ========== RIGHT COLUMN (Cards - No Borders) ========== */}
@@ -148,7 +151,7 @@ export default function About() {
                                     },
                                 },
                             }}
-                            className="md:w-3/5 flex flex-col justify-center space-y-5 mt-12 md:mt-0 pl-0 md:pl-4 py-4"
+                            className="md:w-3/5 flex flex-col justify-center space-y-4 mt-10 md:mt-0 md:pl-2 py-2"
                         >
                             {paragraphs.map((text, index) => (
                                 <motion.div
@@ -175,7 +178,7 @@ export default function About() {
                                     {/* Left accent bar - soft, no border */}
                                     <div className="absolute left-0 top-6 bottom-6 w-[3px] rounded-full bg-primary-500/70 opacity-80 group-hover:opacity-100 transition-opacity" />
 
-                                    <p className="pl-5 text-gray-700 dark:text-gray-300 text-[1.05rem] leading-relaxed text-justify">
+                                    <p className="pl-5 text-gray-700 dark:text-light-muted text-[1.05rem] leading-relaxed text-justify">
                                         {text}
                                     </p>
                                 </motion.div>
