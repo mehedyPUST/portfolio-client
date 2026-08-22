@@ -131,16 +131,14 @@ export default function Skills() {
                         </div>
                     </motion.div>
 
-                    {/* Divider */}
+                    {/* Divider bar — your original thick gradient bar */}
                     <motion.div
-                        initial={{ opacity: 0, scaleY: 0.6 }}
+                        initial={{ opacity: 0, scaleY: 0.5 }}
                         whileInView={{ opacity: 1, scaleY: 1 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.55, delay: 0.1 }}
-                        className="hidden md:block w-px self-stretch mx-6 lg:mx-8 bg-gradient-to-b from-transparent via-primary-400/70 to-transparent relative"
-                    >
-                        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-primary-500 shadow-[0_0_0_4px_rgba(16,185,129,0.15)]" />
-                    </motion.div>
+                        transition={{ duration: 0.7, delay: 0.15, ease: 'easeOut' }}
+                        className="hidden md:block w-1.5 min-h-[400px] self-stretch mx-6 lg:mx-8 rounded-full bg-gradient-to-b from-primary-500 via-primary-400/60 to-primary-500/10"
+                    />
 
                     {/* RIGHT — Skill list */}
                     <div className="md:w-[55%] flex flex-col justify-center mt-8 md:mt-0 md:pl-2 py-2 min-h-[280px]">
