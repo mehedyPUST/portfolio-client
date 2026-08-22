@@ -3,7 +3,15 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Tag, Edit } from 'lucide-react';
+import {
+    ArrowLeft,
+    ExternalLink,
+    Edit,
+    Layers,
+    Zap,
+    Rocket,
+    Star,
+} from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 import { useAuth } from '@/context/AuthContext';
 import EditProjectModal from '@/components/admin/EditProjectModal';
@@ -39,164 +47,273 @@ export default function ProjectDetail() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-light-bg dark:bg-dark">
-                <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
+            <div className="min-h-screen flex items-center justify-center bg-[#F8FAFA] dark:bg-dark">
+                <div className="w-11 h-11 border-[3px] border-primary-500 border-t-transparent rounded-full animate-spin" />
             </div>
         );
     }
 
     if (error || !project) {
         return (
-            <div className="min-h-screen bg-light-bg dark:bg-dark px-4">
-                {/* Navbar with Theme Toggle */}
-                <nav className="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-dark/90 backdrop-blur-md shadow-lg border-b border-gray-200/50 dark:border-dark-border">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                        <Link href="/" className="text-2xl font-bold text-primary-500 tracking-tight">
+            <div className="min-h-screen bg-[#F8FAFA] dark:bg-dark">
+                <nav className="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-dark/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-dark-border">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                        <Link
+                            href="/"
+                            className="text-xl font-bold text-primary-600 dark:text-primary-400 tracking-tight"
+                        >
                             &lt;MH/&gt;
                         </Link>
                         <ThemeToggle />
                     </div>
                 </nav>
 
-                <div className="flex items-center justify-center min-h-screen pt-16">
-                    <div className="text-center">
-                        <h1 className="text-6xl font-bold text-primary-600 dark:text-primary-400 mb-4">404</h1>
-                        <p className="text-gray-600 dark:text-light-muted mb-8">Project not found.</p>
-                        <Link href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl shadow-lg shadow-primary-500/30">
-                            <ArrowLeft size={18} /> Back to Portfolio
+                <div className="flex items-center justify-center min-h-screen pt-16 px-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-center max-w-md"
+                    >
+                        <p className="text-7xl font-bold text-primary-500/20 dark:text-primary-400/20 mb-2">
+                            404
+                        </p>
+                        <h1 className="text-2xl font-semibold text-gray-900 dark:text-light mb-2">
+                            Project not found
+                        </h1>
+                        <p className="text-gray-500 dark:text-light-muted mb-8 text-sm">
+                            This project doesn&apos;t exist or may have been removed.
+                        </p>
+                        <Link
+                            href="/"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-primary-600/25 transition"
+                        >
+                            <ArrowLeft size={16} /> Back to Portfolio
                         </Link>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         );
     }
 
+    const techList = project.tech
+        ? project.tech.split(',').map((t) => t.trim()).filter(Boolean)
+        : [];
+
+    const hasLive = project.live && project.live !== '#';
+    const hasGithub = project.github && project.github !== '#';
+    const hasBackend = project.backendGithub && project.backendGithub !== '#';
+
     return (
         <>
-            <div className="min-h-screen bg-light-bg dark:bg-dark">
-                {/* Navbar with Theme Toggle */}
-                <nav className="fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-dark/90 backdrop-blur-md shadow-lg border-b border-gray-200/50 dark:border-dark-border">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                        <Link href="/" className="text-2xl font-bold text-primary-500 tracking-tight">
+            <div className="min-h-screen bg-[#F8FAFA] dark:bg-dark">
+                {/* Navbar */}
+                <nav className="fixed top-0 left-0 w-full z-50 bg-white/80 dark:bg-dark/80 backdrop-blur-xl border-b border-gray-200/60 dark:border-dark-border">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                        <Link
+                            href="/"
+                            className="text-xl font-bold text-primary-600 dark:text-primary-400 tracking-tight"
+                        >
                             &lt;MH/&gt;
                         </Link>
                         <ThemeToggle />
                     </div>
                 </nav>
 
-                <div className="pt-20 px-4">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
-                        <Link href="/projects" className="inline-flex items-center gap-2 text-primary-500 hover:text-primary-600 font-medium mb-8 transition">
-                            <ArrowLeft size={18} /> Back to Projects
+                <main className="pt-24 pb-20 px-4 sm:px-6">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4 }}
+                        className="max-w-4xl mx-auto"
+                    >
+                        {/* Back link */}
+                        <Link
+                            href="/projects"
+                            className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-light-muted hover:text-primary-600 dark:hover:text-primary-400 transition mb-8 group"
+                        >
+                            <ArrowLeft
+                                size={16}
+                                className="group-hover:-translate-x-0.5 transition-transform"
+                            />
+                            Back to Projects
                         </Link>
 
-                        <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-dark-border">
-                            <div className="relative w-full h-64 md:h-96 bg-gray-100 dark:bg-dark-elevated">
+                        {/* Hero image card */}
+                        <div className="relative rounded-2xl overflow-hidden border border-gray-200/80 dark:border-dark-border shadow-xl shadow-gray-200/50 dark:shadow-none mb-8 bg-gray-100 dark:bg-dark-elevated">
+                            <div className="aspect-[16/9] sm:aspect-[2/1] relative">
                                 {project.image ? (
-                                    <img src={project.image} alt={project.name} className="w-full h-full object-cover" />
-                                ) : (
-                                    <div className="flex items-center justify-center h-full text-gray-300 dark:text-dark-border text-lg">No Image</div>
-                                )}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                                <div className="absolute bottom-6 left-6 right-6">
-                                    <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{project.name}</h1>
-                                    <div className="flex items-center gap-2 text-primary-300">
-                                        <Tag size={16} /> <span className="text-sm">{project.tech}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="p-8">
-                                <div className="flex flex-wrap gap-2 mb-8">
-                                    {project.live && project.live !== '#' && (
-                                        <a
-                                            href={project.live}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1.5 px-4 py-2 border border-primary-300 dark:border-primary-700 text-primary-700 dark:text-primary-400 bg-white dark:bg-dark-surface hover:bg-primary-50 dark:hover:bg-primary-500/10 rounded-lg text-sm font-medium transition-colors"
-                                        >
-                                            <ExternalLink size={14} />
-                                            Live Demo
-                                        </a>
-                                    )}
-                                    {project.github && project.github !== '#' && (
-                                        <a
-                                            href={project.github}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1.5 px-4 py-2 border border-gray-300 dark:border-dark-border text-gray-700 dark:text-light-muted bg-white dark:bg-dark-surface hover:bg-gray-50 dark:hover:bg-dark-elevated rounded-lg text-sm font-medium transition-colors"
-                                        >
-                                            <FaGithub size={14} />
-                                            Client Repository
-                                        </a>
-                                    )}
-                                </div>
-
-                                <div className="mb-8 -mx-8">
-                                    <h2 className="text-xl font-bold text-primary-700 dark:text-primary-400 mb-3 px-8">
-                                        About This Project
-                                    </h2>
-                                    <div
-                                        className="text-gray-700 dark:text-light leading-relaxed max-w-none px-8"
-                                        dangerouslySetInnerHTML={{ __html: project.description || '<p>No description provided.</p>' }}
+                                    <img
+                                        src={project.image}
+                                        alt={project.name}
+                                        className="w-full h-full object-cover"
                                     />
-                                </div>
-
-                                {project.tech && (
-                                    <div className="mb-8">
-                                        <h2 className="text-xl font-bold text-primary-700 dark:text-primary-400 mb-3">Tech Stack</h2>
-                                        <div className="flex flex-wrap gap-2">
-                                            {project.tech.split(',').map((t) => (
-                                                <span key={t.trim()} className="px-3 py-1 bg-primary-100 dark:bg-primary-500/20 text-primary-700 dark:text-primary-400 rounded-full text-sm">{t.trim()}</span>
-                                            ))}
-                                        </div>
+                                ) : (
+                                    <div className="flex items-center justify-center h-full text-gray-300 dark:text-dark-border">
+                                        <Layers size={48} strokeWidth={1.25} />
                                     </div>
                                 )}
-
-                                <div className="mb-6">
-                                    <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800/50 overflow-hidden">
-                                        <h3 className="font-bold text-amber-800 dark:text-amber-300 text-lg pt-6 px-6 pb-0">
-                                            ⚡ Challenges
-                                        </h3>
-                                        <div
-                                            className="text-amber-700 dark:text-amber-400/80 leading-relaxed px-6 pb-6"
-                                            dangerouslySetInnerHTML={{ __html: project.challenges || '<p>None documented.</p>' }}
-                                        />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                                <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
+                                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                                        {project.featured && (
+                                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-500/90 text-white text-xs font-semibold backdrop-blur-sm">
+                                                <Star size={11} className="fill-current" /> Featured
+                                            </span>
+                                        )}
                                     </div>
-                                </div>
-
-                                <div>
-                                    <div className="bg-primary-50 dark:bg-primary-500/10 rounded-xl border border-primary-200 dark:border-primary-800/50 overflow-hidden">
-                                        <h3 className="font-bold text-primary-700 dark:text-primary-400 text-lg pt-6 px-6 pb-0">
-                                            🚀 Future Improvements
-                                        </h3>
-                                        <div
-                                            className="text-primary-700 dark:text-primary-400/80 leading-relaxed px-6 pb-6"
-                                            dangerouslySetInnerHTML={{ __html: project.improvements || '<p>None planned.</p>' }}
-                                        />
-                                    </div>
+                                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">
+                                        {project.name}
+                                    </h1>
+                                    {project.shortDescription && (
+                                        <p className="mt-2 text-white/80 text-sm sm:text-base max-w-2xl line-clamp-2">
+                                            {project.shortDescription}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
+
+                        {/* Action buttons */}
+                        <div className="flex flex-wrap gap-2.5 mb-10">
+                            {hasLive && (
+                                <a
+                                    href={project.live}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-500 text-white text-sm font-semibold rounded-xl shadow-md shadow-primary-600/20 transition"
+                                >
+                                    <ExternalLink size={15} />
+                                    Live Demo
+                                </a>
+                            )}
+                            {hasGithub && (
+                                <a
+                                    href={project.github}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border text-gray-700 dark:text-light text-sm font-medium rounded-xl hover:bg-gray-50 dark:hover:bg-dark-elevated transition"
+                                >
+                                    <FaGithub size={15} />
+                                    Frontend
+                                </a>
+                            )}
+                            {hasBackend && (
+                                <a
+                                    href={project.backendGithub}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border text-gray-700 dark:text-light text-sm font-medium rounded-xl hover:bg-gray-50 dark:hover:bg-dark-elevated transition"
+                                >
+                                    <FaGithub size={15} />
+                                    Backend
+                                </a>
+                            )}
+                        </div>
+
+                        {/* Content grid */}
+                        <div className="space-y-8">
+                            {/* About */}
+                            <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 sm:p-8 shadow-sm">
+                                <h2 className="text-lg font-semibold text-gray-900 dark:text-light mb-4 flex items-center gap-2">
+                                    <span className="w-1 h-5 rounded-full bg-primary-500" />
+                                    About This Project
+                                </h2>
+                                <div
+                                    className="text-gray-600 dark:text-light-muted leading-relaxed prose prose-sm dark:prose-invert max-w-none
+                                        prose-p:my-3 prose-headings:text-gray-900 dark:prose-headings:text-light
+                                        prose-a:text-primary-600 dark:prose-a:text-primary-400"
+                                    dangerouslySetInnerHTML={{
+                                        __html:
+                                            project.description ||
+                                            '<p class="text-gray-400 italic">No description provided.</p>',
+                                    }}
+                                />
+                            </section>
+
+                            {/* Tech Stack */}
+                            {techList.length > 0 && (
+                                <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 sm:p-8 shadow-sm">
+                                    <h2 className="text-lg font-semibold text-gray-900 dark:text-light mb-4 flex items-center gap-2">
+                                        <span className="w-1 h-5 rounded-full bg-primary-500" />
+                                        Tech Stack
+                                    </h2>
+                                    <div className="flex flex-wrap gap-2">
+                                        {techList.map((t) => (
+                                            <span
+                                                key={t}
+                                                className="inline-flex items-center px-3 py-1.5 rounded-lg bg-primary-50 dark:bg-primary-500/10 text-primary-700 dark:text-primary-400 text-sm font-medium border border-primary-100 dark:border-primary-500/20"
+                                            >
+                                                {t}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </section>
+                            )}
+
+                            {/* Challenges & Improvements */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 shadow-sm">
+                                    <h3 className="text-base font-semibold text-gray-900 dark:text-light mb-3 flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center">
+                                            <Zap size={15} className="text-amber-600 dark:text-amber-400" />
+                                        </div>
+                                        Challenges
+                                    </h3>
+                                    <div
+                                        className="text-sm text-gray-600 dark:text-light-muted leading-relaxed prose prose-sm dark:prose-invert max-w-none"
+                                        dangerouslySetInnerHTML={{
+                                            __html:
+                                                project.challenges ||
+                                                '<p class="text-gray-400 italic">None documented.</p>',
+                                        }}
+                                    />
+                                </section>
+
+                                <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 shadow-sm">
+                                    <h3 className="text-base font-semibold text-gray-900 dark:text-light mb-3 flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-lg bg-primary-50 dark:bg-primary-500/10 flex items-center justify-center">
+                                            <Rocket size={15} className="text-primary-600 dark:text-primary-400" />
+                                        </div>
+                                        Future Improvements
+                                    </h3>
+                                    <div
+                                        className="text-sm text-gray-600 dark:text-light-muted leading-relaxed prose prose-sm dark:prose-invert max-w-none"
+                                        dangerouslySetInnerHTML={{
+                                            __html:
+                                                project.improvements ||
+                                                '<p class="text-gray-400 italic">None planned.</p>',
+                                        }}
+                                    />
+                                </section>
+                            </div>
+                        </div>
                     </motion.div>
-                </div>
+                </main>
             </div>
 
+            {/* Edit FAB */}
             {isAuthenticated && (
                 <motion.button
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    initial={{ opacity: 0, scale: 0.85 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.97 }}
                     onClick={() => setShowEditModal(true)}
-                    className="fixed bottom-8 right-8 z-50 flex items-center gap-2 px-5 py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-full shadow-2xl shadow-primary-500/30 transition"
+                    className="fixed bottom-7 right-7 z-50 flex items-center gap-2 px-5 py-3 bg-primary-600 hover:bg-primary-500 text-white text-sm font-semibold rounded-full shadow-xl shadow-primary-600/30 transition"
                 >
-                    <Edit size={16} /> Edit Project
+                    <Edit size={15} /> Edit Project
                 </motion.button>
             )}
 
             {showEditModal && (
-                <EditProjectModal project={project} onClose={() => setShowEditModal(false)} onUpdate={() => { fetchProject(); setShowEditModal(false); }} />
+                <EditProjectModal
+                    project={project}
+                    onClose={() => setShowEditModal(false)}
+                    onUpdate={() => {
+                        fetchProject();
+                        setShowEditModal(false);
+                    }}
+                />
             )}
         </>
     );
