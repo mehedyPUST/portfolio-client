@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Download, Edit, FolderKanban } from 'lucide-react';
 import { FaFacebook, FaGithub, FaLinkedin } from 'react-icons/fa';
 import { useAuth } from '@/context/AuthContext';
@@ -41,6 +40,14 @@ export default function Hero() {
     const facebook = heroData?.facebook || '#';
     const photoUrl = heroData?.photoUrl || '/mehedy.jpg';
 
+    const scrollToProjects = () => {
+        const el = document.getElementById('projects');
+        if (el) {
+            const y = el.getBoundingClientRect().top + window.pageYOffset - 70;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+    };
+
     return (
         <>
             <section
@@ -48,15 +55,18 @@ export default function Hero() {
                 className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-600 via-primary-700 to-dark/90 dark:from-dark dark:via-dark-surface dark:to-primary-900/20 relative overflow-hidden"
             >
                 <ParticlesBackground />
+
                 <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 z-[1]" />
+
                 <div className="absolute top-20 left-20 w-72 h-72 bg-primary-400/20 rounded-full blur-3xl animate-pulse z-[1]" />
                 <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-pulse delay-1000 z-[1]" />
 
                 <div className="max-w-7xl mx-auto px-4 py-20 flex flex-col md:flex-row items-center gap-12 lg:gap-20 relative z-10">
+                    {/* Left Content */}
                     <motion.div
-                        initial={{ opacity: 0, x: -40 }}
+                        initial={{ opacity: 0, x: -50 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.55 }}
+                        transition={{ duration: 0.6 }}
                         className="flex-1 text-center md:text-left"
                     >
                         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4">
@@ -66,43 +76,43 @@ export default function Hero() {
                         </h1>
 
                         <motion.h2
-                            initial={{ opacity: 0, y: 16 }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.25 }}
-                            className="text-xl md:text-2xl text-white/90 dark:text-gray-200 mb-5 font-medium"
+                            transition={{ delay: 0.3 }}
+                            className="text-xl md:text-2xl text-white/90 dark:text-gray-200 mb-6 font-medium"
                         >
                             {subtitle}
                         </motion.h2>
 
                         <motion.p
-                            initial={{ opacity: 0, y: 16 }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.35 }}
+                            transition={{ delay: 0.4 }}
                             className="text-white/80 dark:text-gray-300 max-w-lg mx-auto md:mx-0 mb-8 text-lg leading-relaxed"
                         >
                             {description}
                         </motion.p>
 
-                        {/* Clear primary + secondary CTAs */}
                         <motion.div
-                            initial={{ opacity: 0, y: 16 }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.45 }}
+                            transition={{ delay: 0.5 }}
                             className="flex flex-wrap gap-3 justify-center md:justify-start"
                         >
-                            <Link
-                                href="#projects"
-                                className="inline-flex items-center gap-2 bg-primary-400 hover:bg-primary-500 text-dark font-semibold px-6 py-3.5 rounded-full transition shadow-lg shadow-primary-400/30 text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                            <button
+                                type="button"
+                                onClick={scrollToProjects}
+                                className="inline-flex items-center gap-2 bg-primary-400 hover:bg-primary-500 text-dark font-semibold px-7 py-3.5 rounded-full transition shadow-lg shadow-primary-400/30 hover:shadow-primary-400/50 text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
                             >
                                 <FolderKanban size={20} /> View Projects
-                            </Link>
+                            </button>
 
                             {resumeLink && resumeLink !== '#' && (
                                 <a
                                     href={resumeLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-6 py-3.5 rounded-full border border-white/25 transition backdrop-blur-sm text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+                                    className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium px-7 py-3.5 rounded-full border border-white/25 transition backdrop-blur-sm text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
                                 >
                                     <Download size={18} /> Resume
                                 </a>
@@ -110,51 +120,52 @@ export default function Hero() {
                         </motion.div>
 
                         <motion.div
-                            initial={{ opacity: 0, y: 16 }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.55 }}
+                            transition={{ delay: 0.6 }}
                             className="flex gap-5 mt-8 justify-center md:justify-start"
                         >
                             <a
                                 href={github}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-white/80 hover:text-primary-400 transition-all duration-300 hover:scale-110"
+                                className="text-white/80 hover:text-primary-400 transition-all duration-300 transform hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(0,237,100,0.5)]"
                                 aria-label="GitHub"
                             >
-                                <FaGithub size={24} />
+                                <FaGithub size={26} />
                             </a>
                             <a
                                 href={linkedin}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-white/80 hover:text-primary-400 transition-all duration-300 hover:scale-110"
+                                className="text-white/80 hover:text-primary-400 transition-all duration-300 transform hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(0,237,100,0.5)]"
                                 aria-label="LinkedIn"
                             >
-                                <FaLinkedin size={24} />
+                                <FaLinkedin size={26} />
                             </a>
                             <a
                                 href={facebook}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-white/80 hover:text-primary-400 transition-all duration-300 hover:scale-110"
+                                className="text-white/80 hover:text-primary-400 transition-all duration-300 transform hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(0,237,100,0.5)]"
                                 aria-label="Facebook"
                             >
-                                <FaFacebook size={24} />
+                                <FaFacebook size={26} />
                             </a>
                         </motion.div>
                     </motion.div>
 
+                    {/* Right — Profile Image */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.25, duration: 0.55 }}
+                        transition={{ delay: 0.3, duration: 0.6 }}
                         className="flex-1 flex justify-center items-center"
                     >
                         <div className="relative group">
-                            <div className="absolute -inset-6 bg-gradient-to-r from-primary-400 via-primary-500 to-primary-400 rounded-full blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
+                            <div className="absolute -inset-6 bg-gradient-to-r from-primary-400 via-primary-500 to-primary-400 rounded-full blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-500 animate-pulse" />
                             <div className="absolute -inset-2 bg-primary-400 rounded-full blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-300" />
-                            <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-primary-400/80 shadow-2xl shadow-primary-400/20">
+                            <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-primary-400/80 shadow-2xl shadow-primary-400/20 group-hover:border-primary-300 transition-all duration-300">
                                 <Image
                                     src={photoUrl || '/mehedy.jpg'}
                                     alt={title}
@@ -171,7 +182,7 @@ export default function Hero() {
                 {isAuthenticated && (
                     <button
                         onClick={() => setShowEditModal(true)}
-                        className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg text-sm backdrop-blur-sm transition z-20 border border-white/20"
+                        className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg text-sm backdrop-blur-sm transition-all duration-200 z-20 border border-white/20 hover:border-white/40 hover:scale-105"
                     >
                         <Edit size={14} /> Edit
                     </button>
