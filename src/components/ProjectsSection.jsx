@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, Edit, AlertCircle, RefreshCw } from 'lucide-react';
+import { ArrowRight, Edit, AlertCircle, RefreshCw, FolderKanban } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import SkeletonCard from './SkeletonCard';
 import ProjectCard from './ProjectCard';
@@ -36,7 +36,6 @@ export default function ProjectsSection() {
 
             const data = await res.json();
 
-            // Support multiple response formats
             const list = Array.isArray(data)
                 ? data
                 : Array.isArray(data?.projects)
@@ -62,125 +61,113 @@ export default function ProjectsSection() {
     return (
         <section
             id="projects"
-            className="py-24 bg-white dark:bg-dark-surface relative scroll-mt-20 overflow-hidden"
+            className="relative scroll-mt-20 overflow-hidden py-20 sm:py-24 bg-[#F8FAFA] dark:bg-dark border-y border-gray-100 dark:border-dark-border"
         >
-            <div className="max-w-6xl mx-auto px-4">
-                {/* ===== MOBILE ===== */}
-                <div className="md:hidden">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="mb-8"
-                    >
-                        <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <div className="pointer-events-none absolute inset-0">
+                <div className="absolute -top-24 right-0 w-72 h-72 bg-primary-400/10 dark:bg-primary-500/5 rounded-full blur-3xl" />
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary-500/5 dark:bg-primary-400/5 rounded-full blur-3xl" />
+            </div>
+
+            <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+                <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4 }}
+                    className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10 sm:mb-12"
+                >
+                    <div className="max-w-xl">
+                        <p className="text-xs font-semibold tracking-wider uppercase text-primary-600 dark:text-primary-400 mb-2">
+                            Portfolio
+                        </p>
+                        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 dark:text-light">
                             Featured Projects
                         </h2>
-                        <div className="w-12 h-1 bg-primary-500 rounded-full mt-3" />
-                        <p className="mt-3 text-sm text-gray-600 dark:text-gray-300">
-                            A selection of recent work that reflects my approach to building modern web applications.
+                        <p className="mt-3 text-sm sm:text-base text-gray-600 dark:text-light-muted leading-relaxed">
+                            A selection of recent work that reflects how I design and ship modern web applications.
                         </p>
-                    </motion.div>
-
-                    <div className="space-y-5">
-                        {loading ? (
-                            Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
-                        ) : error ? (
-                            <div className="text-center py-12 bg-primary-50 dark:bg-dark-elevated rounded-2xl border border-gray-200 dark:border-dark-border/50">
-                                <AlertCircle className="w-8 h-8 text-red-500 mx-auto mb-3" />
-                                <p className="font-medium text-gray-800 dark:text-gray-200 mb-1">
-                                    Could not load projects
-                                </p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{error}</p>
-                                <button
-                                    onClick={fetchProjects}
-                                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 text-white text-sm rounded-lg"
-                                >
-                                    <RefreshCw size={14} /> Try Again
-                                </button>
-                            </div>
-                        ) : projects.length === 0 ? (
-                            <div className="text-center py-12 bg-primary-50 dark:bg-dark-elevated rounded-2xl">
-                                <p className="text-gray-700 dark:text-gray-300">No featured projects yet</p>
-                            </div>
-                        ) : (
-                            projects.map((project) => (
-                                <ProjectCard key={project._id || project.id} project={project} />
-                            ))
-                        )}
                     </div>
 
-                    <div className="mt-10 flex justify-center">
-                        <Link
-                            href="/projects"
-                            className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl shadow-lg shadow-primary-500/25"
-                        >
-                            See More Projects
-                            <ArrowRight size={17} />
-                        </Link>
-                    </div>
-                </div>
+                    <Link
+                        href="/projects"
+                        className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary-600 hover:bg-primary-500 text-white text-sm font-semibold shadow-md shadow-primary-600/20 transition shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40"
+                    >
+                        View all
+                        <ArrowRight size={16} />
+                    </Link>
+                </motion.div>
 
-                {/* ===== DESKTOP ===== */}
-                <div className="hidden md:flex flex-row items-stretch justify-center">
-                    {/* Left */}
-                    <div className="w-2/5 flex flex-col justify-center space-y-6 pr-12 py-4">
-                        <div>
-                            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                Featured Projects
-                            </h2>
-                            <div className="w-12 h-1 bg-primary-500 rounded-full mt-4" />
+                {loading ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                        {Array.from({ length: 3 }).map((_, i) => (
+                            <SkeletonCard key={i} />
+                        ))}
+                    </div>
+                ) : error ? (
+                    <div className="rounded-2xl border border-red-200/70 dark:border-red-900/40 bg-white dark:bg-dark-surface px-6 py-14 text-center shadow-sm">
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 dark:bg-red-500/10">
+                            <AlertCircle className="w-6 h-6 text-red-500" />
                         </div>
-                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                            A selection of recent work that reflects my approach to building modern, performant web applications.
+                        <p className="font-semibold text-gray-900 dark:text-light mb-1">
+                            Could not load projects
                         </p>
+                        <p className="text-sm text-gray-500 dark:text-light-muted mb-5 max-w-md mx-auto">
+                            {error}
+                        </p>
+                        <button
+                            type="button"
+                            onClick={fetchProjects}
+                            className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-500 text-white text-sm font-medium rounded-xl transition"
+                        >
+                            <RefreshCw size={14} /> Try again
+                        </button>
+                    </div>
+                ) : projects.length === 0 ? (
+                    <div className="rounded-2xl border border-gray-200 dark:border-dark-border bg-white dark:bg-dark-surface px-6 py-16 text-center shadow-sm">
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-50 dark:bg-primary-500/10">
+                            <FolderKanban className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                        </div>
+                        <p className="font-semibold text-gray-900 dark:text-light mb-1">
+                            No featured projects yet
+                        </p>
+                        <p className="text-sm text-gray-500 dark:text-light-muted">
+                            Featured projects will appear here once they are published.
+                        </p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                        {projects.map((project, index) => (
+                            <motion.div
+                                key={project._id || project.id}
+                                initial={{ opacity: 0, y: 18 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: '-30px' }}
+                                transition={{ duration: 0.4, delay: Math.min(index * 0.06, 0.24) }}
+                                className="h-full"
+                            >
+                                <ProjectCard project={project} />
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
+
+                {!loading && !error && projects.length > 0 && (
+                    <div className="mt-10 sm:mt-12 flex justify-center sm:hidden">
                         <Link
                             href="/projects"
-                            className="inline-flex items-center gap-2.5 w-fit px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl shadow-lg shadow-primary-500/25 hover:scale-[1.02] transition-all"
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-600 hover:bg-primary-500 text-white text-sm font-semibold shadow-md shadow-primary-600/20 transition"
                         >
-                            See More Projects
-                            <ArrowRight size={17} />
+                            See more projects
+                            <ArrowRight size={16} />
                         </Link>
                     </div>
-
-                    {/* Separator */}
-                    <div className="w-1.5 min-h-[380px] bg-gradient-to-b from-primary-500 via-primary-400/50 to-primary-500/10 rounded-full mx-8 self-stretch" />
-
-                    {/* Right */}
-                    <div className="w-3/5 flex flex-col justify-center space-y-6 pl-4 py-4">
-                        {loading ? (
-                            Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
-                        ) : error ? (
-                            <div className="text-center py-16 bg-primary-50 dark:bg-dark-elevated rounded-2xl border">
-                                <AlertCircle className="w-8 h-8 text-red-500 mx-auto mb-3" />
-                                <p className="font-medium text-gray-800 dark:text-gray-200 mb-1">
-                                    Could not load projects
-                                </p>
-                                <p className="text-sm text-gray-500 mb-4">{error}</p>
-                                <button
-                                    onClick={fetchProjects}
-                                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 text-white text-sm rounded-lg"
-                                >
-                                    <RefreshCw size={14} /> Try Again
-                                </button>
-                            </div>
-                        ) : projects.length === 0 ? (
-                            <div className="text-center py-16 bg-primary-50 dark:bg-dark-elevated rounded-2xl">
-                                <p className="text-gray-700 dark:text-gray-300">No featured projects yet</p>
-                            </div>
-                        ) : (
-                            projects.map((project) => (
-                                <ProjectCard key={project._id || project.id} project={project} />
-                            ))
-                        )}
-                    </div>
-                </div>
+                )}
             </div>
 
             {isAuthenticated && (
                 <Link
                     href="/admin/dashboard"
-                    className="absolute top-6 right-6 flex items-center gap-2 px-3.5 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-xl text-sm font-medium shadow-lg"
+                    className="absolute top-5 right-4 sm:top-6 sm:right-6 z-10 inline-flex items-center gap-2 px-3.5 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-xl text-sm font-medium shadow-lg shadow-primary-600/25 transition"
                 >
                     <Edit size={14} />
                     Dashboard
