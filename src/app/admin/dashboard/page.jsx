@@ -82,7 +82,7 @@ export default function AdminDashboard() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-light-bg dark:bg-dark">
+            <div className="min-h-screen flex items-center justify-center bg-[#F8FAFA] dark:bg-dark">
                 <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
             </div>
         );
@@ -99,7 +99,7 @@ export default function AdminDashboard() {
     return (
         <div className="min-h-screen bg-[#F8FAFA] dark:bg-dark">
             {/* Top Navbar */}
-            <nav className="sticky top-0 z-40 bg-white dark:bg-dark-surface border-b border-gray-200 dark:border-dark-border shadow-sm">
+            <nav className="sticky top-0 z-40 bg-white/90 dark:bg-dark-surface/90 backdrop-blur-md border-b border-gray-100 dark:border-dark-border shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Link
@@ -109,16 +109,21 @@ export default function AdminDashboard() {
                             <ArrowLeft size={18} />
                             <span className="hidden sm:inline text-sm">View Site</span>
                         </Link>
-                        <div className="w-px h-6 bg-gray-300 dark:bg-dark-border" />
-                        <h1 className="text-lg font-bold text-gray-900 dark:text-white">
-                            Dashboard
-                        </h1>
+                        <div className="w-px h-6 bg-gray-200 dark:bg-dark-border" />
+                        <div>
+                            <p className="text-[10px] font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-400 leading-none mb-0.5">
+                                Admin
+                            </p>
+                            <h1 className="text-lg font-bold text-gray-900 dark:text-light leading-tight">
+                                Dashboard
+                            </h1>
+                        </div>
                     </div>
                     <div className="flex items-center gap-3">
                         <ThemeToggle />
                         <button
                             onClick={handleLogout}
-                            className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition text-sm font-medium"
+                            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 dark:text-light-muted hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition"
                         >
                             <LogOut size={16} />
                             <span className="hidden sm:inline">Logout</span>
@@ -128,48 +133,56 @@ export default function AdminDashboard() {
             </nav>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Stats */}
+                {/* Stats strip */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                     {[
-                        { label: 'Projects', value: projects.length, icon: FolderKanban, color: 'bg-primary-500' },
-                        { label: 'Featured', value: projects.filter(p => p.featured).length, icon: Star, color: 'bg-primary-400' },
-                        { label: 'About Paras', value: aboutData?.paragraphs?.length || 0, icon: User, color: 'bg-primary-600' },
+                        { label: 'Projects', value: projects.length, icon: FolderKanban, tint: 'from-primary-50 to-primary-100/50 dark:from-primary-500/10 dark:to-primary-500/5' },
+                        { label: 'Featured', value: projects.filter((p) => p.featured).length, icon: Star, tint: 'from-amber-50 to-amber-100/40 dark:from-amber-500/10 dark:to-amber-500/5' },
+                        { label: 'About paras', value: aboutData?.paragraphs?.length || 0, icon: User, tint: 'from-sky-50 to-sky-100/40 dark:from-sky-500/10 dark:to-sky-500/5' },
                     ].map((stat) => (
-                        <motion.div
+                        <div
                             key={stat.label}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="bg-white dark:bg-dark-surface rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-dark-border flex items-center gap-4"
+                            className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${stat.tint} p-5 shadow-sm`}
                         >
-                            <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center shadow-lg`}>
-                                <stat.icon className="text-white" size={22} />
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-light-muted">
+                                        {stat.label}
+                                    </p>
+                                    <p className="text-3xl font-bold text-gray-900 dark:text-light mt-1 tabular-nums">
+                                        {stat.value}
+                                    </p>
+                                </div>
+                                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/80 dark:bg-dark-surface/80 shadow-sm text-primary-600 dark:text-primary-400">
+                                    <stat.icon size={20} />
+                                </div>
                             </div>
-                            <div>
-                                <p className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
-                                <p className="text-sm text-gray-600 dark:text-gray-300">{stat.label}</p>
-                            </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
 
-                {/* Tab navigation */}
-                <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-dark-border pb-4">
+                {/* Tabs */}
+                <div className="flex flex-wrap gap-2 mb-6 p-1.5 rounded-2xl bg-white dark:bg-dark-surface shadow-sm w-fit">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${activeTab === tab.id
+                            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                                activeTab === tab.id
                                     ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-elevated'
-                                }`}
+                                    : 'text-gray-600 dark:text-light-muted hover:bg-gray-50 dark:hover:bg-dark-elevated'
+                            }`}
                         >
                             <tab.icon size={16} />
                             {tab.label}
                             {tab.count !== undefined && (
-                                <span className={`px-2 py-0.5 rounded-full text-xs ${activeTab === tab.id
-                                        ? 'bg-white/20 text-white'
-                                        : 'bg-gray-200 dark:bg-dark-border text-gray-700 dark:text-gray-300'
-                                    }`}>
+                                <span
+                                    className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                                        activeTab === tab.id
+                                            ? 'bg-white/20 text-white'
+                                            : 'bg-gray-100 dark:bg-dark-elevated text-gray-600 dark:text-light-muted'
+                                    }`}
+                                >
                                     {tab.count}
                                 </span>
                             )}
@@ -186,28 +199,36 @@ export default function AdminDashboard() {
                 >
                     {/* Projects Tab */}
                     {activeTab === 'projects' && (
-                        <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-sm border border-gray-200 dark:border-dark-border overflow-hidden">
-                            <div className="flex items-center justify-between p-6 border-b border-gray-100 dark:border-dark-border">
+                        <div className="bg-gradient-to-br from-white via-gray-50/80 to-primary-50/40 dark:from-dark-surface dark:via-dark-surface dark:to-primary-900/10 rounded-2xl shadow-sm overflow-hidden">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 border-b border-gray-100/80 dark:border-dark-border/60">
                                 <div>
-                                    <h2 className="text-lg font-bold text-gray-900 dark:text-white">All Projects</h2>
-                                    <p className="text-sm text-gray-600 dark:text-gray-300">Manage your portfolio projects</p>
+                                    <h2 className="text-lg font-bold text-gray-900 dark:text-light">All Projects</h2>
+                                    <p className="text-sm text-gray-500 dark:text-light-muted mt-0.5">
+                                        Manage your portfolio projects
+                                    </p>
                                 </div>
                                 <button
                                     onClick={() => setAddProjectOpen(true)}
-                                    className="flex items-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-500 text-white font-medium rounded-xl transition shadow-lg shadow-primary-600/30"
+                                    className="flex items-center justify-center gap-2 px-4 py-2.5 bg-primary-600 hover:bg-primary-500 text-white font-medium rounded-xl transition shadow-lg shadow-primary-600/30"
                                 >
                                     <Plus size={16} />
                                     Add Project
                                 </button>
                             </div>
-                            <div className="divide-y divide-gray-100 dark:divide-dark-border">
+
+                            <div className="divide-y divide-gray-100/80 dark:divide-dark-border/50">
                                 {projects.length === 0 ? (
-                                    <div className="text-center py-16">
-                                        <FolderKanban className="mx-auto text-gray-300 dark:text-dark-border mb-4" size={48} />
-                                        <p className="text-gray-600 dark:text-gray-300">No projects yet</p>
+                                    <div className="text-center py-16 px-4">
+                                        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-50 dark:bg-primary-500/10">
+                                            <FolderKanban className="text-primary-500 dark:text-primary-400" size={28} />
+                                        </div>
+                                        <p className="text-gray-600 dark:text-light-muted font-medium">No projects yet</p>
+                                        <p className="text-sm text-gray-400 dark:text-light-muted/70 mt-1">
+                                            Create your first portfolio project
+                                        </p>
                                         <button
                                             onClick={() => setAddProjectOpen(true)}
-                                            className="mt-4 px-4 py-2 bg-primary-500 text-white rounded-xl text-sm font-medium hover:bg-primary-600 transition shadow-lg shadow-primary-500/30"
+                                            className="mt-5 px-5 py-2.5 bg-primary-500 text-white rounded-xl text-sm font-medium hover:bg-primary-600 transition shadow-lg shadow-primary-500/30"
                                         >
                                             Create your first project
                                         </button>
@@ -216,52 +237,103 @@ export default function AdminDashboard() {
                                     projects.map((project) => (
                                         <div
                                             key={project._id}
-                                            className="flex flex-col sm:flex-row sm:items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-dark-elevated transition gap-4"
+                                            className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 hover:bg-white/70 dark:hover:bg-dark-elevated/60 transition gap-4"
                                         >
-                                            <div className="flex items-center gap-4">
-                                                <img
-                                                    src={project.image}
-                                                    alt={project.name}
-                                                    className="w-20 h-14 object-cover rounded-lg flex-shrink-0"
-                                                    onError={(e) => { e.target.style.display = 'none'; }}
-                                                />
+                                            <div className="flex items-center gap-4 min-w-0">
+                                                <div className="relative shrink-0 overflow-hidden rounded-xl shadow-sm">
+                                                    {project.image ? (
+                                                        <img
+                                                            src={project.image}
+                                                            alt={project.name}
+                                                            className="w-20 h-14 object-cover"
+                                                            onError={(e) => {
+                                                                e.target.style.display = 'none';
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <div className="w-20 h-14 bg-gradient-to-br from-primary-100 to-primary-50 dark:from-primary-500/20 dark:to-dark-elevated flex items-center justify-center">
+                                                            <span className="text-lg font-bold text-primary-500/60">
+                                                                {(project.name || 'P').charAt(0)}
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                </div>
                                                 <div className="min-w-0">
-                                                    <div className="flex items-center gap-2">
-                                                        <h3 className="font-semibold text-gray-900 dark:text-white truncate">
+                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                        <h3 className="font-semibold text-gray-900 dark:text-light truncate">
                                                             {project.name}
                                                         </h3>
                                                         {project.featured && (
-                                                            <span className="flex-shrink-0 px-2 py-0.5 bg-primary-100 dark:bg-primary-500/20 text-primary-700 dark:text-primary-400 text-xs rounded-full flex items-center gap-1 font-medium">
-                                                                <Star size={10} /> Featured
+                                                            <span className="flex-shrink-0 px-2 py-0.5 bg-primary-500 text-white text-[10px] rounded-full flex items-center gap-1 font-semibold shadow-sm shadow-primary-500/25">
+                                                                <Star size={10} className="fill-white" /> Featured
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-300 truncate">{project.tech}</p>
-                                                    <div className="flex items-center gap-3 mt-1">
-                                                        {project.live && project.live !== '#' && (
-                                                            <a href={project.live} target="_blank" className="text-xs text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1 font-medium">
-                                                                <ExternalLink size={10} /> Live
-                                                            </a>
-                                                        )}
-                                                        {project.github && project.github !== '#' && (
-                                                            <a href={project.github} target="_blank" className="text-xs text-gray-700 dark:text-gray-300 hover:underline flex items-center gap-1">
-                                                                <FaGithub size={10} /> Repo
-                                                            </a>
-                                                        )}
-                                                    </div>
+                                                    <p className="text-sm text-gray-500 dark:text-light-muted mt-0.5 line-clamp-1">
+                                                        {project.shortDescription ||
+                                                            project.description
+                                                                ?.replace(/<[^>]*>/g, '')
+                                                                .replace(/\s+/g, ' ')
+                                                                .trim()
+                                                                .slice(0, 80) ||
+                                                            'No description'}
+                                                    </p>
+                                                    {project.tech && (
+                                                        <div className="mt-2 flex flex-wrap gap-1.5">
+                                                            {project.tech
+                                                                .split(',')
+                                                                .map((t) => t.trim())
+                                                                .filter(Boolean)
+                                                                .slice(0, 4)
+                                                                .map((t) => (
+                                                                    <span
+                                                                        key={t}
+                                                                        className="inline-flex items-center rounded-full bg-primary-50/90 dark:bg-primary-500/10 px-2 py-0.5 text-[10px] font-medium text-primary-700 dark:text-primary-400"
+                                                                    >
+                                                                        {t}
+                                                                    </span>
+                                                                ))}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-2 flex-shrink-0">
+
+                                            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 self-end sm:self-center">
+                                                {project.live && project.live !== '#' && (
+                                                    <a
+                                                        href={project.live}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="p-2 rounded-lg text-gray-500 dark:text-light-muted hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-500/10 transition"
+                                                        title="Live demo"
+                                                    >
+                                                        <ExternalLink size={16} />
+                                                    </a>
+                                                )}
+                                                {project.github && project.github !== '#' && (
+                                                    <a
+                                                        href={project.github}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="p-2 rounded-lg text-gray-500 dark:text-light-muted hover:text-gray-900 dark:hover:text-light hover:bg-gray-100 dark:hover:bg-dark-elevated transition"
+                                                        title="GitHub"
+                                                    >
+                                                        <FaGithub size={16} />
+                                                    </a>
+                                                )}
                                                 <button
-                                                    onClick={() => { setSelectedProject(project); setEditProjectOpen(true); }}
-                                                    className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition"
+                                                    onClick={() => {
+                                                        setSelectedProject(project);
+                                                        setEditProjectOpen(true);
+                                                    }}
+                                                    className="p-2 rounded-lg text-gray-500 dark:text-light-muted hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-500/10 transition"
                                                     title="Edit"
                                                 >
                                                     <Edit size={16} />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(project._id)}
-                                                    className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
+                                                    className="p-2 rounded-lg text-gray-500 dark:text-light-muted hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition"
                                                     title="Delete"
                                                 >
                                                     <Trash2 size={16} />
@@ -276,20 +348,23 @@ export default function AdminDashboard() {
 
                     {/* Hero Tab */}
                     {activeTab === 'hero' && (
-                        <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-sm border border-gray-200 dark:border-dark-border p-6">
-                            <div className="flex items-center justify-between mb-6">
+                        <div className="bg-gradient-to-br from-white via-gray-50/80 to-primary-50/40 dark:from-dark-surface dark:via-dark-surface dark:to-primary-900/10 rounded-2xl shadow-sm p-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                                 <div>
-                                    <h2 className="text-lg font-bold text-gray-900 dark:text-white">Hero Section</h2>
-                                    <p className="text-sm text-gray-600 dark:text-gray-300">Your introduction and social links</p>
+                                    <h2 className="text-lg font-bold text-gray-900 dark:text-light">Hero Section</h2>
+                                    <p className="text-sm text-gray-500 dark:text-light-muted mt-0.5">
+                                        Your introduction and social links
+                                    </p>
                                 </div>
                                 <button
                                     onClick={() => setHeroModalOpen(true)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl transition shadow-lg shadow-primary-500/30"
+                                    className="flex items-center justify-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl transition shadow-lg shadow-primary-500/30"
                                 >
                                     <Edit size={16} /> Edit
                                 </button>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                 {[
                                     { label: 'Name', value: heroData?.title || 'Not set' },
                                     { label: 'Designation', value: heroData?.subtitle || 'Not set' },
@@ -299,9 +374,16 @@ export default function AdminDashboard() {
                                     { label: 'LinkedIn', value: heroData?.linkedin || 'Not set' },
                                     { label: 'Facebook', value: heroData?.facebook || 'Not set' },
                                 ].map((item) => (
-                                    <div key={item.label} className="bg-gray-50 dark:bg-dark-elevated p-4 rounded-xl border border-gray-100 dark:border-dark-border">
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 font-medium">{item.label}</p>
-                                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{item.value}</p>
+                                    <div
+                                        key={item.label}
+                                        className="rounded-xl bg-white/70 dark:bg-dark-elevated/70 p-4 shadow-sm"
+                                    >
+                                        <p className="text-[11px] font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-400 mb-1">
+                                            {item.label}
+                                        </p>
+                                        <p className="text-sm font-semibold text-gray-900 dark:text-light truncate">
+                                            {item.value}
+                                        </p>
                                     </div>
                                 ))}
                             </div>
@@ -310,30 +392,39 @@ export default function AdminDashboard() {
 
                     {/* About Tab */}
                     {activeTab === 'about' && (
-                        <div className="bg-white dark:bg-dark-surface rounded-2xl shadow-sm border border-gray-200 dark:border-dark-border p-6">
-                            <div className="flex items-center justify-between mb-6">
+                        <div className="bg-gradient-to-br from-white via-gray-50/80 to-primary-50/40 dark:from-dark-surface dark:via-dark-surface dark:to-primary-900/10 rounded-2xl shadow-sm p-6">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                                 <div>
-                                    <h2 className="text-lg font-bold text-gray-900 dark:text-white">About Section</h2>
-                                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                                    <h2 className="text-lg font-bold text-gray-900 dark:text-light">About Section</h2>
+                                    <p className="text-sm text-gray-500 dark:text-light-muted mt-0.5">
                                         {aboutData?.paragraphs?.length || 0} paragraph(s)
                                     </p>
                                 </div>
                                 <button
                                     onClick={() => setAboutModalOpen(true)}
-                                    className="flex items-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl transition shadow-lg shadow-primary-500/30"
+                                    className="flex items-center justify-center gap-2 px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl transition shadow-lg shadow-primary-500/30"
                                 >
                                     <Edit size={16} /> Edit
                                 </button>
                             </div>
                             <div className="space-y-3">
                                 {aboutData?.paragraphs?.map((para, i) => (
-                                    <div key={i} className="bg-gray-50 dark:bg-dark-elevated p-4 rounded-xl border border-gray-100 dark:border-dark-border">
-                                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-1 font-medium">Paragraph {i + 1}</p>
-                                        <p className="text-sm text-gray-800 dark:text-gray-100">{para}</p>
+                                    <div
+                                        key={i}
+                                        className="rounded-xl bg-white/70 dark:bg-dark-elevated/70 p-4 shadow-sm"
+                                    >
+                                        <p className="text-[11px] font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-400 mb-1.5">
+                                            Paragraph {i + 1}
+                                        </p>
+                                        <p className="text-sm text-gray-700 dark:text-light-muted leading-relaxed">
+                                            {para}
+                                        </p>
                                     </div>
                                 ))}
                                 {(!aboutData?.paragraphs || aboutData.paragraphs.length === 0) && (
-                                    <p className="text-gray-600 dark:text-gray-300 text-center py-8">No content yet. Click Edit to add.</p>
+                                    <p className="text-gray-500 dark:text-light-muted text-center py-10">
+                                        No content yet. Click Edit to add.
+                                    </p>
                                 )}
                             </div>
                         </div>
@@ -343,16 +434,47 @@ export default function AdminDashboard() {
 
             {/* Modals */}
             {heroModalOpen && (
-                <EditHeroModal heroData={heroData} onClose={() => setHeroModalOpen(false)} onUpdate={() => { fetchHero(); setHeroModalOpen(false); }} />
+                <EditHeroModal
+                    heroData={heroData}
+                    onClose={() => setHeroModalOpen(false)}
+                    onUpdate={() => {
+                        fetchHero();
+                        setHeroModalOpen(false);
+                    }}
+                />
             )}
             {aboutModalOpen && (
-                <EditAboutModal aboutData={aboutData} onClose={() => setAboutModalOpen(false)} onUpdate={() => { fetchAbout(); setAboutModalOpen(false); }} />
+                <EditAboutModal
+                    aboutData={aboutData}
+                    onClose={() => setAboutModalOpen(false)}
+                    onUpdate={() => {
+                        fetchAbout();
+                        setAboutModalOpen(false);
+                    }}
+                />
             )}
             {addProjectOpen && (
-                <AddProjectModal onClose={() => setAddProjectOpen(false)} onAdd={() => { fetchProjects(); setAddProjectOpen(false); }} />
+                <AddProjectModal
+                    onClose={() => setAddProjectOpen(false)}
+                    onAdd={() => {
+                        fetchProjects();
+                        setAddProjectOpen(false);
+                    }}
+                />
             )}
             {editProjectOpen && selectedProject && (
-                <EditProjectModal project={selectedProject} onClose={() => { setEditProjectOpen(false); setSelectedProject(null); }} onUpdate={() => { fetchProjects(); setEditProjectOpen(false); setSelectedProject(null); }} />
+                <EditProjectModal
+                    project={selectedProject}
+                    onClose={() => {
+                        setEditProjectOpen(false);
+                        setSelectedProject(null);
+                    }}
+                    onUpdate={() => {
+                        fetchProjects();
+                        setEditProjectOpen(false);
+                        setSelectedProject(null);
+                    }}
+                />
             )}
         </div>
     );
