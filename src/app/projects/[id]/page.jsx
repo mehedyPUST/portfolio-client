@@ -201,6 +201,7 @@ export default function ProjectDetail() {
                             Back to Projects
                         </Link>
 
+                        {/* Hero image */}
                         <div className="relative rounded-2xl overflow-hidden border border-gray-200/80 dark:border-dark-border shadow-xl shadow-gray-200/50 dark:shadow-none mb-8 bg-gray-100 dark:bg-dark-elevated">
                             <div className="aspect-[16/9] sm:aspect-[2/1] relative">
                                 {project.image ? (
@@ -235,6 +236,7 @@ export default function ProjectDetail() {
                             </div>
                         </div>
 
+                        {/* Action buttons */}
                         <div className="flex flex-wrap gap-2.5 mb-10">
                             {hasLive && (
                                 <a
@@ -272,6 +274,7 @@ export default function ProjectDetail() {
                         </div>
 
                         <div className="space-y-8">
+                            {/* About */}
                             <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 sm:p-8 shadow-sm">
                                 <h2 className="text-lg font-semibold text-gray-900 dark:text-light mb-4 flex items-center gap-2">
                                     <span className="w-1 h-5 rounded-full bg-primary-500" />
@@ -285,6 +288,7 @@ export default function ProjectDetail() {
                                 </div>
                             </section>
 
+                            {/* Tech Stack */}
                             {techList.length > 0 && (
                                 <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 sm:p-8 shadow-sm">
                                     <h2 className="text-lg font-semibold text-gray-900 dark:text-light mb-4 flex items-center gap-2">
@@ -304,34 +308,56 @@ export default function ProjectDetail() {
                                 </section>
                             )}
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 shadow-sm">
-                                    <h3 className="text-base font-semibold text-gray-900 dark:text-light mb-3 flex items-center gap-2">
-                                        <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center">
-                                            <Zap size={15} className="text-amber-600 dark:text-amber-400" />
+                            {/* Challenges & Improvements — vertical timeline */}
+                            <div className="relative space-y-0">
+                                {/* Challenges */}
+                                <section className="relative pl-0 sm:pl-10">
+                                    <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-amber-400 via-amber-400/40 to-primary-500/40" />
+                                    <div className="hidden sm:flex absolute left-0 top-6 -translate-x-1/2 w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-500/15 border-2 border-amber-400 dark:border-amber-500 items-center justify-center z-10">
+                                        <Zap size={14} className="text-amber-600 dark:text-amber-400" />
+                                    </div>
+
+                                    <div className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 sm:p-8 shadow-sm">
+                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-light mb-4 flex items-center gap-2.5">
+                                            <div className="sm:hidden w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center shrink-0">
+                                                <Zap size={15} className="text-amber-600 dark:text-amber-400" />
+                                            </div>
+                                            Challenges
+                                        </h3>
+                                        <div className="text-[15px] text-gray-600 dark:text-light-muted">
+                                            <MarkdownContent
+                                                content={project.challenges}
+                                                fallback="None documented."
+                                            />
                                         </div>
-                                        Challenges
-                                    </h3>
-                                    <div className="text-sm text-gray-600 dark:text-light-muted">
-                                        <MarkdownContent
-                                            content={project.challenges}
-                                            fallback="None documented."
-                                        />
                                     </div>
                                 </section>
 
-                                <section className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 shadow-sm">
-                                    <h3 className="text-base font-semibold text-gray-900 dark:text-light mb-3 flex items-center gap-2">
-                                        <div className="w-8 h-8 rounded-lg bg-primary-50 dark:bg-primary-500/10 flex items-center justify-center">
-                                            <Rocket size={15} className="text-primary-600 dark:text-primary-400" />
+                                {/* Spacer / connector */}
+                                <div className="hidden sm:block h-6 relative pl-10">
+                                    <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-primary-500/40 to-primary-500" />
+                                </div>
+                                <div className="sm:hidden h-5" />
+
+                                {/* Future Improvements */}
+                                <section className="relative pl-0 sm:pl-10">
+                                    <div className="hidden sm:flex absolute left-0 top-6 -translate-x-1/2 w-8 h-8 rounded-full bg-primary-50 dark:bg-primary-500/15 border-2 border-primary-500 items-center justify-center z-10">
+                                        <Rocket size={14} className="text-primary-600 dark:text-primary-400" />
+                                    </div>
+
+                                    <div className="bg-white dark:bg-dark-surface rounded-2xl border border-gray-200/80 dark:border-dark-border p-6 sm:p-8 shadow-sm">
+                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-light mb-4 flex items-center gap-2.5">
+                                            <div className="sm:hidden w-8 h-8 rounded-lg bg-primary-50 dark:bg-primary-500/10 flex items-center justify-center shrink-0">
+                                                <Rocket size={15} className="text-primary-600 dark:text-primary-400" />
+                                            </div>
+                                            Future Improvements
+                                        </h3>
+                                        <div className="text-[15px] text-gray-600 dark:text-light-muted">
+                                            <MarkdownContent
+                                                content={project.improvements}
+                                                fallback="None planned."
+                                            />
                                         </div>
-                                        Future Improvements
-                                    </h3>
-                                    <div className="text-sm text-gray-600 dark:text-light-muted">
-                                        <MarkdownContent
-                                            content={project.improvements}
-                                            fallback="None planned."
-                                        />
                                     </div>
                                 </section>
                             </div>
