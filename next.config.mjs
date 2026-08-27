@@ -8,11 +8,19 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'i.ibb.co',
       },
       {
         protocol: 'https',
-        hostname: '*.ibb.co',
+        hostname: '**.ibb.co',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ibb.co',
       },
     ],
   },

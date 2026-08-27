@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { ArrowLeft, Edit, ExternalLink, FolderKanban, Layout, LogOut, Plus, Star, Trash2, User } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
@@ -240,15 +241,14 @@ export default function AdminDashboard() {
                                             className="group flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 hover:bg-white/70 dark:hover:bg-dark-elevated/60 transition gap-4"
                                         >
                                             <div className="flex items-center gap-4 min-w-0">
-                                                <div className="relative shrink-0 overflow-hidden rounded-xl shadow-sm">
+                                                <div className="relative shrink-0 w-20 h-14 overflow-hidden rounded-xl shadow-sm">
                                                     {project.image ? (
-                                                        <img
+                                                        <Image
                                                             src={project.image}
                                                             alt={project.name}
-                                                            className="w-20 h-14 object-cover"
-                                                            onError={(e) => {
-                                                                e.target.style.display = 'none';
-                                                            }}
+                                                            fill
+                                                            sizes="80px"
+                                                            className="object-cover"
                                                         />
                                                     ) : (
                                                         <div className="w-20 h-14 bg-gradient-to-br from-primary-100 to-primary-50 dark:from-primary-500/20 dark:to-dark-elevated flex items-center justify-center">

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
     ArrowLeft,
@@ -185,7 +186,14 @@ export default function ProjectDetail() {
                         <div className="relative rounded-2xl overflow-hidden border border-gray-200/80 dark:border-dark-border shadow-xl shadow-gray-200/40 dark:shadow-none mb-8 bg-gray-100 dark:bg-dark-elevated">
                             <div className="aspect-[16/9] sm:aspect-[2/1] relative">
                                 {project.image ? (
-                                    <img src={project.image} alt={project.name} className="w-full h-full object-cover" />
+                                    <Image
+                                        src={project.image}
+                                        alt={project.name}
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 1200px"
+                                        className="object-cover"
+                                        priority
+                                    />
                                 ) : (
                                     <div className="flex items-center justify-center h-full text-gray-300 dark:text-dark-border">
                                         <Layers size={48} strokeWidth={1.25} />
